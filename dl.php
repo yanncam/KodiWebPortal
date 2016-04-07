@@ -11,7 +11,7 @@ include("functions.php");
 	
 if(ENABLE_DOWNLOAD){
 	if(ENABLE_AUTHENTICATION){ // Check authentication and authorization
-		if(!isset($_SESSION['user'], $_SESSION['pass'])){
+		if(!isAuthenticated()){
 			exit;
 		}
 	}
@@ -20,16 +20,20 @@ if(ENABLE_DOWNLOAD){
 		$id = intval($_GET["id"]);
 		switch(strval($_GET["type"])){
 			case "tvshow":
-				$sql = "SELECT * FROM " . NAX_TVSHOWEPISODE_VIEW . " WHERE idEpisode=$id LIMIT 0,1;"; 
+				$sql 		= "SELECT * FROM " . NAX_TVSHOWEPISODE_VIEW . " WHERE idEpisode=$id LIMIT 0,1;";
+				$localPath 	= NAX_TVSHOW_LOCAL_PATH;
+				$remotePath = NAX_TVSHOW_REMOTE_PATH;
 				break;
 			case "movie":
-				$sql = "SELECT * FROM " . NAX_MOVIE_VIEW . " WHERE idMovie=$id LIMIT 0,1;";
+				$sql 		= "SELECT * FROM " . NAX_MOVIE_VIEW . " WHERE idMovie=$id LIMIT 0,1;";
+				$localPath 	= NAX_MOVIES_LOCAL_PATH;
+				$remotePath = NAX_MOVIES_REMOTE_PATH;
 				break;
 		}
 		$req 	= mysql_query($sql);
 		$data 	= mysql_fetch_array($req);
 		if($data){
-			$path = str_ireplace(NAX_SAMBA_PATH, NAX_LOCAL_PATH, $data["strPath"]) . "/" . $data["strFileName"];
+			$path = str_ireplace($remotePath, $localPath, $data["strPath"]) . "/" . $data["strFileName"];
 			if(ENABLE_AUTHENTICATION)
 				logDownload($_SESSION['user'], $path);
 			header("X-Sendfile: $path");

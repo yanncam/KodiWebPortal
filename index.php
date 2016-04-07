@@ -4,15 +4,11 @@ include_once("config.php");
 include_once("functions.php");
 
 if(ENABLE_AUTHENTICATION){
-	if(!isset($_SESSION['user'], $_SESSION['pass']) && !isset($_POST['user'], $_POST['pass'])){
+	if(!isAuthenticated() && !isset($_POST['user'], $_POST['pass'])){
 		include_once("login.php");
 		exit;
-	} elseif(!isset($_SESSION['user'], $_SESSION['pass']) && isset($_POST['user'], $_POST['pass'])){
-		if(checkLDAPAuthentication(trim(strval($_POST['user'])), trim(strval($_POST['pass'])))){
-			// Credentials allowed
-			$_SESSION['user'] = trim(strval($_POST['user']));
-			$_SESSION['pass'] = trim(strval($_POST['pass']));
-		} else {
+	} elseif(!isAuthenticated() && isset($_POST['user'], $_POST['pass'])){
+		if(!checkAuthentication(trim(strval($_POST['user'])), trim(strval($_POST['pass'])))){
 			echo "Wrong username of password...";
 			exit;
 		}
@@ -77,13 +73,20 @@ if(isset($_GET["offset"])){
 	exit;
 }
 
-?><html>
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <head>
-<link rel="stylesheet" href="style.css">
-<script type="text/javascript" src="https://code.jquery.com/jquery.min.js"></script>
-<script type="text/javascript" src="script.js"></script>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Pragma" content="no-cache" />
+	<meta http-equiv="Cache-Control" content="no-cache" />
+	<meta http-equiv="Pragma-directive" content="no-cache" />
+	<meta http-equiv="Cache-Directive" content="no-cache" />
+	<meta name="robots" content="noindex,follow" />
+	<title>KodiWebPortal <?php echo KODI_WEB_PORTAL_VERSION; ?></title>
+	<link rel="stylesheet" href="style.css">
+	<script type="text/javascript" src="https://code.jquery.com/jquery.min.js"></script>
+	<script type="text/javascript" src="script.js"></script>
 </head>
-
 
 <body>
 <a href="index.php" alt="Movies / Films" title="See all movies"><img class="image-nav" src="./images/cinema-logo.png" style="margin-top:30px;" /></a>
