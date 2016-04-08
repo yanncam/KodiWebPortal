@@ -38,6 +38,10 @@ Access to **Kodi Web Portal** can be :
 ## How to install Kodi Web Portal ?
 
 Just clone the Git repo source code and edit the "config.php" file.
+Apache server who host the **Kodi Web Portal** needs :
+* mod_xsendfile : to be able to sent big file, like a movie, through HTTP/HTTPS.
+* php-ldap module : if you want to authenticate your users on LDAP directory.
+* access to your multimedia content through filesystem (with mounting point or stored locally)
 
 ## How to configure my Synology NAS to use Kodi Web Portal?
 
