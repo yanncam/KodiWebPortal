@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Kodiwebportal : The Web Portal for Kodi to display, search and download your personal multimedia content.">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Kodiwebportal</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/yanncam/KodiWebPortal">View on GitHub</a>
+
+          <h1 id="project_title">Kodiwebportal</h1>
+          <h2 id="project_tagline">The Web Portal for Kodi to display, search and download your personal multimedia content.</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/yanncam/KodiWebPortal/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/yanncam/KodiWebPortal/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a id="kodiwebportal" class="anchor" href="#kodiwebportal" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>KodiWebPortal</h1>
+
+<p><strong>The Web Portal for Kodi to display, search and download your personal multimedia content</strong></p>
+
+<h2>
+<a id="description" class="anchor" href="#description" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Description</h2>
+
+<p><strong>Kodi Web Portal</strong> is a web interface to browse, display, search and eventually download your Kodi multimedia content indexed. This web application is very light, without framework (except JQuery) and dependencies.</p>
+
+<p><strong>Kodi Web Portal</strong> needs to be deployed with a direct file access to your media content if the downloading feature is enabled. This web application requires an access to the MySQL's Kodi database.</p>
+
+<p>You can use Kodi (XBMC) with a MySQL database to centralized all your multimedia content. This dabatase contains all your movies references, tv shows, details about them (script writers, realisators, actors, studio, synopsis, original title and in your language, etc.), fanart and thumb URLs and file path to play the content.</p>
+
+<p><strong>Kodi Web Portal</strong> allows you to access your Kodi's database through a simple web browser.</p>
+
+<p><img src="/screenshots/002.jpg?raw=true" alt="Alt text" title="Kodi Web Portal">
+<img src="/screenshots/005.jpg?raw=true" alt="Alt text" title="Trailer preview">
+<img src="/screenshots/014.jpg?raw=true" alt="Alt text" title="TV Show season browsing"></p>
+
+<p>Original idea of <strong>Kodi Web Portal</strong> came from my personal centralization of all backuped movies and tv shows into a Synology NAS.
+Through this excellent kind of NAS, you can deploy additionnal module in the DSM, like :</p>
+
+<ul>
+<li>Web Station : Apache and PHP server</li>
+<li>MariaDB : fork of MySQL database</li>
+<li>phpMyAdmin : to administrate the MariaDB database</li>
+<li>Directory Server : an LDAP server in the Synology for manage users and groups
+A Synology NAS acts as a complete web server to host my Kodi's data and the <strong>Kodi Web Portal</strong>.</li>
+</ul>
+
+<p>I wanted to use my Synology NAS with these features to provide a private and personal web interface displaying all my Kodi's movies and TV show scraped, and so, if I was outside home, I would have been able to browse and download my personal content with ease. <strong>Kody Web Portal</strong> was born.</p>
+
+<h2>
+<a id="authentication" class="anchor" href="#authentication" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Authentication</h2>
+
+<p>Access to <strong>Kodi Web Portal</strong> can be :</p>
+
+<ul>
+<li>Anonymous : no login/password required, <strong>Kodi Web Portal</strong> content is displayed to anyone</li>
+<li>Internal authentication : user accounts (login / password) are defined in the config.php file</li>
+<li>LDAP authentication : Kodi Web Portal delegate the authentication to an LDAP directory, with group membership check.</li>
+<li>Chaining authentication : check authentication with internal account, then LDAP.</li>
+</ul>
+
+<p><img src="/screenshots/001.jpg?raw=true" alt="Alt text" title="Authentication page"></p>
+
+<h2>
+<a id="how-to-install-kodi-web-portal-" class="anchor" href="#how-to-install-kodi-web-portal-" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>How to install Kodi Web Portal ?</h2>
+
+<p>Just clone the Git repo source code and edit the "config.php" file.</p>
+
+<h2>
+<a id="how-to-configure-my-synology-nas-to-use-kodi-web-portal" class="anchor" href="#how-to-configure-my-synology-nas-to-use-kodi-web-portal" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>How to configure my Synology NAS to use Kodi Web Portal?</h2>
+
+<p>For this specific deployement on a Synology NAS, you need :</p>
+
+<ul>
+<li>Web Station package installed via DSM</li>
+<li>MariaDB package installed via DSM</li>
+<li>phpMyAdmin package installed via DSM (juste for administration tasks, this package can be stopped after)</li>
+<li>Directory Server package installed via DSM (only if you need to manage users and groups through LDAP)</li>
+</ul>
+
+<p>Configure your Kodi to use the MariaDB/MySQL database on your NAS with a dedicated account (Kodi create a database like "xbmc_videoXX" with "XX" a number automatically).</p>
+
+<p>Once Kodi has pushed all your multimedia content into the SQL database, check if all your media content files are presents in a dedicated Synology share like "MEDIATHEQUE".</p>
+
+<p>Allow the internal Synology user "httpd" to access to this "MEDIATHEQUE" share with "read" permission (in the DSM, edit "permission" on the "MEDIATHEQUE" share, choose "Internal Group" and enable "read" for user "httpd").</p>
+
+<p>Finaly, you have to edit an Apache config file manualy through SSH, to add the "/volume1/MEDIATHEQUE" path usable by the X-send-file Apache module.</p>
+
+<ul>
+<li>vi /etc/httpd/conf/extra/mod_xsendfile.conf-user # Synology DSM5</li>
+<li>vi /volume1/@appstore/WebStation/usr/local/etc/httpd/conf/extra/mod_xsendfile.conf-user # Synology DSM6</li>
+</ul>
+
+<div class="highlight highlight-source-shell"><pre>[...]
+XSendFilePath /volume1/MEDIATHEQUE
+[...]</pre></div>
+
+<p>Reboot the Synology's Apache server to load the new configuration (stop the package then restart it).</p>
+
+<h2>
+<a id="ideas-for-the-future" class="anchor" href="#ideas-for-the-future" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Ideas for the future...</h2>
+
+<ul>
+<li>Adding SQL users authentication</li>
+<li>Adding users comments on movies / TV show</li>
+<li>Track movies / tvshow watched by a user himself</li>
+<li>Create an install.php page with compatibility checks and auto-create config.php file</li>
+<li>Add "starts" on new entry since the last connection of a user</li>
+<li>Customization of errors</li>
+</ul>
+
+<h2>
+<a id="misc" class="anchor" href="#misc" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Misc</h2>
+
+<p>Thanks to Vmauduit for his help ;) !</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Kodiwebportal maintained by <a href="https://github.com/yanncam">yanncam</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
