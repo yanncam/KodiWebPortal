@@ -2,18 +2,10 @@
 	// Check if Ajax request is running to load entries
 	$ajaxRuning = false;
 
-	attachEvents();
-
-	/*$(window).scroll(function(){
-		if ($(window).scrollTop() == $(document).height() - $(window).height()){
-			getEntries();
-		}
-	}); */
-	
 	var lastScrollTop = 0;
 	$(window).scroll(function(e) {
-		var body = $("body")[0],
-			scrollTop = body.scrollTop;
+		var body = $("body")[0];
+		var scrollTop = $(window).scrollTop();
 
 		if (scrollTop > lastScrollTop) {
 			if (scrollTop >= (body.scrollHeight - window.innerHeight - 50)) {
@@ -24,7 +16,16 @@
 		}
 		lastScrollTop = scrollTop;
 	});
- 
+	
+	attachEvents();
+
+	/*$(window).scroll(function(){
+		if ($(window).scrollTop() == $(document).height() - $(window).height()){
+			getEntries();
+		}
+	}); */
+	
+
 });
 
 function attachEvents(){
