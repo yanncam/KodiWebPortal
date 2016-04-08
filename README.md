@@ -71,9 +71,9 @@ Reboot the Synology's Apache server to load the new configuration (stop the pack
 * Adding users comments on movies / TV show
 * Track movies / tvshow watched by a user himself
 * Create an install.php page with compatibility checks and auto-create config.php file
-* Add "starts" on new entry since the last connection of a user
+* Add "stars" on new entry since the last connection of a user
 * Customization of errors
 
 ## Misc
 
-Thanks to Vmauduit for his help ;) !
+Thanks to Vmauduit for his contribution ;) !
