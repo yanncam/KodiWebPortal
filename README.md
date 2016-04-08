@@ -47,7 +47,7 @@ For this specific deployement on a Synology NAS, you need :
 * phpMyAdmin package installed via DSM (juste for administration tasks, this package can be stopped after)
 * Directory Server package installed via DSM (only if you need to manage users and groups through LDAP)
 
-Configure your Kodi to use the MariaDB/MySQL database on your NAS with a dedicated account (Kodi create a database like "xbmc_videoXX" with "XX" a number automatically).
+Configure your Kodi to use the MariaDB/MySQL database on your NAS with a dedicated account (Kodi creates a database like "xbmc_videoXX" with "XX" a number automatically defined).
 
 Once Kodi has pushed all your multimedia content into the SQL database, check if all your media content files are presents in a dedicated Synology share like "MEDIATHEQUE".
 
