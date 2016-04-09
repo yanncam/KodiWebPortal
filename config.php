@@ -82,6 +82,7 @@ if(!$db){
 
 // Connect to the latest XBMC/KODI database presents in the backend, database name is get automaticaly.
 $req = mysql_query("SELECT SCHEMA_NAME FROM information_schema.SCHEMATA WHERE SCHEMA_NAME LIKE 'xbmc_video%' ORDER BY SCHEMA_NAME DESC LIMIT 0,1;");
+mysql_query("SET NAMES 'utf8'");
 $dbSelected = false;
 while($database = mysql_fetch_array($req)){
 	if(substr($database[0], 0, 10) == "xbmc_video"){
