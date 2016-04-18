@@ -173,43 +173,47 @@ function getAllNationalities(){
 /**
   * Return the string representing the size in right format (Ko, Mo, Go) of
   * a file located at the path passed in argument.
+  * For Unix based host, shell_exec() must be available
   */
 function showsize($file) {
-	$return = "";
+	$return = "N/A";
 	$statBin = "/bin/stat";
     if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
-      if (class_exists("COM")) {
-        $fsobj = new COM('Scripting.FileSystemObject');
-        $f = $fsobj->GetFile(realpath($file));
-        $file = $f->Size;
-      } else {
-        $file = trim(exec("for %F in (\"" . $file . "\") do @echo %~zF"));
-      }
+		if (class_exists("COM")) {
+			$fsobj = new COM('Scripting.FileSystemObject');
+			$f = $fsobj->GetFile(realpath($file));
+			$file = $f->Size;
+		} else {
+			$file = trim(exec("for %F in (\"" . $file . "\") do @echo %~zF"));
+		}
     } elseif (PHP_OS == 'Darwin') {
-      $file = trim(shell_exec("$statBin -f %z " . escapeshellarg($file)));
+		$file = trim(@shell_exec("$statBin -f %z " . escapeshellarg($file)));
     } elseif ((PHP_OS == 'Linux') || (PHP_OS == 'FreeBSD') || (PHP_OS == 'Unix') || (PHP_OS == 'SunOS')) {
-	  $file = trim(shell_exec("$statBin -t " . escapeshellarg($file) . " | awk '{ print $(NF-14) }'"));
+		$file = trim(@shell_exec("$statBin -t " . escapeshellarg($file) . " | awk '{ print $(NF-14) }'"));
     } else {
-      $file = filesize($file);
+		$file = filesize($file);
     }
-    if ($file < 1024) {
-      $return = $file . ' Byte';
+	$file = intval($file);
+	if($file <= 0) {
+		$return = "N/A";
+    } elseif ($file < 1024) {
+		$return = $file . ' Byte';
     } elseif ($file < 1048576) {
-      $return = round($file / 1024, 2) . ' Ko';
+		$return = round($file / 1024, 2) . ' Ko';
     } elseif ($file < 1073741824) {
-      $return = round($file / 1048576, 2) . ' Mo';
+		$return = round($file / 1048576, 2) . ' Mo';
     } elseif ($file < 1099511627776) {
-      $return = round($file / 1073741824, 2) . ' Go';
+		$return = round($file / 1073741824, 2) . ' Go';
     } elseif ($file < 1125899906842624) {
-      $return = round($file / 1099511627776, 2) . ' To';
+		$return = round($file / 1099511627776, 2) . ' To';
     } elseif ($file < 1152921504606846976) {
-      $return = round($file / 1125899906842624, 2) . ' Po';
+		$return = round($file / 1125899906842624, 2) . ' Po';
     } elseif ($file < 1180591620717411303424) {
-      $return = round($file / 1152921504606846976, 2) . ' Eo';
+		$return = round($file / 1152921504606846976, 2) . ' Eo';
     } elseif ($file < 1208925819614629174706176) {
-      $return = round($file / 1180591620717411303424, 2) . ' Zo';
+		$return = round($file / 1180591620717411303424, 2) . ' Zo';
     } else {
-      $return = round($file / 1208925819614629174706176, 2) . ' Yo';
+		$return = round($file / 1208925819614629174706176, 2) . ' Yo';
     }
 	return $return;
 }
@@ -347,80 +351,102 @@ function getDetailsEntryMovie($id){
   */
 function getDetailsEntryTvShow($id){
 	$id = intval($_GET["id"]);
-	$sql = "SELECT *,ExtractValue(c06,'/thumb[@season=\"-1\"]') AS thumb FROM " . NAX_TVSHOW_VIEW . " WHERE " . NAX_TVSHOW_VIEW . ".idShow=$id;";
-	//echo $sql;
+	// One SQL request to rule them all...
+	$sql = "SELECT 
+				" . NAX_TVSHOW_VIEW . ".c00 AS tvshowTitleFR,
+				" . NAX_TVSHOW_VIEW . ".c01 AS tvshowSynopsis,
+				" . NAX_TVSHOWSEASON_VIEW . ".episodes AS seasonNbEpisodes,
+				" . NAX_TVSHOWSEASON_VIEW . ".season AS seasonIdseason,
+				" . NAX_TVSHOWSEASON_VIEW . ".premiered AS seasonPremiered,
+				" . NAX_TVSHOWEPISODE_VIEW . ".c13 AS episodeIdepisode,
+				" . NAX_TVSHOWEPISODE_VIEW . ".c00 AS episodeTitle,
+				" . NAX_TVSHOWEPISODE_VIEW . ".c10 AS episodeRealisator,
+				" . NAX_TVSHOWEPISODE_VIEW . ".c04 AS episodeScriptwriter,
+				" . NAX_TVSHOWEPISODE_VIEW . ".c03 AS episodeNote,
+				" . NAX_TVSHOWEPISODE_VIEW . ".c01 AS episodeSynopsis,
+				" . NAX_TVSHOWEPISODE_VIEW . ".studio,
+				" . NAX_TVSHOWEPISODE_VIEW . ".strPath,
+				" . NAX_TVSHOWEPISODE_VIEW . ".strFileName,
+				" . NAX_TVSHOWEPISODE_VIEW . ".idEpisode,
+				ExtractValue(" . NAX_TVSHOW_VIEW . ".c06,'/thumb[@season=\"-1\"]') AS tvshowThumb0 
+			FROM 
+				" . NAX_TVSHOW_VIEW . ", 
+				" . NAX_TVSHOWSEASON_VIEW . ", 
+				" . NAX_TVSHOWEPISODE_VIEW . " 
+			WHERE 
+					" . NAX_TVSHOW_VIEW . ".idShow=$id 
+				AND " . NAX_TVSHOW_VIEW . ".idShow=" . NAX_TVSHOWSEASON_VIEW . ".idShow 
+				AND " . NAX_TVSHOWSEASON_VIEW . ".idShow=" . NAX_TVSHOWEPISODE_VIEW . ".idShow 
+				AND " . NAX_TVSHOWSEASON_VIEW . ".season=" . NAX_TVSHOWEPISODE_VIEW . ".c12 
+			ORDER BY 
+				" . NAX_TVSHOWSEASON_VIEW . ".idSeason,
+				CAST(" . NAX_TVSHOWEPISODE_VIEW . ".c13 as SIGNED INTEGER) 
+				ASC;";
+
 	$req = mysql_query($sql);
-	$data = mysql_fetch_array($req);
-	$totalSaisons = intval($data["totalSeasons"]);
-	$titleFR = $data["c00"];
-	//$titleEN = $data["c16"];
-	$synopsis = $data["c01"];
-	$thumbs = picturesXMLtoURLArray($data["thumb"]);  // loading all thumb
+	$data = mysql_fetch_array($req); // fetch first line of result (first season)
+	$titleFR = $data["tvshowTitleFR"];
+	$synopsis = $data["tvshowSynopsis"];
+	
+	$thumbs = picturesXMLtoURLArray($data["tvshowThumb0"]);  // loading all thumb
 	if(strtolower(substr($thumbs[0], 0, 4)) != "http")
 		$thumbs[0] = "http://" . $thumbs[0];
 	$thumbs[0] = str_replace("http://thetvdb.com", "https://thetvdb.com", $thumbs[0]); // HSTS
 
-	//$actors = $data["name"] . " (" . $data["role"] . ")";
-	//while($data = mysql_fetch_array($req))
-	//	$actors .= ", " . $data["name"] . " (" . $data["role"] . ")";
 	$echo =  "<div class='serie-details-title'>$titleFR</div>";
-	$echo .= "<div class='serie-details-details'><div><b>Synopsis : </b><br />" . $synopsis . "<br /><br />";
-	//$echo .= "Actors : $actors<br /><br />";
-	$echo .= "</div>";
-	$echo .= "<div class='serie-details-saison'>";
-	$sql = "SELECT * FROM " . NAX_TVSHOWSEASON_VIEW . " WHERE " . NAX_TVSHOWSEASON_VIEW . ".idShow=$id ORDER BY " . NAX_TVSHOWSEASON_VIEW . ".idSeason ASC;";
-	$req = mysql_query($sql);
-	for($i=0;$i<$totalSaisons;$i++)
-	{
-		$dataSeason = mysql_fetch_array($req);
-		$episodes = $dataSeason["episodes"];
-		$echo .= "<div class='serie-details-saison-details' onclick=\"toggleTvshowContent('serie-details-saison-episodes', '".$i."');\">";
-		$sqlThumb = "SELECT ExtractValue(c06,'/thumb[@season=\"".$dataSeason["season"]."\"]') AS thumb FROM " . NAX_TVSHOW_VIEW . " WHERE " . NAX_TVSHOW_VIEW . ".idShow=$id;";
-		$reqThumb = mysql_query($sqlThumb);
-		$dataThumb = mysql_fetch_array($reqThumb);
-		$thumbs = picturesXMLtoURLArray($dataThumb["thumb"]);  // loading all thumb
-		if(strtolower(substr($thumbs[0], 0, 4)) != "http")
-			$thumbs[0] = "http://" . $thumbs[0];
-		$thumbs[0] = str_replace("http://thetvdb.com", "https://thetvdb.com", $thumbs[0]); // HSTS
-		$echo .= "	<img class='serie-details-saison-thumb arrondi' src='" . $thumbs[0] . "' onerror=\"this.src='images/thumb-onerror.jpg';\" />";
-		$echo .= "	<div class='serie-details-saison-details-infos'>";
-		$echo .= "		<div class='text-up bold size125'>Season ".$dataSeason["season"]."</div>";
-		$echo .= "		<div class='text-down'>First broadcast ".$dataSeason["premiered"]."<br/>Episodes: ".$dataSeason["episodes"]."</div>";
-		$echo .= "	</div>";
-		$echo .= "</div>";
-		// Hidden div with all season's episodes
-		$echo .= "<div class='serie-details-saison-episodes' id='serie-details-saison-episodes-".$i."'>";
-		// Get all episode for current season
-		$sqlEpisodes = "SELECT * FROM " . NAX_TVSHOWEPISODE_VIEW . " WHERE " . NAX_TVSHOWEPISODE_VIEW . ".idShow=$id AND " . NAX_TVSHOWEPISODE_VIEW . ".c12=".$dataSeason["season"]." ORDER BY CAST(c13 as SIGNED INTEGER) ASC;";
-		$reqEpisodes = mysql_query($sqlEpisodes);
-		for($j=0;$j<$episodes;$j++){
-			$dataEpisodes = mysql_fetch_array($reqEpisodes);
-			$echo .= "<div class='serie-details-saison-episode'>";
-			$path = str_replace("//", "/", (str_ireplace(NAX_TVSHOW_REMOTE_PATH, NAX_TVSHOW_LOCAL_PATH, $dataEpisodes["strPath"]) . "/" . $dataEpisodes["strFileName"]));
-			$size = showsize($path);
-			$echo .= "	<div class='serie-details-saison-episode-titre' >";
-			$echo .= $dataEpisodes["c12"]."x".$dataEpisodes["c13"]." - ".$dataEpisodes["c00"];
-			$echo .= "		<a onclick=\"toggleTvshowContent('serie-details-saison-episode-synopsis', '".$dataEpisodes["idEpisode"]."');\" style=\"cursor:pointer;float:right;\"><img src='images/info.png' title='Description' /></a>";
-			if(ENABLE_DOWNLOAD)
-				$echo .= "		<a target='_blank' style=\"cursor:pointer;float:right;\" href='dl.php?type=tvshow&id=" . $dataEpisodes["idEpisode"] . "'><img src='images/download.png' title='Download' /></a>";
-			$echo .= "		<p class='serie-details-saison-episode-synopsis' id='serie-details-saison-episode-synopsis-".$dataEpisodes["idEpisode"]."'>";
-			$echo .= $dataEpisodes["c01"];
-			$echo .= "			<br /><br />";
-			$echo .= "			<b>Realisator :</b> " . $dataEpisodes["c10"] . "<br />";
-			$echo .= "			<b>Scriptwriter :</b> " . $dataEpisodes["c04"] . "<br />";
-			$echo .= "			<b>Studio :</b> " . $dataEpisodes["studio"] . "<br />";
-			$echo .= "			<b>Note :</b> " . floatval($dataEpisodes["c03"]) . "<br />";
-			$echo .= "			<b>File path :</b> $path<br />";
-			if($size)
-				$echo .= "		<b>File size :</b> $size<br />";
-			//$echo .= "			<img class='serie-details-episode-thumb' style='float:right;' src='" . $dataEpisodes["thumb"] . "' onerror=\"this.src='images/thumb-onerror.jpg';\" />";
-			$echo .= "		</p>";
+	$echo .= "<div class='serie-details-details'><div><b>Synopsis : </b><br />$synopsis<br /><br /></div>";
+	$echo .= "	<div class='serie-details-saison'>";
+	$currentSeason = -1;
+	do {
+		if($currentSeason != $data["seasonIdseason"]){ // Define season's DIV
+			if($currentSeason > -1)
+				$echo .= "</div>"; // End hidden div with all season's episodes
+			$currentSeason = $data["seasonIdseason"];
+			$episodes = $data["seasonNbEpisodes"];
+			$echo .= "<div class='serie-details-saison-details' onclick=\"toggleTvshowContent('serie-details-saison-episodes', '".$data["seasonIdseason"]."');\">";
+			
+			// Retrieve current season's thumb (TODO)
+			$sqlThumb = "SELECT ExtractValue(c06,'/thumb[@season=\"".$data["seasonIdseason"]."\"]') AS thumb FROM " . NAX_TVSHOW_VIEW . " WHERE " . NAX_TVSHOW_VIEW . ".idShow=$id;";
+			$reqThumb = mysql_query($sqlThumb);
+			$dataThumb = mysql_fetch_array($reqThumb);
+			$thumbs = picturesXMLtoURLArray($dataThumb["thumb"]);  // loading all thumb
+			if(strtolower(substr($thumbs[0], 0, 4)) != "http")
+				$thumbs[0] = "http://" . $thumbs[0];
+			$thumbs[0] = str_replace("http://thetvdb.com", "https://thetvdb.com", $thumbs[0]); // HSTS
+			$echo .= "	<img class='serie-details-saison-thumb arrondi' src='" . $thumbs[0] . "' onerror=\"this.src='images/thumb-onerror.jpg';\" />";
+			
+			$echo .= "	<div class='serie-details-saison-details-infos'>";
+			$echo .= "		<div class='text-up bold size125'>Season ".$data["seasonIdseason"]."</div>";
+			$echo .= "		<div class='text-down'>First broadcast ".$data["seasonPremiered"]."<br/>Episodes: ".$data["seasonNbEpisodes"]."</div>";
 			$echo .= "	</div>";
 			$echo .= "</div>";
+			// Begin hidden div with all season's episodes
+			$echo .= "<div class='serie-details-saison-episodes' id='serie-details-saison-episodes-".$data["seasonIdseason"]."'>";
 		}
+
+		// For each season's episode
+		$echo .= "<div class='serie-details-saison-episode'>";
+		$path = str_replace("//", "/", (str_ireplace(NAX_TVSHOW_REMOTE_PATH, NAX_TVSHOW_LOCAL_PATH, $data["strPath"]) . "/" . $data["strFileName"]));
+		$size = showsize($path);
+		$echo .= "	<div class='serie-details-saison-episode-titre' >";
+		$echo .= $data["seasonIdseason"]."x".$data["episodeIdepisode"]." - ".$data["episodeTitle"];
+		$echo .= "		<a onclick=\"toggleTvshowContent('serie-details-saison-episode-synopsis', '".$data["idEpisode"]."');\" style=\"cursor:pointer;float:right;\"><img src='images/info.png' title='Description' /></a>";
+		if(ENABLE_DOWNLOAD)
+			$echo .= "	<a target='_blank' style=\"cursor:pointer;float:right;\" href='dl.php?type=tvshow&id=" . $data["idEpisode"] . "'><img src='images/download.png' title='Download' /></a>";
+		$echo .= "		<p class='serie-details-saison-episode-synopsis' id='serie-details-saison-episode-synopsis-".$data["idEpisode"]."'>";
+		$echo .= $data["episodeSynopsis"];
+		$echo .= "			<br /><br />";
+		$echo .= "			<b>Realisator :</b> " . $data["episodeRealisator"] . "<br />";
+		$echo .= "			<b>Scriptwriter :</b> " . $data["episodeScriptwriter"] . "<br />";
+		$echo .= "			<b>Studio :</b> " . $data["studio"] . "<br />";
+		$echo .= "			<b>Note :</b> " . floatval($data["episodeNote"]) . "<br />";
+		$echo .= "			<b>File path :</b> $path<br />";
+		$echo .= "			<b>File size :</b> $size<br />";
+		$echo .= "		</p>";
+		$echo .= "	</div>";
 		$echo .= "</div>";
-	}
-	$echo .= "</div>";
+	} while($data = mysql_fetch_array($req)); // iterate for others seasons (season > 1)
+	$echo .= "	</div>";
 	$echo .= "</div>";
 	echo $echo;
 	mysql_close();
