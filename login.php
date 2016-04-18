@@ -85,9 +85,9 @@ input[type="text"], input[type="password"] {
 	<div align="center" >
 		<form name="login_form" method="post" action="">
 			<br />
-			<input id="loginField" type="text" name="user" size="32" maxlength="32" value="" placeholder="Username" />
+			<input id="loginField" type="text" name="user" size="32" maxlength="32" value="" placeholder="Username" autocomplete="off" />
 			<br /><br />
-			<input type="password" id="passwordField" name="pass" size="32" maxlength="1024" placeholder="Password" />
+			<input type="password" id="passwordField" name="pass" size="32" maxlength="1024" placeholder="Password" autocomplete="off" />
 			<br /><br /><br />
 			<input type="submit" class="button" value="Login" />
 		</form>
