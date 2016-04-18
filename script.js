@@ -114,7 +114,7 @@ function getEntries(){
 
 function printDetails(divDetails, id){
 	// Set the height of opacity div to full page
-	$("#opacity").height($(window).height());
+	$("#opacity").height($(document).height());
 	$("#opacity").show();
 	// Place the details div from current vertical scrolling
 	$("#"+divDetails).css({ top: $(window).scrollTop()+($("#"+divDetails).height()*0.75) });
@@ -143,7 +143,7 @@ function printDetails(divDetails, id){
 
 function displayYoutube(divYoutube, idvideo){
 	// Set the height of opacity div to full page
-	$("#opacity").height($(window).height());
+	$("#opacity").height($(document).height());
 	$("#opacity").show();
 	// Place the details div from current vertical scrolling
 	$("#"+divYoutube).css({ top: $(window).scrollTop()+($("#"+divYoutube).height()*0.90) });
