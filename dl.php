@@ -20,27 +20,30 @@ if(ENABLE_DOWNLOAD){
 		$id = intval($_GET["id"]);
 		switch(strval($_GET["type"])){
 			case "tvshow":
-				$sql 		= "SELECT * FROM " . NAX_TVSHOWEPISODE_VIEW . " WHERE idEpisode=$id LIMIT 0,1;";
+				$sql 		= "SELECT strPath,strFileName FROM " . NAX_TVSHOWEPISODE_VIEW . " WHERE idEpisode=:id LIMIT 0,1;";
 				$localPath 	= NAX_TVSHOW_LOCAL_PATH;
 				$remotePath = NAX_TVSHOW_REMOTE_PATH;
 				break;
 			case "movie":
-				$sql 		= "SELECT * FROM " . NAX_MOVIE_VIEW . " WHERE idMovie=$id LIMIT 0,1;";
+				$sql 		= "SELECT strPath,strFileName FROM " . NAX_MOVIE_VIEW . " WHERE idMovie=:id LIMIT 0,1;";
 				$localPath 	= NAX_MOVIES_LOCAL_PATH;
 				$remotePath = NAX_MOVIES_REMOTE_PATH;
 				break;
 		}
-		$req 	= mysql_query($sql);
-		$data 	= mysql_fetch_array($req);
+		
+		$stmt = $db->prepare($sql);
+		$stmt->bindValue('id', $id, PDO::PARAM_INT);
+		$stmt->execute();
+		$data = $stmt->fetch();
 		if($data){
 			$path = str_ireplace($remotePath, $localPath, $data["strPath"]) . "/" . $data["strFileName"];
+			echo $path;
 			if(ENABLE_AUTHENTICATION)
 				logDownload($_SESSION['user'], $path);
 			header("X-Sendfile: $path");
 			header("Content-type: application/octet-stream");
 			header("Content-Disposition: attachment; filename=\"" . $data["strFileName"] . "\"");
 		}
-		mysql_close();
 	}
 }
 ?>

@@ -99,10 +99,10 @@ function extractYoutubeId($url){
   * Get an array of all Year of movies.
   */
 function getAllYears(){
+	global $db;
 	$return = array();
-	$sql = 'SELECT DISTINCT c07 FROM `' . NAX_MOVIE_VIEW . '` ORDER BY c07 DESC;'; 
-	$req = mysql_query($sql);
-	while($data = mysql_fetch_array($req)){
+	$stmt = $db->query("SELECT DISTINCT c07 FROM `" . NAX_MOVIE_VIEW . "` ORDER BY c07 DESC;");
+	while($data = $stmt->fetch()){
 		if(intval($data["c07"]) > 0)
 			$return[] = intval($data["c07"]);
 	}
@@ -113,10 +113,10 @@ function getAllYears(){
   * Get an array of all Studios of TVShow.
   */
 function getAllStudios(){
+	global $db;
 	$return = array();
-	$sql = 'SELECT DISTINCT c14 FROM `' . NAX_TVSHOW_VIEW . '` ORDER BY c14 DESC;'; 
-	$req = mysql_query($sql);
-	while($data = mysql_fetch_array($req)){
+	$stmt = $db->query("SELECT DISTINCT c14 FROM `" . NAX_TVSHOW_VIEW . "` ORDER BY c14 DESC;");
+	while($data = $stmt->fetch()){
 		if(!empty(trim(strval($data["c14"]))))
 			$return[] = trim(strval($data["c14"]));
 	}
@@ -127,6 +127,7 @@ function getAllStudios(){
   * Get an array of all Genre of movies or TVshow ($type).
   */
 function getAllGenres($type){
+	global $db;
 	if($type == "tvshow"){
 		$column = "c08";
 		$table  = NAX_TVSHOW_VIEW;
@@ -135,9 +136,8 @@ function getAllGenres($type){
 		$table  = NAX_MOVIE_VIEW;
 	}
 	$return = array();
-	$sql = "SELECT DISTINCT $column FROM `$table` ORDER BY $column ASC;"; 
-	$req = mysql_query($sql);
-	while($data = mysql_fetch_array($req)){
+	$stmt = $db->query("SELECT DISTINCT $column FROM `$table` ORDER BY $column ASC;");
+	while($data = $stmt->fetch()){
 		$values = explode("/", $data[$column]);
 		foreach($values as $value){
 			if(!in_array(trim(strval($value)), $return) && !empty(trim(strval($value)))){
@@ -154,10 +154,10 @@ function getAllGenres($type){
   * Get an array of all Nationality of movies.
   */
 function getAllNationalities(){
+	global $db;
 	$return = array();
-	$sql = 'SELECT DISTINCT c21 FROM `' . NAX_MOVIE_VIEW . '` ORDER BY c21 ASC;'; 
-	$req = mysql_query($sql);
-	while($data = mysql_fetch_array($req)){
+	$stmt = $db->query("SELECT DISTINCT c21 FROM `" . NAX_MOVIE_VIEW . "` ORDER BY c21 ASC;");
+	while($data = $stmt->fetch()){
 		$values = explode("/", $data["c21"]);
 		foreach($values as $value){
 			if(!in_array(trim(strval($value)), $return) && !empty(trim(strval($value)))){
@@ -223,16 +223,15 @@ function showsize($file) {
   * Results depend on the $sql query passed in argument.
   */
 function getEntriesMovies($sql){
-	$req = mysql_query($sql);
-	while($data = mysql_fetch_array($req)) {
+	global $db;
+	$stmt = $db->query($sql);
+	while($data = $stmt->fetch()){
 		$thumbs = picturesXMLtoURLArray($data["c08"]);  // loading all thumb
 		if(strtolower(substr($thumbs[0], 0, 4)) != "http")
 			$thumbs[0] = "http://" . $thumbs[0];
-		$thumbs[0] = str_replace("http://image.tmdb.org", "https://image.tmdb.org", $thumbs[0]); // HSTS
 		$fanarts = picturesXMLtoURLArray($data["c20"]);  // loading all thumb
 		if(strtolower(substr($fanarts[0], 0, 4)) != "http")
 			$fanarts[0] = "http://" . $fanarts[0];
-		$fanarts[0] = str_replace("http://image.tmdb.org", "https://image.tmdb.org", $fanarts[0]); // HSTS
 	?>
 	<div class="entry arrondi" id="<?php echo $data["idMovie"]; ?>">
 	  <div class="fanart arrondi"><img class="arrondi" src="<?php echo $fanarts[0]; ?>" onerror="this.src='images/fanart-onerror.png';" style="display:none;" /></div>
@@ -257,7 +256,6 @@ function getEntriesMovies($sql){
 
 	<?php  
 	} 
-	mysql_close(); 
 }
 
 /**
@@ -265,13 +263,13 @@ function getEntriesMovies($sql){
   * Results depend on the $sql query passed in argument.
   */
 function getEntriesTvShow($sql){
-	$req = mysql_query($sql);
-	while($data = mysql_fetch_array($req)) { 
+	global $db;
+	$stmt = $db->query($sql);
+	while($data = $stmt->fetch()){
 		$thumbs = picturesXMLtoURLArray($data["thumb"]);  // loading all thumb
 		if(strtolower(substr($thumbs[0], 0, 4)) != "http")
 			$thumbs[0] = "http://" . $thumbs[0];
-		$thumbs[0] = str_replace("http://thetvdb.com", "https://thetvdb.com", $thumbs[0]); // HSTS
-		$fanart = str_replace("http://thetvdb.com", "https://thetvdb.com", ($data["fanartURL"].$data["fanartValue"])); // HSTS
+		$fanart = $data["fanartURL"].$data["fanartValue"];
 		
 	?>
 	<div class="entry arrondi" id="<?php echo $data["idShow"]; ?>">
@@ -294,8 +292,6 @@ function getEntriesTvShow($sql){
 
 	<?php  
 	} 
-
-	mysql_close(); 
 }
 
 /**
@@ -303,25 +299,47 @@ function getEntriesTvShow($sql){
   * Movie is identified by $id.
   */
 function getDetailsEntryMovie($id){
+	global $db;
 	$id = intval($_GET["id"]);
-	$sql = "SELECT * FROM " . NAX_MOVIE_VIEW . ", " . NAX_ACTORS_TABLE . ", " . NAX_ACTORLINKMOVIE_TABLE . " WHERE " . NAX_MOVIE_VIEW . ".idMovie=" . NAX_ACTORLINKMOVIE_TABLE . ".media_id AND " . NAX_ACTORLINKMOVIE_TABLE . ".actor_id=" . NAX_ACTORS_TABLE . ".actor_id AND " . NAX_MOVIE_VIEW . ".idMovie=$id;";
-	$req = mysql_query($sql);
-	$data = mysql_fetch_array($req);
-	$titleFR = $data["c00"];
-	$titleEN = $data["c16"];
-	$synopsis = $data["c01"];
-	$thumbs = picturesXMLtoURLArray($data["c08"]);  // loading all thumb
+	$sql = "SELECT 
+				" . NAX_MOVIE_VIEW . ".c00 AS movieTitleFR,
+				" . NAX_MOVIE_VIEW . ".c16 AS movieTitleEN,
+				" . NAX_MOVIE_VIEW . ".c01 AS movieSynopsis,
+				" . NAX_MOVIE_VIEW . ".c08 AS movieThumbs,
+				" . NAX_MOVIE_VIEW . ".c14 AS movieGenre,
+				" . NAX_MOVIE_VIEW . ".c07 AS movieYear,
+				" . NAX_MOVIE_VIEW . ".c15 AS movieRealisator,
+				" . NAX_MOVIE_VIEW . ".c21 AS movieNationality,
+				" . NAX_MOVIE_VIEW . ".strPath,
+				" . NAX_MOVIE_VIEW . ".strFileName,
+				" . NAX_ACTORS_TABLE . ".name,
+				" . NAX_ACTORLINKMOVIE_TABLE . ".role
+			FROM 
+				" . NAX_MOVIE_VIEW . ", 
+				" . NAX_ACTORS_TABLE . ", 
+				" . NAX_ACTORLINKMOVIE_TABLE . "
+			WHERE 
+					" . NAX_MOVIE_VIEW . ".idMovie=:id
+				AND	" . NAX_MOVIE_VIEW . ".idMovie=" . NAX_ACTORLINKMOVIE_TABLE . ".media_id 
+				AND " . NAX_ACTORLINKMOVIE_TABLE . ".actor_id=" . NAX_ACTORS_TABLE . ".actor_id;";
+	$stmt = $db->prepare($sql);
+	$stmt->bindValue('id', $id, PDO::PARAM_INT);
+	$stmt->execute();
+	$data = $stmt->fetch();
+	$titleFR = $data["movieTitleFR"];
+	$titleEN = $data["movieTitleEN"];
+	$synopsis = $data["movieSynopsis"];
+	$thumbs = picturesXMLtoURLArray($data["movieThumbs"]);  // loading all thumb
 	if(strtolower(substr($thumbs[0], 0, 4)) != "http")
 		$thumbs[0] = "http://" . $thumbs[0];
-	$thumbs[0] = str_replace("http://image.tmdb.org", "https://image.tmdb.org", $thumbs[0]); // HSTS
-	$genre = $data["c14"];
-	$year = $data["c07"];
-	$realisator = $data["c15"];
-	$nationality = $data["c21"];
+	$genre = $data["movieGenre"];
+	$year = $data["movieYear"];
+	$realisator = $data["movieRealisator"];
+	$nationality = $data["movieNationality"];
 	$path = str_replace("//", "/", (str_ireplace(NAX_MOVIES_REMOTE_PATH, NAX_MOVIES_LOCAL_PATH, $data["strPath"]) . "/" . $data["strFileName"]));
 	$size = showsize($path);
 	$actors = $data["name"] . " (" . $data["role"] . ")";
-	while($data = mysql_fetch_array($req)){
+	while($data = $stmt->fetch()){
 		$actors .= ", " . $data["name"] . " (" . $data["role"] . ")";
 	}
 	$echo =  "<div class='details-title'>" . $titleFR . " (" . $titleEN . ")</div>";
@@ -342,7 +360,6 @@ function getDetailsEntryMovie($id){
 		$echo .= "</div>";
 	}
 	echo $echo;
-	mysql_close();
 }
 
 /**
@@ -350,6 +367,7 @@ function getDetailsEntryMovie($id){
   * TVShow is identified by $id.
   */
 function getDetailsEntryTvShow($id){
+	global $db;
 	$id = intval($_GET["id"]);
 	// One SQL request to rule them all...
 	$sql = "SELECT 
@@ -374,7 +392,7 @@ function getDetailsEntryTvShow($id){
 				" . NAX_TVSHOWSEASON_VIEW . ", 
 				" . NAX_TVSHOWEPISODE_VIEW . " 
 			WHERE 
-					" . NAX_TVSHOW_VIEW . ".idShow=$id 
+					" . NAX_TVSHOW_VIEW . ".idShow=:id
 				AND " . NAX_TVSHOW_VIEW . ".idShow=" . NAX_TVSHOWSEASON_VIEW . ".idShow 
 				AND " . NAX_TVSHOWSEASON_VIEW . ".idShow=" . NAX_TVSHOWEPISODE_VIEW . ".idShow 
 				AND " . NAX_TVSHOWSEASON_VIEW . ".season=" . NAX_TVSHOWEPISODE_VIEW . ".c12 
@@ -383,15 +401,16 @@ function getDetailsEntryTvShow($id){
 				CAST(" . NAX_TVSHOWEPISODE_VIEW . ".c13 as SIGNED INTEGER) 
 				ASC;";
 
-	$req = mysql_query($sql);
-	$data = mysql_fetch_array($req); // fetch first line of result (first season)
+	$stmt = $db->prepare($sql);
+	$stmt->bindValue('id', $id, PDO::PARAM_INT);
+	$stmt->execute();
+	$data = $stmt->fetch();
 	$titleFR = $data["tvshowTitleFR"];
 	$synopsis = $data["tvshowSynopsis"];
 	
 	$thumbs = picturesXMLtoURLArray($data["tvshowThumb0"]);  // loading all thumb
 	if(strtolower(substr($thumbs[0], 0, 4)) != "http")
 		$thumbs[0] = "http://" . $thumbs[0];
-	$thumbs[0] = str_replace("http://thetvdb.com", "https://thetvdb.com", $thumbs[0]); // HSTS
 
 	$echo =  "<div class='serie-details-title'>$titleFR</div>";
 	$echo .= "<div class='serie-details-details'><div><b>Synopsis : </b><br />$synopsis<br /><br /></div>";
@@ -406,13 +425,14 @@ function getDetailsEntryTvShow($id){
 			$echo .= "<div class='serie-details-saison-details' onclick=\"toggleTvshowContent('serie-details-saison-episodes', '".$data["seasonIdseason"]."');\">";
 			
 			// Retrieve current season's thumb (TODO)
-			$sqlThumb = "SELECT ExtractValue(c06,'/thumb[@season=\"".$data["seasonIdseason"]."\"]') AS thumb FROM " . NAX_TVSHOW_VIEW . " WHERE " . NAX_TVSHOW_VIEW . ".idShow=$id;";
-			$reqThumb = mysql_query($sqlThumb);
-			$dataThumb = mysql_fetch_array($reqThumb);
+			$sqlThumb = "SELECT ExtractValue(c06,'/thumb[@season=\"".$data["seasonIdseason"]."\"]') AS thumb FROM " . NAX_TVSHOW_VIEW . " WHERE " . NAX_TVSHOW_VIEW . ".idShow=:id;";
+			$stmtThumb = $db->prepare($sqlThumb);
+			$stmtThumb->bindValue('id', $id, PDO::PARAM_INT);
+			$stmtThumb->execute();
+			$dataThumb = $stmtThumb->fetch();
 			$thumbs = picturesXMLtoURLArray($dataThumb["thumb"]);  // loading all thumb
 			if(strtolower(substr($thumbs[0], 0, 4)) != "http")
 				$thumbs[0] = "http://" . $thumbs[0];
-			$thumbs[0] = str_replace("http://thetvdb.com", "https://thetvdb.com", $thumbs[0]); // HSTS
 			$echo .= "	<img class='serie-details-saison-thumb arrondi' src='" . $thumbs[0] . "' onerror=\"this.src='images/thumb-onerror.jpg';\" />";
 			
 			$echo .= "	<div class='serie-details-saison-details-infos'>";
@@ -445,11 +465,10 @@ function getDetailsEntryTvShow($id){
 		$echo .= "		</p>";
 		$echo .= "	</div>";
 		$echo .= "</div>";
-	} while($data = mysql_fetch_array($req)); // iterate for others seasons (season > 1)
+	} while($data = $stmt->fetch()); // iterate for others seasons (season > 1)
 	$echo .= "	</div>";
 	$echo .= "</div>";
 	echo $echo;
-	mysql_close();
 }
 
 /**

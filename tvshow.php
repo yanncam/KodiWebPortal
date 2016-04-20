@@ -16,9 +16,9 @@ if(ENABLE_AUTHENTICATION){
 }
 
 // Clean GET vars for filter
-$title 			= (isset($_GET["title"]) && !empty($_GET["title"])) ? mysql_real_escape_string(trim(strval($_GET["title"]))) : "";
-$genre 			= (isset($_GET["genre"]) && !empty($_GET["genre"])) ? mysql_real_escape_string(trim(strval($_GET["genre"]))) : "";
-$studio		 	= (isset($_GET["studio"]) && !empty($_GET["studio"])) ? mysql_real_escape_string(trim(strval($_GET["studio"]))) : "";
+$title 			= (isset($_GET["title"]) && !empty($_GET["title"])) ? substr($db->quote(trim(strval($_GET["title"]))),1,-1) : "";
+$genre 			= (isset($_GET["genre"]) && !empty($_GET["genre"])) ? substr($db->quote(trim(strval($_GET["genre"]))),1,-1) : "";
+$studio		 	= (isset($_GET["studio"]) && !empty($_GET["studio"])) ? substr($db->quote(trim(strval($_GET["studio"]))),1,-1) : "";
 $offset 		= (isset($_GET["offset"]) && trim(strval($_GET["offset"])) != "" && intval($_GET["offset"]) >= 0) ? intval($_GET["offset"]) : 0;
 
 // Compute SQL filters
@@ -88,8 +88,8 @@ if(isset($_GET["offset"])){
 <div id="search">
 <form action="" method="GET">
 <?php
-	$countreq = mysql_query("SELECT DISTINCT COUNT(*) FROM " . NAX_TVSHOW_VIEW . ";");
-	$count = mysql_fetch_array($countreq);
+	$stmt = $db->query("SELECT DISTINCT COUNT(*) FROM " . NAX_TVSHOW_VIEW . ";");
+	$count = $stmt->fetch();
 	echo "<b>[ " . $count[0] . " TV show ]</b> - ";
 ?>
 	<label for="title">Title</label>

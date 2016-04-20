@@ -16,11 +16,11 @@ if(ENABLE_AUTHENTICATION){
 }
 
 // Clean GET vars for filter
-$title 			= (isset($_GET["title"]) && !empty($_GET["title"])) ? mysql_real_escape_string(trim(strval($_GET["title"]))) : "";
-$genre 			= (isset($_GET["genre"]) && !empty($_GET["genre"])) ? mysql_real_escape_string(trim(strval($_GET["genre"]))) : "";
+$title 			= (isset($_GET["title"]) && !empty($_GET["title"])) ? substr($db->quote(trim(strval($_GET["title"]))),1,-1) : "";
+$genre 			= (isset($_GET["genre"]) && !empty($_GET["genre"])) ? substr($db->quote(trim(strval($_GET["genre"]))),1,-1) : "";
 $year 			= (isset($_GET["year"]) && !empty($_GET["year"])) ? intval($_GET["year"]) : "";
-$realisator 	= (isset($_GET["realisator"]) && !empty($_GET["realisator"])) ? mysql_real_escape_string(trim(strval($_GET["realisator"]))) : "";
-$nationality 	= (isset($_GET["nationality"]) && !empty($_GET["nationality"])) ? mysql_real_escape_string(trim(strval($_GET["nationality"]))) : "";
+$realisator 	= (isset($_GET["realisator"]) && !empty($_GET["realisator"])) ? substr($db->quote(trim(strval($_GET["realisator"]))),1,-1) : "";
+$nationality 	= (isset($_GET["nationality"]) && !empty($_GET["nationality"])) ? substr($db->quote(trim(strval($_GET["nationality"]))),1,-1) : "";
 $offset 		= (isset($_GET["offset"]) && trim(strval($_GET["offset"])) != "" && intval($_GET["offset"]) >= 0) ? intval($_GET["offset"]) : 0;
 
 // Compute SQL filters
@@ -97,8 +97,8 @@ if(isset($_GET["offset"])){
 
 <form action="" method="GET">
 <?php
-	$countreq = mysql_query("SELECT DISTINCT COUNT(*) FROM " . NAX_MOVIE_VIEW . ";");
-	$count = mysql_fetch_array($countreq);
+	$stmt = $db->query("SELECT DISTINCT COUNT(*) FROM " . NAX_MOVIE_VIEW . ";");
+	$count = $stmt->fetch();
 	echo "<b>[ " . $count[0] . " movies ]</b> - ";
 ?>
 	<label for="title">Title</label>
