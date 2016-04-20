@@ -6,12 +6,14 @@
 // Reboot Apache through DSM (manage package => WebStation)
 
 session_start();
-include("config.php");
-include("functions.php");
+require_once("./config.php");
+require_once("./db.php");
+require_once("./functions.php");
 	
 if(ENABLE_DOWNLOAD){
 	if(ENABLE_AUTHENTICATION){ // Check authentication and authorization
 		if(!isAuthenticated()){
+			header("Location: login.php");
 			exit;
 		}
 	}
@@ -37,13 +39,14 @@ if(ENABLE_DOWNLOAD){
 		$data = $stmt->fetch();
 		if($data){
 			$path = str_ireplace($remotePath, $localPath, $data["strPath"]) . "/" . $data["strFileName"];
-			echo $path;
 			if(ENABLE_AUTHENTICATION)
 				logDownload($_SESSION['user'], $path);
 			header("X-Sendfile: $path");
 			header("Content-type: application/octet-stream");
 			header("Content-Disposition: attachment; filename=\"" . $data["strFileName"] . "\"");
 		}
-	}
-}
+	} else
+		header("Location: index.php");
+} else
+	header("Location: index.php");
 ?>

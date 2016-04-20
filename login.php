@@ -1,9 +1,4 @@
-﻿<?php
-session_start();
-include_once("config.php");
-include_once("functions.php");
-?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
 	<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
@@ -13,6 +8,7 @@ include_once("functions.php");
 	<meta http-equiv="Cache-Directive" content="no-cache" />
 	<meta name="robots" content="noindex,follow" />
 	<title>Authentication page</title>
+	<script type="text/javascript" src="https://code.jquery.com/jquery.min.js"></script>
 </head>
 <body>
 <div align="center">
@@ -21,8 +17,12 @@ include_once("functions.php");
 <br />
 
 <style>
+html {
+	height: 100%;
+}
+
 body{
-	background:url(./images/kodi_background.png) #F4F5F2 no-repeat center;
+	background:url("./images/kodi_background.png") #F4F5F2 no-repeat center;
 	background-size:cover;
 }
 
@@ -44,7 +44,6 @@ input {
     outline: none;
     background-color: #fff;
     background-clip: padding-box;
-    /* border-radius: 3px; */
     zoom: 1;
 }
 
@@ -78,16 +77,50 @@ input[type="text"], input[type="password"] {
 	border:1px solid #777;
 	background:url(./images/lock.png) 5px no-repeat #FFFFFF;
 	padding-left:30px;
-}</style>
+}
+
+.error{
+	color: red;
+	font: 11px/normal sans-serif;
+    font-weight: 600;
+}
+
+.success{
+	color: green;
+	font: 11px/normal sans-serif;
+    font-weight: 600;
+}
+</style>
+
+<script type="text/javascript">
+	function login(user, passwd){
+		$.ajax({
+			type: 'POST',
+			url: 'index.php',
+			contentType: 'application/x-www-form-urlencoded;charset=utf-8',
+			dataType: 'text',
+			data: "user="+user+"&pass="+passwd,
+			success: function(data, textStatus, jqXHR){
+				$("#results").empty();
+				$("#results").append(data);
+		    },
+			beforeSend: function(){
+				$("#results").empty();
+				$("#results").append("<img src='./images/loading-login.gif' />");
+		    }
+		});
+	}
+</script>
 
 <br />
 <div id="loginBox">
 	<div align="center" >
-		<form name="login_form" method="post" action="">
+		<div id="results" style="height:20px"></div>
+		<form name="login_form" onsubmit="login($('#loginField').val(), $('#passwordField').val());return false;">
 			<br />
 			<input id="loginField" type="text" name="user" size="32" maxlength="32" value="" placeholder="Username" autocomplete="off" />
 			<br /><br />
-			<input type="password" id="passwordField" name="pass" size="32" maxlength="1024" placeholder="Password" autocomplete="off" />
+			<input id="passwordField" type="password" name="pass" size="32" maxlength="255" placeholder="Password" autocomplete="off" />
 			<br /><br /><br />
 			<input type="submit" class="button" value="Login" />
 		</form>

@@ -15,17 +15,10 @@
 			}
 		}
 		lastScrollTop = scrollTop;
+		$("#opacity").height($(document).height());
 	});
 	
 	attachEvents();
-
-	/*$(window).scroll(function(){
-		if ($(window).scrollTop() == $(document).height() - $(window).height()){
-			getEntries();
-		}
-	}); */
-	
-
 });
 
 function attachEvents(){
@@ -84,20 +77,19 @@ function attachEvents(){
             $(this).animate({
                 'marginLeft':"-85"
             });
-        });
+        }
+	);
 }
 
 function getEntries(){
 	loc = document.location + "";
 	if(loc.indexOf("?") == -1)
 		loc += "?";
-	//alert(loc + "&offset=" +(($(".entry").length)));
 	$ajaxRuning = true;
 	
 	$.ajax({
 	    url : loc + "&offset=" +(($(".entry").length)),
 	    type: "GET",
-	    /*data : "offset="+(($(".entry").length)),*/
 	    beforeSend: function(data, textStatus, jqXHR){
 			$("#entries").append("<div class='loading'><img src='images/loading.gif' alt='Loading...' /></div>");
 	    },	

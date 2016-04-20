@@ -57,9 +57,10 @@ $USERS = array(
 ###############################################################################################################
 define("ENABLE_LDAP_AUTHENTICATION", false);
 define("LDAP_AUTH_HOST", "localhost");
-define("LDAP_USERS_DN", "cn=users,dc=example,dc=local");
-define("LDAP_GROUPS_DN", "cn=groups,dc=example,dc=local");
+define("LDAP_USERS_DN", "cn=users,dc=x,dc=local");
+define("LDAP_GROUPS_DN", "cn=groups,dc=x,dc=local");
 define("LDAP_GROUP_XBMC_FILTER", "(cn=xbmc)");
+define("LDAP_USERID_ATTRIBUTE", "uid");
 define("LDAP_GROUP_ATTRIBUTE", "memberuid");
 
 ###############################################################################################################
@@ -73,36 +74,6 @@ define("NAX_TVSHOW_VIEW","tvshow_view");
 define("NAX_TVSHOWSEASON_VIEW","season_view");
 define("NAX_TVSHOWEPISODE_VIEW","episode_view");
 define("ENABLE_AUTHENTICATION", (ENABLE_INTERNAL_AUTHENTICATION || ENABLE_LDAP_AUTHENTICATION));
-define("KODI_WEB_PORTAL_VERSION", "1.0.0");
-
-//$db = mysql_connect(SQL_XBMC_HOST.":".SQL_XBMC_PORT, SQL_XBMC_USER, SQL_XBMC_PASS);
-$db =null;
-try {
-	$db = new PDO("mysql:host=" . SQL_XBMC_HOST . ";dbname=xbmc_video99", SQL_XBMC_USER, SQL_XBMC_PASS);
-	$db->query("SET NAMES 'utf8';");
-}
-catch(PDOException $e){
-	echo $e->getMessage();
-}
-
-/*if(!$db){
-	echo "Fail to connect...";
-}*/
-
-// Connect to the latest XBMC/KODI database presents in the backend, database name is get automaticaly.
-/*$req = mysql_query("SELECT SCHEMA_NAME FROM information_schema.SCHEMATA WHERE SCHEMA_NAME LIKE 'xbmc_video%' ORDER BY SCHEMA_NAME DESC LIMIT 0,1;");
-mysql_query("SET NAMES 'utf8'");
-$dbSelected = false;
-while($database = mysql_fetch_array($req)){
-	if(substr($database[0], 0, 10) == "xbmc_video"){
-		mysql_select_db($database[0],$db);
-		//mysql_select_db("xbmc_video99",$db);
-		$dbSelected = true;
-	}
-}
-if(!$dbSelected){
-	echo "Database unavailable";
-	exit;
-}*/
-
+define("KODI_WEB_PORTAL_VERSION", "1.0.1");
+define("IS_INCLUDED", true);
 ?>

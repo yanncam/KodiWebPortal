@@ -1,15 +1,21 @@
 ﻿<?php
 session_start();
-include_once("config.php");
-include_once("functions.php");
+require_once("./config.php");
+require_once("./db.php");
+require_once("./functions.php");
 
 if(ENABLE_AUTHENTICATION){
 	if(!isAuthenticated() && !isset($_POST['user'], $_POST['pass'])){
-		include_once("login.php");
+		header("Location: login.php");
 		exit;
 	} elseif(!isAuthenticated() && isset($_POST['user'], $_POST['pass'])){
+		sleep(2);
 		if(!checkAuthentication(trim(strval($_POST['user'])), trim(strval($_POST['pass'])))){
-			echo "Wrong username of password...";
+			echo "<span class='error'>Wrong username or password...</span>";
+			exit;
+		} else {
+			echo "<span class='success'>Authentication success, redirecting...&nbsp;&nbsp;&nbsp;</span><img src='./images/loading-login.gif' />";
+			echo "<script type='text/javascript'>document.location='./';</script>";
 			exit;
 		}
 	}
@@ -57,6 +63,12 @@ if(count($filters) > 0){
 
 //echo $sql;
 
+if(isset($_GET["action"]) && $_GET["action"] == "logout"){
+	session_destroy();
+	header("Location: login.php");
+	exit;
+}
+
 if(isset($_GET["id"]) && isset($_GET["action"]) && $_GET["action"] == "detail"){
 	$id = intval($_GET["id"]);
 	if($id > 0)
@@ -85,7 +97,7 @@ if(isset($_GET["offset"])){
 	<title>KodiWebPortal <?php echo KODI_WEB_PORTAL_VERSION; ?></title>
 	<link rel="stylesheet" href="style.css">
 	<script type="text/javascript" src="https://code.jquery.com/jquery.min.js"></script>
-	<script type="text/javascript" src="script.js"></script>
+	<script type="text/javascript" src="./script.js"></script>
 </head>
 
 <body>
@@ -151,6 +163,7 @@ if(isset($_GET["offset"])){
 
 	<input type="submit" value="Search" />
 	<input type="button" onclick="document.location=document.location.href.replace(document.location.search, '');" value="Reset" />
+	<a href="index.php?action=logout"><img src="./images/logout.png" title="Logout" alt="Logout" style="float:right;" /></a>
 </form>
 </div>
 

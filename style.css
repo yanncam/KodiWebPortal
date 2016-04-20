@@ -48,18 +48,6 @@ body{
   height: 100%;  
 }
 
-/*.entry .fanart{
-  width: 100%;  
-  height: 100%;  
-  float: left;  
-  filter: alpha(opacity=50);  
-  -moz-opacity: 0.5;  
-  -khtml-opacity: 0.5;  
-  opacity: 0.5;
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
-}*/
-
 .entry .title{
   position: absolute;
   text-align: center;

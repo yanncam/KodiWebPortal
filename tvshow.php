@@ -1,17 +1,13 @@
 <?php
 session_start();
-include_once("config.php");
-include_once("functions.php");
+require_once("./config.php");
+require_once("./db.php");
+require_once("./functions.php");
 
 if(ENABLE_AUTHENTICATION){
-	if(!isAuthenticated() && !isset($_POST['user'], $_POST['pass'])){
-		include_once("login.php");
+	if(!isAuthenticated()){
+		header("Location: login.php");
 		exit;
-	} elseif(!isAuthenticated() && isset($_POST['user'], $_POST['pass'])){
-		if(!checkAuthentication(trim(strval($_POST['user'])), trim(strval($_POST['pass'])))){
-			echo "Wrong username of password...";
-			exit;
-		}
 	}
 }
 
@@ -125,6 +121,7 @@ if(isset($_GET["offset"])){
 
 	<input type="submit" value="Search" />
 	<input type="button" onclick="document.location=document.location.href.replace(document.location.search, '');" value="Reset" />
+	<a href="index.php?action=logout"><img src="./images/logout.png" title="Logout" alt="Logout" style="float:right;" /></a>
 </form>
 </div>
 
