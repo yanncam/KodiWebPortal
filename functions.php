@@ -33,18 +33,11 @@ function checkAuthentication($user, $password){
 /**
   * Check login and password against internal users definition.
   * return true or false if authentication succeed.
+  * PHP juggling attack protected
   */
 function checkInternalAuthentication($user, $password){
 	global $USERS;
-	if(is_array($USERS) && !empty($USERS)){
-		if(array_key_exists(strval($user), $USERS)){
-			return ($USERS[$user] === $password);					// PHP juggling attack protected
-		} else {
-			return false;
-		}
-	} else {
-		return false;
-	}
+	return (is_array($USERS) && !empty($USERS) && array_key_exists(strval($user), $USERS) && ($USERS[$user] === $password));
 }
 
 /**
@@ -54,15 +47,15 @@ function checkInternalAuthentication($user, $password){
   */
 function checkLDAPAuthentication($user, $password){
 	if(preg_match("/^[a-zA-Z]+$/",$user)){
-		$query_user = "uid=$user,".LDAP_USERS_DN;
+		$queryUser = LDAP_USERID_ATTRIBUTE."=$user,".LDAP_USERS_DN;
 		$ldap 		= ldap_connect(LDAP_AUTH_HOST);
 		ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION, 3);
 		if(!$ldap){
-			echo "LDAP connection error";
+			//echo "LDAP connection error";
 			return false;
 		}
-		if(!@ldap_bind($ldap, $query_user, $password)){
-			echo "LDAP bind error";
+		if(!@ldap_bind($ldap, $queryUser, $password)){
+			//echo "LDAP bind error";
 			return false;
 		}
 		$results = ldap_search($ldap, LDAP_GROUPS_DN, LDAP_GROUP_XBMC_FILTER, array(LDAP_GROUP_ATTRIBUTE));
