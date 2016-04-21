@@ -33,11 +33,18 @@ function checkAuthentication($user, $password){
 /**
   * Check login and password against internal users definition.
   * return true or false if authentication succeed.
-  * PHP juggling attack protected
   */
 function checkInternalAuthentication($user, $password){
 	global $USERS;
-	return (is_array($USERS) && !empty($USERS) && array_key_exists(strval($user), $USERS) && ($USERS[$user] === $password));
+	if(is_array($USERS) && !empty($USERS)){
+		if(array_key_exists(strval($user), $USERS)){
+			return ($USERS[$user] === $password);					// PHP juggling attack protected
+		} else {
+			return false;
+		}
+	} else {
+		return false;
+	}
 }
 
 /**
@@ -47,15 +54,15 @@ function checkInternalAuthentication($user, $password){
   */
 function checkLDAPAuthentication($user, $password){
 	if(preg_match("/^[a-zA-Z]+$/",$user)){
-		$query_user = LDAP_USERID_ATTRIBUTE."=$user,".LDAP_USERS_DN;
+		$query_user = "uid=$user,".LDAP_USERS_DN;
 		$ldap 		= ldap_connect(LDAP_AUTH_HOST);
 		ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION, 3);
 		if(!$ldap){
-			//echo "LDAP connection error";
+			echo "LDAP connection error";
 			return false;
 		}
 		if(!@ldap_bind($ldap, $query_user, $password)){
-			//echo "LDAP bind error";
+			echo "LDAP bind error";
 			return false;
 		}
 		$results = ldap_search($ldap, LDAP_GROUPS_DN, LDAP_GROUP_XBMC_FILTER, array(LDAP_GROUP_ATTRIBUTE));
@@ -72,21 +79,28 @@ function checkLDAPAuthentication($user, $password){
   * Convert XML from KODI/XBMC database to array of URL.
   */
 function picturesXMLtoURLArray($picturesXML){
-	$pictures = array();
-	$pattern = "/((http|https|ftp)\:\/\/)?[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(:[a-zA-Z0-9]*)?\/([a-zA-Z0-9\-\.\?_&amp;%\$#\=~\/\'\,])*/";
-	preg_match_all($pattern, $picturesXML, $pictures);
-	return ((count($pictures) > 0) && (count($pictures[1]) > 0)) ? $pictures[0] : array();
+	$return = array("nopicture");
+	if(!empty(trim($picturesXML))){
+		$pictures = array();
+		$pattern = "/((http|https|ftp)\:\/\/)?[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(:[a-zA-Z0-9]*)?\/([a-zA-Z0-9\-\.\?_&amp;%\$#\=~\/\'\,])*/";
+		preg_match_all($pattern, $picturesXML, $pictures);
+		$return = ((count($pictures) > 0) && (count($pictures[1]) > 0)) ? $pictures[0] : array("nopicture");
+	}
+	return $return;
 }
 
 /**
   * Extract the Youtube ID from an URL stored in KODI/XBMC database.
   */
 function extractYoutubeId($url){
-	$return = "";
-	$urls = array();
-	$pattern = "/(v=|videoid=)([a-zA-Z0-9_\-]{10,})&?/";
-	preg_match_all($pattern, $url, $urls);
-	return ((count($urls) > 0)) ? $urls[count($urls)-1][count(count($urls)-1)-1] : array();
+	$return = array();
+	if(!empty(trim($url))){
+		$urls = array();
+		$pattern = "/(v=|videoid=)([a-zA-Z0-9_\-]{10,})&?/";
+		preg_match_all($pattern, $url, $urls);
+		$return = ((count($urls) > 0)) ? $urls[count($urls)-1][count(count($urls)-1)-1] : array();
+	}
+	return $return;
 }
 
 /**
@@ -247,6 +261,7 @@ function getEntriesMovies($sql){
 	</div>
 	<div id="details_<?php echo $data["idMovie"]; ?>" class="details arrondi"></div>
 	<div id="video_<?php echo $data["idMovie"]; ?>" class="videos arrondi"></div>
+
 	<?php  
 	} 
 }

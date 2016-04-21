@@ -74,6 +74,6 @@ define("NAX_TVSHOW_VIEW","tvshow_view");
 define("NAX_TVSHOWSEASON_VIEW","season_view");
 define("NAX_TVSHOWEPISODE_VIEW","episode_view");
 define("ENABLE_AUTHENTICATION", (ENABLE_INTERNAL_AUTHENTICATION || ENABLE_LDAP_AUTHENTICATION));
-define("KODI_WEB_PORTAL_VERSION", "1.0.1");
+define("KODI_WEB_PORTAL_VERSION", "1.0.2");
 define("IS_INCLUDED", true);
 ?>
