@@ -77,7 +77,7 @@ function picturesXMLtoURLArray($picturesXML){
 		$pictures = array();
 		$pattern = "/((http|https|ftp)\:\/\/)?[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(:[a-zA-Z0-9]*)?\/([a-zA-Z0-9\-\.\?_&amp;%\$#\=~\/\'\,])*/";
 		preg_match_all($pattern, $picturesXML, $pictures);
-		$return = ((count($pictures) > 0) && (count($pictures[1]) > 0)) ? $pictures[0] : array("nopicture");
+		$return = ((count($pictures) > 0) && (isset($pictures[1])) && (count($pictures[1]) > 0)) ? $pictures[0] : array("nopicture");
 	}
 	return $return;
 }
@@ -91,7 +91,7 @@ function extractYoutubeId($url){
 		$urls = array();
 		$pattern = "/(v=|videoid=)([a-zA-Z0-9_\-]{10,})&?/";
 		preg_match_all($pattern, $url, $urls);
-		$return = ((count($urls) > 0)) ? $urls[count($urls)-1][count(count($urls)-1)-1] : array();
+		$return = ((count($urls) > 0) && !empty($urls[count($urls)-1])) ? $urls[count($urls)-1][count(count($urls)-1)-1] : array();
 	}
 	return $return;
 }
