@@ -15,7 +15,13 @@
 			}
 		}
 		lastScrollTop = scrollTop;
+		// Adjust opacity if visible and scrolling occurs
 		$("#opacity").height($(document).height());
+		
+		// Detail div and Youtube div follow the scrolling
+		$('.details:visible').css({ top: $(window).scrollTop()+($('.details:visible').height()*0.75) });
+		$('.videos:visible').css({ top: $(window).scrollTop()+($('.videos:visible').height()*0.90) });
+		
 	});
 	
 	attachEvents();
@@ -35,7 +41,7 @@ function attachEvents(){
           $(this).find('div.title').stop(true, true).animate({scrollTop: 0}, { duration: 1000, easing: 'swing' });
           $(this).find("div.toolbar").fadeOut();
       }
-  );
+	);
   
 	$('#opacity').click(function(){
 		$("#opacity").hide();
@@ -44,12 +50,6 @@ function attachEvents(){
 		$(".videos").empty();
 		$(".details").empty();
 	});
-
-	/*$('.details').click(function(){
-		$("#opacity").hide();
-		$(".details").hide();  
-		$(".details").empty();
-	});*/
 	
 	$('.videos').click(function(){
 		$("#opacity").hide();
