@@ -40,12 +40,14 @@ define("SQL_XBMC_PASS", "");
 # performed before LDAP authentication.
 # If ENABLE_INTERNAL_AUTHENTICATION is false and ENABLE_LDAP_AUTHENTICATION too, then visitor can access to
 # KodiWebPortal without login.
+# Internal password hash are made with bcrypt() like (PHP >= 5.5) :
+# 	echo password_hash("MyU53rP4s5W0rd", PASSWORD_DEFAULT);
 ###############################################################################################################
 define("ENABLE_INTERNAL_AUTHENTICATION", true);
 $USERS = array(
-				"kodi" 		=> "K0d1P4s5W0rD",		// Define first internal user
-				"xbmc" 		=> "X8mCP4s5W0rD",		// Define second internal user
-//				"myUser"	=> "MyU53rP4s5W0rd",	// Define another internal user
+				"kodi" 		=> "$2y$10$471cELEUsyQJqaDyJBuXzOoBCEWfZwvMBtGsGLOQPwNH8DLInzJlq",		// K0d1P4s5W0rD		- Define first internal user
+				"xbmc" 		=> "$2y$10$3FaeYaRCEYUVm6rM2d3ixe3YaEcIvdp8/dmkU8y48X5rQILyoceo2",		// X8mCP4s5W0rD 	- Define second internal user
+//				"myUser"	=> "$2y$10$U7arjRoGuVd4DPueJjAnSeqDKGgTs3bXmViQlGlGxKNBgLMS1uAQq",		// MyU53rP4s5W0rd 	- Define another internal user
 );
 
 ###############################################################################################################
@@ -74,6 +76,6 @@ define("NAX_TVSHOW_VIEW","tvshow_view");
 define("NAX_TVSHOWSEASON_VIEW","season_view");
 define("NAX_TVSHOWEPISODE_VIEW","episode_view");
 define("ENABLE_AUTHENTICATION", (ENABLE_INTERNAL_AUTHENTICATION || ENABLE_LDAP_AUTHENTICATION));
-define("KODI_WEB_PORTAL_VERSION", "1.0.2");
+define("KODI_WEB_PORTAL_VERSION", "1.0.3");
 define("IS_INCLUDED", true);
 ?>

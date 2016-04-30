@@ -34,10 +34,12 @@ function checkAuthentication($user, $password){
   * Check login and password against internal users definition.
   * return true or false if authentication succeed.
   * PHP juggling attack protected
+  * Password haching method : bcrypt()
+  * 	echo password_hash("MyU53rP4s5W0rd", PASSWORD_DEFAULT);
   */
 function checkInternalAuthentication($user, $password){
 	global $USERS;
-	return (is_array($USERS) && !empty($USERS) && array_key_exists(strval($user), $USERS) && ($USERS[$user] === $password));
+	return (is_array($USERS) && !empty($USERS) && array_key_exists(strval($user), $USERS) && password_verify($password, $USERS[$user]));
 }
 
 /**
