@@ -48,7 +48,14 @@ if(!empty($nationality)){
 }
 
 if(count($filters) > 0){
-	$sql = "SELECT * FROM " . NAX_MOVIE_VIEW . " WHERE ";
+	$sql = "SELECT 
+				" . NAX_MOVIE_VIEW . ".idMovie,
+				" . NAX_MOVIE_VIEW . ".c00 AS movieTitleFR,
+				" . NAX_MOVIE_VIEW . ".c01 AS movieSynopsis,
+				" . NAX_MOVIE_VIEW . ".c08 AS movieThumbs,
+				" . NAX_MOVIE_VIEW . ".c19 AS movieToutube,
+				" . NAX_MOVIE_VIEW . ".c20 AS movieFanarts
+			FROM " . NAX_MOVIE_VIEW . " WHERE ";
 	$multi = false;
 	foreach($filters as $filter){
 		if($multi)
@@ -58,10 +65,15 @@ if(count($filters) > 0){
 	}
 	$sql .= "ORDER BY c00 ASC LIMIT $offset," . DEFAULT_ENTRIES_DISPLAY . ";";
 } else {
-	$sql = "SELECT * FROM " . NAX_MOVIE_VIEW . " ORDER BY dateAdded DESC LIMIT $offset," . DEFAULT_ENTRIES_DISPLAY . ";"; 
+	$sql = "SELECT 
+				" . NAX_MOVIE_VIEW . ".idMovie,
+				" . NAX_MOVIE_VIEW . ".c00 AS movieTitleFR,
+				" . NAX_MOVIE_VIEW . ".c01 AS movieSynopsis,
+				" . NAX_MOVIE_VIEW . ".c08 AS movieThumbs,
+				" . NAX_MOVIE_VIEW . ".c19 AS movieToutube,
+				" . NAX_MOVIE_VIEW . ".c20 AS movieFanarts
+			FROM " . NAX_MOVIE_VIEW . " ORDER BY dateAdded DESC LIMIT $offset," . DEFAULT_ENTRIES_DISPLAY . ";"; 
 }
-
-//echo $sql;
 
 if(isset($_GET["action"]) && $_GET["action"] == "logout"){
 	session_destroy();

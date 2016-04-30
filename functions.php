@@ -229,21 +229,21 @@ function getEntriesMovies($sql){
 	global $db;
 	$stmt = $db->query($sql);
 	while($data = $stmt->fetch()){
-		$thumbs = picturesXMLtoURLArray($data["c08"]);  // loading all thumb
+		$thumbs = picturesXMLtoURLArray($data["movieThumbs"]);  // loading all thumb
 		if(strtolower(substr($thumbs[0], 0, 4)) != "http")
 			$thumbs[0] = "http://" . $thumbs[0];
-		$fanarts = picturesXMLtoURLArray($data["c20"]);  // loading all thumb
+		$fanarts = picturesXMLtoURLArray($data["movieFanarts"]);  // loading all thumb
 		if(strtolower(substr($fanarts[0], 0, 4)) != "http")
 			$fanarts[0] = "http://" . $fanarts[0];
 	?>
 	<div class="entry arrondi" id="<?php echo $data["idMovie"]; ?>">
 	  <div class="fanart arrondi"><img class="arrondi" src="<?php echo $fanarts[0]; ?>" onerror="this.src='images/fanart-onerror.png';" style="display:none;" /></div>
-	  <div class="title"><?php echo $data["c00"]; ?></div>
+	  <div class="title"><?php echo $data["movieTitleFR"]; ?></div>
 	  <img class="thumb arrondi" src="<?php echo $thumbs[0]; ?>" onerror="this.src='images/thumb-onerror.jpg';" style="display:none;" />
-	  <div class="synopsis"><?php echo $data["c01"]; ?></div>
+	  <div class="synopsis"><?php echo $data["movieSynopsis"]; ?></div>
 	  <div class="toolbar">
 	<?php
-	  $youtubeID = extractYoutubeId($data["c19"]);
+	  $youtubeID = extractYoutubeId($data["movieToutube"]);
 	  if(!empty($youtubeID))
 		echo "<a onclick=\"displayYoutube('video_" . $data["idMovie"] . "', '" . $youtubeID . "');return false;\" href='https://www.youtube.com/watch?v=" . $youtubeID . "'><img src='images/youtube.png' title='Watch trailer' /></a>";
 	?>
