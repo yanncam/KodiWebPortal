@@ -26,11 +26,14 @@ define("NAX_TVSHOW_REMOTE_PATH", "smb://NAX/MEDIATHEQUE/");	// Location of TVsho
 ###############################################################################################################
 # MySQL XBMC/KODI user authentication
 # Configure here how KodiWebPortal can connect to the MySQL server who hosts the Kodi dabatase (xbmc_videoXX).
+# SQL_XBMC_DBNAME can be "xbmc_videoXX" as a string, of false to autoselect dbname with latest version.
 ###############################################################################################################
 define("SQL_XBMC_HOST", "localhost");
 define("SQL_XBMC_PORT", 3306);
 define("SQL_XBMC_USER", "root");
 define("SQL_XBMC_PASS", "");
+//define("SQL_XBMC_DBNAME", "xbmc_video99");
+define("SQL_XBMC_DBNAME", false); // set to false to autoselect latest XBMC/KODI database
 
 ###############################################################################################################
 # Internal authentication mecanism
