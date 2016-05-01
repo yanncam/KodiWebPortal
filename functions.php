@@ -415,9 +415,9 @@ function getDetailsEntryTvShow($id){
 	if(strtolower(substr($thumbs[0], 0, 4)) != "http")
 		$thumbs[0] = "http://" . $thumbs[0];
 
-	$echo =  "<div class='serie-details-title'>$titleFR</div>";
-	$echo .= "<div class='serie-details-details'><div><b>" . SYNOPSIS_LABEL . " : </b><br />$synopsis<br /><br /></div>";
-	$echo .= "	<div class='serie-details-saison'>";
+	$echo =  "<div class='tvshow-details-title'>$titleFR</div>";
+	$echo .= "<div class='tvshow-details-details'><div><b>" . SYNOPSIS_LABEL . " : </b><br />$synopsis<br /><br /></div>";
+	$echo .= "	<div class='tvshow-details-season'>";
 	$currentSeason = -1;
 	do {
 		if($currentSeason != $data["seasonIdseason"]){ // Define season's DIV
@@ -425,7 +425,7 @@ function getDetailsEntryTvShow($id){
 				$echo .= "</div>"; // End hidden div with all season's episodes
 			$currentSeason = $data["seasonIdseason"];
 			$episodes = $data["seasonNbEpisodes"];
-			$echo .= "<div class='serie-details-saison-details' onclick=\"toggleTvshowContent('serie-details-saison-episodes', '".$data["seasonIdseason"]."');\">";
+			$echo .= "<div class='tvshow-details-season-details' onclick=\"toggleTvshowContent('tvshow-details-season-episodes', '".$data["seasonIdseason"]."');\">";
 			
 			// Retrieve current season's thumb (TODO)
 			$sqlThumb = "SELECT ExtractValue(c06,'/thumb[@season=\"".$data["seasonIdseason"]."\"]') AS thumb FROM " . NAX_TVSHOW_VIEW . " WHERE " . NAX_TVSHOW_VIEW . ".idShow=:id;";
@@ -436,27 +436,27 @@ function getDetailsEntryTvShow($id){
 			$thumbs = picturesXMLtoURLArray($dataThumb["thumb"]);  // loading all thumb
 			if(strtolower(substr($thumbs[0], 0, 4)) != "http")
 				$thumbs[0] = "http://" . $thumbs[0];
-			$echo .= "	<img class='serie-details-saison-thumb arrondi' src='" . $thumbs[0] . "' onerror=\"this.src='images/thumb-onerror.jpg';\" />";
+			$echo .= "	<img class='tvshow-details-season-thumb arrondi' src='" . $thumbs[0] . "' onerror=\"this.src='images/thumb-onerror.jpg';\" />";
 			
-			$echo .= "	<div class='serie-details-saison-details-infos'>";
+			$echo .= "	<div class='tvshow-details-season-details-infos'>";
 			$echo .= "		<div class='text-up bold size125'>" . SEASON_LABEL . " ".$data["seasonIdseason"]."</div>";
 			$echo .= "		<div class='text-down'>" . YEAR_LABEL . " ".$data["seasonPremiered"]."<br/>" . EPISODE_LABEL . " : ".$data["seasonNbEpisodes"]."</div>";
 			$echo .= "	</div>";
 			$echo .= "</div>";
 			// Begin hidden div with all season's episodes
-			$echo .= "<div class='serie-details-saison-episodes' id='serie-details-saison-episodes-".$data["seasonIdseason"]."'>";
+			$echo .= "<div class='tvshow-details-season-episodes' id='tvshow-details-season-episodes-".$data["seasonIdseason"]."'>";
 		}
 
 		// For each season's episode
-		$echo .= "<div class='serie-details-saison-episode'>";
+		$echo .= "<div class='tvshow-details-season-episode'>";
 		$path = str_replace("//", "/", (str_ireplace(NAX_TVSHOW_REMOTE_PATH, NAX_TVSHOW_LOCAL_PATH, $data["strPath"]) . "/" . $data["strFileName"]));
 		$size = showsize($path);
-		$echo .= "	<div class='serie-details-saison-episode-titre' >";
+		$echo .= "	<div class='tvshow-details-season-episode-titre' >";
 		$echo .= $data["seasonIdseason"]."x".$data["episodeIdepisode"]." - ".$data["episodeTitle"];
-		$echo .= "		<a onclick=\"toggleTvshowContent('serie-details-saison-episode-synopsis', '".$data["idEpisode"]."');\" style=\"cursor:pointer;float:right;\"><img src='images/info.png' title='" . DESCRIPTION_LABEL . "' /></a>";
+		$echo .= "		<a onclick=\"toggleTvshowContent('tvshow-details-season-episode-synopsis', '".$data["idEpisode"]."');\" style=\"cursor:pointer;float:right;\"><img src='images/info.png' title='" . DESCRIPTION_LABEL . "' /></a>";
 		if(ENABLE_DOWNLOAD)
 			$echo .= "	<a target='_blank' style=\"cursor:pointer;float:right;\" href='dl.php?type=tvshow&id=" . $data["idEpisode"] . "'><img src='images/download.png' title='" . DOWNLOAD_LABEL . "' /></a>";
-		$echo .= "		<p class='serie-details-saison-episode-synopsis' id='serie-details-saison-episode-synopsis-".$data["idEpisode"]."'>";
+		$echo .= "		<p class='tvshow-details-season-episode-synopsis' id='tvshow-details-season-episode-synopsis-".$data["idEpisode"]."'>";
 		$echo .= $data["episodeSynopsis"];
 		$echo .= "			<br /><br />";
 		$echo .= "			<b>" . REALISATOR_LABEL . " :</b> " . $data["episodeRealisator"] . "<br />";

@@ -155,7 +155,7 @@ body{
   padding-top: 3px;
 }
 
-.details .serie-details-title{
+.details .tvshow-details-title{
   position: absolute;
   text-align: center;
   color: #000;
@@ -167,13 +167,13 @@ body{
   font-weight: bold;
 }
 
-.details .serie-details-details .serie-details-saison .serie-details-saison-details .serie-details-saison-thumb{
+.details .tvshow-details-details .tvshow-details-season .tvshow-details-season-details .tvshow-details-season-thumb{
 	position: absolute;
 	height: 90px;
 	padding: 5px;
 }
 
-.details .serie-details-details{
+.details .tvshow-details-details{
 	position: absolute;
 	color: #000;
 	top: 30px;
@@ -186,7 +186,7 @@ body{
 	padding: 5px;  
 }
 
-.details .serie-details-toolbar{
+.details .tvshow-details-toolbar{
   position: absolute;
   text-align: center;
   color: #000;
@@ -200,7 +200,7 @@ body{
   padding-top: 3px;
 }
 
-.details .serie-details-saison{
+.details .tvshow-details-season{
 	position: relative;
 	color: #000;
 	width: 100%;
@@ -211,7 +211,7 @@ body{
 	height: 450px;
 }
 
-.serie-details-saison .serie-details-saison-details{
+.tvshow-details-season .tvshow-details-season-details{
 	position: relative;
 	color: #000;
 	text-align: justify;
@@ -226,26 +226,26 @@ body{
 	cursor: pointer;
 }
 
-.serie-details-saison .serie-details-saison-details-infos{
+.tvshow-details-season .tvshow-details-season-details-infos{
 	margin-left: 80px;
 }
 
-.serie-details-saison-details-infos .text-down{
+.tvshow-details-season-details-infos .text-down{
 	position:absolute;
 	bottom:0;
 	padding-bottom: 5px;
 }
 
-.serie-details-saison-details-infos .text-up{
+.tvshow-details-season-details-infos .text-up{
 	padding-top: 5px;
 }
 
-.serie-details-saison-episodes{
+.tvshow-details-season-episodes{
 	width: 100%;
 	display:none;
 }
 
-.serie-details-saison-episode{
+.tvshow-details-season-episode{
 	background: -webkit-linear-gradient(#EEE, #BBB); 	/* For Safari 5.1 to 6.0 */
     background: -o-linear-gradient(#EEE, #BBB); 		/* For Opera 11.1 to 12.0 */
     background: -moz-linear-gradient(#EEE, #BBB); 		/* For Firefox 3.6 to 15 */
@@ -253,7 +253,7 @@ body{
 	/*height: 30px;*/
 }
 
-.serie-details-saison-episode:hover{
+.tvshow-details-season-episode:hover{
 	background: -webkit-linear-gradient(#888, #BBB); 	/* For Safari 5.1 to 6.0 */
     background: -o-linear-gradient(#888, #BBB); 		/* For Opera 11.1 to 12.0 */
     background: -moz-linear-gradient(#888, #BBB); 		/* For Firefox 3.6 to 15 */
@@ -261,20 +261,20 @@ body{
 	/*height: 30px;*/
 }
 
-.serie-details-saison-episode-titre{
+.tvshow-details-season-episode-titre{
 	line-height: 30px;
 	vertical-align: middle;
 	padding-left: 5px;
 }
 
-p.serie-details-saison-episode-synopsis{
+p.tvshow-details-season-episode-synopsis{
 	margin-top: 0px;
 	margin-bottom: 0px;
 	display:none;
 	line-height:1.5;
 }
 
-.serie-details-saison-episode-lien{
+.tvshow-details-season-episode-lien{
 
 }
 
