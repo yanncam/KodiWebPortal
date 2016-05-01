@@ -1,6 +1,13 @@
 # KodiWebPortal
 **The Web Portal for Kodi to display, search and download your personal multimedia content**
 
+## Demo
+
+You can try **Kodi Web Portal** [here](http://kodi.asafety.fr/) (http://kodi.asafety.fr/)
+
+* Login : **kodi**
+* Password : **K0d1P4s5W0rD**
+
 ## Description
 
 **Kodi Web Portal** is a web interface to browse, display, search and eventually download your Kodi multimedia content indexed. This web application is very light, without framework (except JQuery) and dependencies.
@@ -29,7 +36,7 @@ I wanted to use my Synology NAS with these features to provide a private and per
 
 ## Compatibility
 
-**Kodi version :**
+**Kodi's versions :**
 * Kodi Jarvis 16.1 (database name "xmbc_video99")
 * Kodi Jarvis 16.0 (database name "xmbc_video99")
 * Kodi Isengard 15.2 (database name "xbmc_video93")
