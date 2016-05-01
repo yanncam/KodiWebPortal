@@ -30,7 +30,14 @@ if(!empty($studio)){
 }
 
 if(count($filters) > 0){
-	$sql = "SELECT *,ExtractValue(c06,'/thumb[@season=\"-1\"]') AS thumb,ExtractValue(c11,'/fanart/@url') AS fanartURL,ExtractValue(c11,'/fanart/thumb[position()=1]/@preview') AS fanartValue FROM " . NAX_TVSHOW_VIEW . " WHERE ";
+	$sql = "SELECT 
+				" . NAX_TVSHOW_VIEW . ".idShow,
+				" . NAX_TVSHOW_VIEW . ".c00 AS tvshowTitle,
+				" . NAX_TVSHOW_VIEW . ".c01 AS tvshowSynopsis,
+				ExtractValue(c06,'/thumb[@season=\"-1\"]') AS thumb,
+				ExtractValue(c11,'/fanart/@url') AS fanartURL,
+				ExtractValue(c11,'/fanart/thumb[position()=1]/@preview') AS fanartValue
+			FROM " . NAX_TVSHOW_VIEW . " WHERE ";
 	$multi = false;
 	foreach($filters as $filter){
 		if($multi)
@@ -40,7 +47,14 @@ if(count($filters) > 0){
 	}
 	$sql .= "ORDER BY c00 ASC LIMIT $offset," . DEFAULT_ENTRIES_DISPLAY . ";";
 } else {
-	$sql = "SELECT *,ExtractValue(c06,'/thumb[@season=\"-1\"]') AS thumb,ExtractValue(c11,'/fanart/@url') AS fanartURL,ExtractValue(c11,'/fanart/thumb[position()=1]/@preview') AS fanartValue FROM " . NAX_TVSHOW_VIEW . " ORDER BY dateAdded DESC LIMIT $offset," . DEFAULT_ENTRIES_DISPLAY . ";";
+	$sql = "SELECT 
+				" . NAX_TVSHOW_VIEW . ".idShow,
+				" . NAX_TVSHOW_VIEW . ".c00 AS tvshowTitle,
+				" . NAX_TVSHOW_VIEW . ".c01 AS tvshowSynopsis,
+				ExtractValue(c06,'/thumb[@season=\"-1\"]') AS thumb,
+				ExtractValue(c11,'/fanart/@url') AS fanartURL,
+				ExtractValue(c11,'/fanart/thumb[position()=1]/@preview') AS fanartValue
+			FROM " . NAX_TVSHOW_VIEW . " ORDER BY dateAdded DESC LIMIT $offset," . DEFAULT_ENTRIES_DISPLAY . ";";
 }
 
 if(isset($_GET["id"]) && isset($_GET["action"]) && $_GET["action"] == "detail"){

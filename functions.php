@@ -279,9 +279,9 @@ function getEntriesTvShow($sql){
 	  <div class="fanart arrondi">
 		<img class="arrondi" src="<?php echo $fanart; ?>" onerror="this.src='images/fanart-onerror.png';" style="display:none;" />
 	  </div>
-	  <div class="title"><?php echo $data["c00"]; ?></div>
+	  <div class="title"><?php echo $data["tvshowTitle"]; ?></div>
 	  <img class="thumb arrondi" src="<?php echo $thumbs[0]; ?>" onerror="this.src='images/thumb-onerror.jpg';" style="display:none;" />
-	  <div class="synopsis"><?php echo $data["c01"]; ?></div>
+	  <div class="synopsis"><?php echo $data["tvshowSynopsis"]; ?></div>
 	  <div class="toolbar">
 		<a onclick="printDetails('details_<?php echo $data["idShow"]; ?>', <?php echo $data["idShow"]; ?>);" style="cursor:pointer;"><img src='images/info.png' title='<?php echo DESCRIPTION_LABEL; ?>' /></a>
 	<?php if(ENABLE_DOWNLOAD){ ?>
