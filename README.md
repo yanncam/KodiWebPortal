@@ -62,9 +62,9 @@ Access to **Kodi Web Portal** can be :
 Just clone the Git repo source code and edit the "config.php" file.
 Apache server who host the **Kodi Web Portal** needs :
 * mod_xsendfile : to be able to sent big file, like a movie, through HTTP/HTTPS.
+* PHP >= 5.5, 6 or 7 : if you want to use internal authentication mecanism. Password are hashed with bcrypt.
 * php-pdo_mysql module : to communicate with the Kodi's database MySQL/MariaDB
 * php-ldap module : only if you want to authenticate your users on LDAP directory.
-* PHP >= 5.5, 6 or 7 : if you want to use internal authentication mecanism. Password are hashed with brcrypt.
 * access to your multimedia content through filesystem (with mounting point or stored locally)
 
 ## How to configure my Synology NAS to use Kodi Web Portal?
@@ -105,6 +105,8 @@ XSendFilePath /volume1/MEDIATHEQUE
 ```
 
 ![Alt text](/screenshots/synology/DSM6_config_004.jpg?raw=true "Update XSendFilePath through SSH")
+
+**Note : be carefull, after any upgrade of your DSM or WebStation package, XSendFile configuration is reset, so you have to edit this file again to allow download.**
 
 Reboot the Synology's Apache server to load the new configuration (stop the package then restart it).
 
