@@ -43,8 +43,6 @@ if(count($filters) > 0){
 	$sql = "SELECT *,ExtractValue(c06,'/thumb[@season=\"-1\"]') AS thumb,ExtractValue(c11,'/fanart/@url') AS fanartURL,ExtractValue(c11,'/fanart/thumb[position()=1]/@preview') AS fanartValue FROM " . NAX_TVSHOW_VIEW . " ORDER BY dateAdded DESC LIMIT $offset," . DEFAULT_ENTRIES_DISPLAY . ";";
 }
 
-//echo $sql;
-
 if(isset($_GET["id"]) && isset($_GET["action"]) && $_GET["action"] == "detail"){
 	$id = intval($_GET["id"]);
 	if($id > 0)
@@ -77,8 +75,8 @@ if(isset($_GET["offset"])){
 </head>
 
 <body>
-<a href="index.php" alt="Movies / Films" title="See all movies"><img class="image-nav" src="./images/cinema-logo.png" style="margin-top:30px;" /></a>
-<a href="tvshow.php" alt="TvShow / Séries" title="See all TVshow"><img class="image-nav image-nav-move" src="./images/tvshow-logo.png" style="margin-top:160px;" /></a>
+<a href="index.php" alt="<?php echo LOGO_MOVIES_LABEL; ?>" title="<?php echo LOGO_MOVIES_LABEL; ?>"><img class="image-nav" src="./images/cinema-logo.png" style="margin-top:30px;" /></a>
+<a href="tvshow.php" alt="<?php echo LOGO_TVSHOWS_LABEL; ?>" title="<?php echo LOGO_TVSHOWS_LABEL; ?>"><img class="image-nav image-nav-move" src="./images/tvshow-logo.png" style="margin-top:160px;" /></a>
 <div id="opacity"></div>
 
 <div id="search">
@@ -86,12 +84,12 @@ if(isset($_GET["offset"])){
 <?php
 	$stmt = $db->query("SELECT DISTINCT COUNT(*) FROM " . NAX_TVSHOW_VIEW . ";");
 	$count = $stmt->fetch();
-	echo "<b>[ " . $count[0] . " TV show ]</b> - ";
+	echo "<b>[ " . $count[0] . " " . TVSHOWS_LABEL . " ]</b> - ";
 ?>
-	<label for="title">Title</label>
+	<label for="title"><?php echo TITLE_LABEL; ?></label>
 	<input id="title" type="text" name="title" placeholder="Vikings" value="<?php echo htmlentities(stripcslashes($title)); ?>" />
 
-	<label for="genre">Genre</label>
+	<label for="genre"><?php echo GENRE_LABEL; ?></label>
 	<select id="genre" name="genre">
 		<option value="">*</option>
 <?php
@@ -105,7 +103,7 @@ if(isset($_GET["offset"])){
 ?>
 	</select>
 
-	<label for="studio">Studios</label>
+	<label for="studio"><?php echo STUDIO_LABEL; ?></label>
 	<select id="studio" name="studio">
 		<option value="">*</option>
 <?php
@@ -119,9 +117,9 @@ if(isset($_GET["offset"])){
 ?>
 	</select>
 
-	<input type="submit" value="Search" />
-	<input type="button" onclick="document.location=document.location.href.replace(document.location.search, '');" value="Reset" />
-	<a href="index.php?action=logout"><img src="./images/logout.png" title="Logout" alt="Logout" style="float:right;" /></a>
+	<input type="submit" value="<?php echo SEARCH_LABEL; ?>" />
+	<input type="button" onclick="document.location=document.location.href.replace(document.location.search, '');" value="<?php echo RESET_LABEL; ?>" />
+	<a href="index.php?action=logout"><img src="./images/logout.png" title="<?php echo LOGOUT_LABEL; ?>" alt="<?php echo LOGOUT_LABEL; ?>" style="float:right;" /></a>
 </form>
 </div>
 

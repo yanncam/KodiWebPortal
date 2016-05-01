@@ -200,23 +200,23 @@ function showsize($file) {
 	if($file <= 0) {
 		$return = "N/A";
     } elseif ($file < 1024) {
-		$return = $file . ' Byte';
+		$return = $file . ' ' . FILESIZE_UNITY;
     } elseif ($file < 1048576) {
-		$return = round($file / 1024, 2) . ' Ko';
+		$return = round($file / 1024, 2) . ' K' . FILESIZE_UNITY;
     } elseif ($file < 1073741824) {
-		$return = round($file / 1048576, 2) . ' Mo';
+		$return = round($file / 1048576, 2) . ' M' . FILESIZE_UNITY;
     } elseif ($file < 1099511627776) {
-		$return = round($file / 1073741824, 2) . ' Go';
+		$return = round($file / 1073741824, 2) . ' G' . FILESIZE_UNITY;
     } elseif ($file < 1125899906842624) {
-		$return = round($file / 1099511627776, 2) . ' To';
+		$return = round($file / 1099511627776, 2) . ' T' . FILESIZE_UNITY;
     } elseif ($file < 1152921504606846976) {
-		$return = round($file / 1125899906842624, 2) . ' Po';
+		$return = round($file / 1125899906842624, 2) . ' P' . FILESIZE_UNITY;
     } elseif ($file < 1180591620717411303424) {
-		$return = round($file / 1152921504606846976, 2) . ' Eo';
+		$return = round($file / 1152921504606846976, 2) . ' E' . FILESIZE_UNITY;
     } elseif ($file < 1208925819614629174706176) {
-		$return = round($file / 1180591620717411303424, 2) . ' Zo';
+		$return = round($file / 1180591620717411303424, 2) . ' Z' . FILESIZE_UNITY;
     } else {
-		$return = round($file / 1208925819614629174706176, 2) . ' Yo';
+		$return = round($file / 1208925819614629174706176, 2) . ' Y' . FILESIZE_UNITY;
     }
 	return $return;
 }
@@ -245,11 +245,11 @@ function getEntriesMovies($sql){
 	<?php
 	  $youtubeID = extractYoutubeId($data["movieToutube"]);
 	  if(!empty($youtubeID))
-		echo "<a onclick=\"displayYoutube('video_" . $data["idMovie"] . "', '" . $youtubeID . "');return false;\" href='https://www.youtube.com/watch?v=" . $youtubeID . "'><img src='images/youtube.png' title='Watch trailer' /></a>";
+		echo "<a onclick=\"displayYoutube('video_" . $data["idMovie"] . "', '" . $youtubeID . "');return false;\" href='https://www.youtube.com/watch?v=" . $youtubeID . "'><img src='images/youtube.png' title='" . YOUTUBE_LABEL . "' /></a>";
 	?>
-		<a onclick="printDetails('details_<?php echo $data["idMovie"]; ?>', <?php echo $data["idMovie"]; ?>);" style="cursor:pointer;"><img src='images/info.png' title='Description' /></a>
+		<a onclick="printDetails('details_<?php echo $data["idMovie"]; ?>', <?php echo $data["idMovie"]; ?>);" style="cursor:pointer;"><img src='images/info.png' title='<?php echo DESCRIPTION_LABEL; ?>' /></a>
 	<?php if(ENABLE_DOWNLOAD){ ?>
-		<a target="_blank" href="dl.php?type=movie&id=<?php echo $data["idMovie"]; ?>"><img src='images/download.png' title='Download' /></a>
+		<a target="_blank" href="dl.php?type=movie&id=<?php echo $data["idMovie"]; ?>"><img src='images/download.png' title='<?php echo DOWNLOAD_LABEL; ?>' /></a>
 	<?php }	?>
 	  </div>
 		
@@ -283,9 +283,9 @@ function getEntriesTvShow($sql){
 	  <img class="thumb arrondi" src="<?php echo $thumbs[0]; ?>" onerror="this.src='images/thumb-onerror.jpg';" style="display:none;" />
 	  <div class="synopsis"><?php echo $data["c01"]; ?></div>
 	  <div class="toolbar">
-		<a onclick="printDetails('details_<?php echo $data["idShow"]; ?>', <?php echo $data["idShow"]; ?>);" style="cursor:pointer;"><img src='images/info.png' title='Description' /></a>
+		<a onclick="printDetails('details_<?php echo $data["idShow"]; ?>', <?php echo $data["idShow"]; ?>);" style="cursor:pointer;"><img src='images/info.png' title='<?php echo DESCRIPTION_LABEL; ?>' /></a>
 	<?php if(ENABLE_DOWNLOAD){ ?>
-			<a onclick="printDetails('details_<?php echo $data["idShow"]; ?>', <?php echo $data["idShow"]; ?>);" style="cursor:pointer;"><img src='images/download.png' title='Download' /></a>
+			<a onclick="printDetails('details_<?php echo $data["idShow"]; ?>', <?php echo $data["idShow"]; ?>);" style="cursor:pointer;"><img src='images/download.png' title='<?php echo DOWNLOAD_LABEL; ?>' /></a>
 	<?php }	?>
 	  </div>
 		
@@ -347,19 +347,19 @@ function getDetailsEntryMovie($id){
 	}
 	$echo =  "<div class='details-title'>" . $titleFR . " (" . $titleEN . ")</div>";
 	$echo .= "<img class='details-thumb arrondi' src='" . $thumbs[0] . "' onerror=\"this.src='images/thumb-onerror.jpg';\" />";
-	$echo .= "<div class='details-details'><b>Synopsis : </b><br />" . $synopsis . "<br /><br />";
-	$echo .= "	<b>Year : </b><br />" . $year . "<br /><br />";
-	$echo .= "	<b>Genre : </b><br />" . $genre . "<br /><br />";
-	$echo .= "	<b>Realisator : </b><br />" . $realisator . "<br /><br />";
-	$echo .= "	<b>Nationality : </b><br />" . $nationality . "<br /><br />";
-	$echo .= "	<b>Actor(s) : </b><br />" . $actors . "<br /><br />";
-	$echo .= "	<b>File path : </b><br />" . $path . "<br /><br />";
+	$echo .= "<div class='details-details'><b>" . SYNOPSIS_LABEL . " : </b><br />" . $synopsis . "<br /><br />";
+	$echo .= "	<b>" . YEAR_LABEL . " : </b><br />" . $year . "<br /><br />";
+	$echo .= "	<b>" . GENRE_LABEL . " : </b><br />" . $genre . "<br /><br />";
+	$echo .= "	<b>" . REALISATOR_LABEL . " : </b><br />" . $realisator . "<br /><br />";
+	$echo .= "	<b>" . NATIONALITY_LABEL . " : </b><br />" . $nationality . "<br /><br />";
+	$echo .= "	<b>" . ACTORS_LABEL . " : </b><br />" . $actors . "<br /><br />";
+	$echo .= "	<b>" . FILEPATH_LABEL . " : </b><br />" . $path . "<br /><br />";
 	if($size)
-		$echo .= "<b>File size : </b><br />$size<br />";
+		$echo .= "<b>" . FILESIZE_LABEL . " : </b><br />$size<br />";
 	$echo .= "</div>";
 	if(ENABLE_DOWNLOAD){
 		$echo .= "<div class='details-toolbar'>";
-		$echo .= "	<a target='_blank' href='dl.php?type=movie&id=" . $id . "'><img src='images/download.png' title='Download' /></a>";
+		$echo .= "	<a target='_blank' href='dl.php?type=movie&id=" . $id . "'><img src='images/download.png' title='" . DOWNLOAD_LABEL . "' /></a>";
 		$echo .= "</div>";
 	}
 	echo $echo;
@@ -416,7 +416,7 @@ function getDetailsEntryTvShow($id){
 		$thumbs[0] = "http://" . $thumbs[0];
 
 	$echo =  "<div class='serie-details-title'>$titleFR</div>";
-	$echo .= "<div class='serie-details-details'><div><b>Synopsis : </b><br />$synopsis<br /><br /></div>";
+	$echo .= "<div class='serie-details-details'><div><b>" . SYNOPSIS_LABEL . " : </b><br />$synopsis<br /><br /></div>";
 	$echo .= "	<div class='serie-details-saison'>";
 	$currentSeason = -1;
 	do {
@@ -439,8 +439,8 @@ function getDetailsEntryTvShow($id){
 			$echo .= "	<img class='serie-details-saison-thumb arrondi' src='" . $thumbs[0] . "' onerror=\"this.src='images/thumb-onerror.jpg';\" />";
 			
 			$echo .= "	<div class='serie-details-saison-details-infos'>";
-			$echo .= "		<div class='text-up bold size125'>Season ".$data["seasonIdseason"]."</div>";
-			$echo .= "		<div class='text-down'>First broadcast ".$data["seasonPremiered"]."<br/>Episodes: ".$data["seasonNbEpisodes"]."</div>";
+			$echo .= "		<div class='text-up bold size125'>" . SEASON_LABEL . " ".$data["seasonIdseason"]."</div>";
+			$echo .= "		<div class='text-down'>" . YEAR_LABEL . " ".$data["seasonPremiered"]."<br/>" . EPISODE_LABEL . " : ".$data["seasonNbEpisodes"]."</div>";
 			$echo .= "	</div>";
 			$echo .= "</div>";
 			// Begin hidden div with all season's episodes
@@ -453,18 +453,18 @@ function getDetailsEntryTvShow($id){
 		$size = showsize($path);
 		$echo .= "	<div class='serie-details-saison-episode-titre' >";
 		$echo .= $data["seasonIdseason"]."x".$data["episodeIdepisode"]." - ".$data["episodeTitle"];
-		$echo .= "		<a onclick=\"toggleTvshowContent('serie-details-saison-episode-synopsis', '".$data["idEpisode"]."');\" style=\"cursor:pointer;float:right;\"><img src='images/info.png' title='Description' /></a>";
+		$echo .= "		<a onclick=\"toggleTvshowContent('serie-details-saison-episode-synopsis', '".$data["idEpisode"]."');\" style=\"cursor:pointer;float:right;\"><img src='images/info.png' title='" . DESCRIPTION_LABEL . "' /></a>";
 		if(ENABLE_DOWNLOAD)
-			$echo .= "	<a target='_blank' style=\"cursor:pointer;float:right;\" href='dl.php?type=tvshow&id=" . $data["idEpisode"] . "'><img src='images/download.png' title='Download' /></a>";
+			$echo .= "	<a target='_blank' style=\"cursor:pointer;float:right;\" href='dl.php?type=tvshow&id=" . $data["idEpisode"] . "'><img src='images/download.png' title='" . DOWNLOAD_LABEL . "' /></a>";
 		$echo .= "		<p class='serie-details-saison-episode-synopsis' id='serie-details-saison-episode-synopsis-".$data["idEpisode"]."'>";
 		$echo .= $data["episodeSynopsis"];
 		$echo .= "			<br /><br />";
-		$echo .= "			<b>Realisator :</b> " . $data["episodeRealisator"] . "<br />";
-		$echo .= "			<b>Scriptwriter :</b> " . $data["episodeScriptwriter"] . "<br />";
-		$echo .= "			<b>Studio :</b> " . $data["studio"] . "<br />";
-		$echo .= "			<b>Note :</b> " . floatval($data["episodeNote"]) . "<br />";
-		$echo .= "			<b>File path :</b> $path<br />";
-		$echo .= "			<b>File size :</b> $size<br />";
+		$echo .= "			<b>" . REALISATOR_LABEL . " :</b> " . $data["episodeRealisator"] . "<br />";
+		$echo .= "			<b>" . SCRIPTWRITER_LABEL . " :</b> " . $data["episodeScriptwriter"] . "<br />";
+		$echo .= "			<b>" . STUDIO_LABEL . " :</b> " . $data["studio"] . "<br />";
+		$echo .= "			<b>" . NOTE_LABEL . " :</b> " . floatval($data["episodeNote"]) . "<br />";
+		$echo .= "			<b>" . FILEPATH_LABEL . " :</b> $path<br />";
+		$echo .= "			<b>" . FILESIZE_LABEL . " :</b> $size<br />";
 		$echo .= "		</p>";
 		$echo .= "	</div>";
 		$echo .= "</div>";
@@ -479,7 +479,7 @@ function getDetailsEntryTvShow($id){
   */
 function logDownload($user, $file){
 	$fp = fopen(NAX_LOGS_PATH . "/" . $user . ".txt", "a");
-	fputs($fp, "[" . date("d/m/Y H:i:s") . "] - $user downloading $file\n");
+	fputs($fp, "[" . date("d/m/Y H:i:s") . "] - $user " . DOWNLOAD_LABEL . " $file\n");
 	fclose($fp);
 }
 

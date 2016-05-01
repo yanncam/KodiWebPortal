@@ -15,7 +15,7 @@ if(isAuthenticated()){ // Check authentication and authorization
 	<meta http-equiv="Pragma-directive" content="no-cache" />
 	<meta http-equiv="Cache-Directive" content="no-cache" />
 	<meta name="robots" content="noindex,follow" />
-	<title>Authentication page</title>
+	<title><?php echo AUTHENTICATION_PAGE_TITLE; ?></title>
 	<script type="text/javascript" src="https://code.jquery.com/jquery.min.js"></script>
 </head>
 <body>
@@ -126,11 +126,11 @@ input[type="text"], input[type="password"] {
 		<div id="results" style="height:20px"></div>
 		<form name="login_form" onsubmit="login($('#loginField').val(), $('#passwordField').val());return false;">
 			<br />
-			<input id="loginField" type="text" name="user" size="32" maxlength="32" value="" placeholder="Username" autocomplete="off" />
+			<input id="loginField" type="text" name="user" size="32" maxlength="32" value="" placeholder="<?php echo AUTHENTICATION_USER_PLACEHOLDER; ?>" autocomplete="off" />
 			<br /><br />
-			<input id="passwordField" type="password" name="pass" size="32" maxlength="255" placeholder="Password" autocomplete="off" />
+			<input id="passwordField" type="password" name="pass" size="32" maxlength="255" placeholder="<?php echo AUTHENTICATION_PASSWD_PLACEHOLDER; ?>" autocomplete="off" />
 			<br /><br /><br />
-			<input type="submit" class="button" value="Login" />
+			<input type="submit" class="button" value="<?php echo AUTHENTICATION_BUTTON; ?>" />
 		</form>
 	</div>
 </div>
