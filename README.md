@@ -119,7 +119,8 @@ Reboot the Synology's Apache server to load the new configuration (stop the pack
 * Track movies / tvshow watched by a user himself
 * Create an install.php page with compatibility checks and auto-create config.php file
 * Add "stars" on new entry since the last connection of a user
-* Customization of errors
+* Add "Music" and others Kodi's category
+* Extend functionality with home personal streaming
 
 ## Misc
 
