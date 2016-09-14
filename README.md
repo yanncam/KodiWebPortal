@@ -30,9 +30,9 @@ Through this excellent kind of NAS, you can deploy additionnal module in the DSM
 * Directory Server : an LDAP server in the Synology for manage users and groups
 A Synology NAS acts as a complete web server to host my Kodi's data and the **Kodi Web Portal**.
 
-I wanted to use my Synology NAS with these features to provide a private and personal web interface displaying all my Kodi's movies and TV show scraped, and so, if I was outside home, I would have been able to browse and download my personal content with ease. **Kody Web Portal** was born.
+I wanted to use my Synology NAS with these features to provide a private and personal web interface displaying all my Kodi's movies and TV show scraped, and so, if I was outside home, I would have been able to browse and download my personal content with ease. **Kodi Web Portal** was born.
 
-**Kody Web Portal** interface is available in French (fr), English (en - default) and Spanish (es). Language is automatically choosen depending on your browser's language.
+**Kodi Web Portal** interface is available in French (fr), English (en - default) and Spanish (es). Language is automatically choosen depending on your browser's language.
 
 ## Compatibility
 
@@ -41,7 +41,7 @@ I wanted to use my Synology NAS with these features to provide a private and per
 * Kodi Jarvis 16.0 (database name "xmbc_video99")
 * Kodi Isengard 15.2 (database name "xbmc_video93")
 
-**Kody Web Portal** is configured by default to choose the most recent Kodi's database (xbmc_videoXX).
+**Kodi Web Portal** is configured by default to choose the most recent Kodi's database (xbmc_videoXX).
 
 **System :**
 * Apache server with PHP (>= 5.5) (Windows / Linux)
