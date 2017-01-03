@@ -93,6 +93,9 @@ switch($lang){
     case "es":
         require_once("./i18n/lang_es.php");
         break;
+    case "de":
+        require_once("./i18n/lang_de.php");
+        break;
     default:
         require_once("./i18n/lang_en.php");
         break;
