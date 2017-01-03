@@ -24,7 +24,7 @@ define("SEASON_LABEL", "Serie");
 define("EPISODE_LABEL", "Episodes");
 define("SCRIPTWRITER_LABEL", "Drehbuchautor");
 define("STUDIO_LABEL", "Studio");
-define("NOTE_LABEL", "Notzit");
+define("NOTE_LABEL", "Notiz");
 define("SEARCH_LABEL", "Suche");
 define("RESET_LABEL", "Zurücksetzten");
 
