@@ -37,6 +37,7 @@ I wanted to use my Synology NAS with these features to provide a private and per
 ## Compatibility
 
 **Kodi's versions :**
+* Kodi Krypton 17.0 (database name "xmbc_video107")
 * Kodi Jarvis 16.1 (database name "xmbc_video99")
 * Kodi Jarvis 16.0 (database name "xmbc_video99")
 * Kodi Isengard 15.2 (database name "xbmc_video93")
@@ -82,7 +83,7 @@ Check PHP configuration for loading right modules (pdo_mysql, ldap if needed...)
 
 ![Alt text](/screenshots/synology/DSM6_config_007.jpg?raw=true "PHP configuration")
 
-Configure your Kodi to use the MariaDB/MySQL database on your NAS with a dedicated account (Kodi creates a database like "xbmc_videoXX" with "XX" a number automatically defined).
+Configure your Kodi to use the MariaDB/MySQL database on your NAS with a dedicated account (Kodi creates a database like "xbmc_videoXXX" with "XXX" a number automatically defined).
 
 ![Alt text](/screenshots/synology/DSM6_config_005.jpg?raw=true "Kodi's database via phpMyAdmin")
 
