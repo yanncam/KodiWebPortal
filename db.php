@@ -6,7 +6,7 @@ if(!isset($_SESSION["database"])){
 	if(SQL_XBMC_DBNAME === false){
 		try {
 			$db = new PDO("mysql:host=" . SQL_XBMC_HOST . ";dbname=information_schema;port:" . SQL_XBMC_PORT, SQL_XBMC_USER, SQL_XBMC_PASS);
-			$stmt = $db->query("SELECT SCHEMA_NAME FROM information_schema.SCHEMATA WHERE SCHEMA_NAME LIKE 'xbmc_video%' ORDER BY SCHEMA_NAME DESC LIMIT 0,1;");
+			$stmt = $db->query("SELECT SCHEMA_NAME FROM information_schema.SCHEMATA WHERE SCHEMA_NAME LIKE 'xbmc_video%' ORDER BY SUBSTR(SCHEMA_NAME,11,5)+0 DESC LIMIT 0,1;");
 			$database = $stmt->fetch();
 			if(empty(trim($database["SCHEMA_NAME"]))){
 				echo "Error, no xbmc_video% database found...";

@@ -17,7 +17,7 @@ define("ENABLE_DOWNLOAD", true);
 # KodiWebPortal will replace each "NAX_XXX_REMOTE_PATH" part or media filepath extracted from Kodi DB with the
 # "NAX_XXX_LOCAL_PATH" corresponding to allow downloading.
 ###############################################################################################################
-define("NAX_LOGS_PATH", "logs");							// Path to log activity
+define("NAX_LOGS_PATH", "logs");				// Path to log activity
 define("NAX_MOVIES_LOCAL_PATH", "/volume1/MEDIATHEQUE/");	// Local path where are movies
 define("NAX_MOVIES_REMOTE_PATH", "smb://NAX/MEDIATHEQUE/");	// Location of movies in Kodi DB
 define("NAX_TVSHOW_LOCAL_PATH", "/volume1/MEDIATHEQUE/");	// Local path where are TVshow
@@ -48,9 +48,9 @@ define("SQL_XBMC_DBNAME", false); // set to false to autoselect latest XBMC/KODI
 ###############################################################################################################
 define("ENABLE_INTERNAL_AUTHENTICATION", true);
 $USERS = array(
-				"kodi" 		=> "$2y$10$471cELEUsyQJqaDyJBuXzOoBCEWfZwvMBtGsGLOQPwNH8DLInzJlq",		// K0d1P4s5W0rD		- Define first internal user
-				"xbmc" 		=> "$2y$10$3FaeYaRCEYUVm6rM2d3ixe3YaEcIvdp8/dmkU8y48X5rQILyoceo2",		// X8mCP4s5W0rD 	- Define second internal user
-//				"myUser"	=> "$2y$10$U7arjRoGuVd4DPueJjAnSeqDKGgTs3bXmViQlGlGxKNBgLMS1uAQq",		// MyU53rP4s5W0rd 	- Define another internal user
+	"kodi" 		=> "$2y$10$471cELEUsyQJqaDyJBuXzOoBCEWfZwvMBtGsGLOQPwNH8DLInzJlq",		// K0d1P4s5W0rD		- Define first internal user
+	"xbmc" 		=> "$2y$10$3FaeYaRCEYUVm6rM2d3ixe3YaEcIvdp8/dmkU8y48X5rQILyoceo2",		// X8mCP4s5W0rD 	- Define second internal user
+//	"myUser"	=> "$2y$10$U7arjRoGuVd4DPueJjAnSeqDKGgTs3bXmViQlGlGxKNBgLMS1uAQq",		// MyU53rP4s5W0rd 	- Define another internal user
 );
 
 ###############################################################################################################
@@ -79,26 +79,26 @@ define("NAX_TVSHOW_VIEW","tvshow_view");
 define("NAX_TVSHOWSEASON_VIEW","season_view");
 define("NAX_TVSHOWEPISODE_VIEW","episode_view");
 define("ENABLE_AUTHENTICATION", (ENABLE_INTERNAL_AUTHENTICATION || ENABLE_LDAP_AUTHENTICATION));
-define("KODI_WEB_PORTAL_VERSION", "1.0.5");
+define("KODI_WEB_PORTAL_VERSION", "1.0.6");
 define("IS_INCLUDED", true);
 
 $lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
 switch($lang){
 	case "fr":
-        require_once("./i18n/lang_fr.php");
-        break;
-    case "en":
-        require_once("./i18n/lang_en.php");
-        break;
-    case "es":
-        require_once("./i18n/lang_es.php");
-        break;
-    case "de":
-        require_once("./i18n/lang_de.php");
-        break;
-    default:
-        require_once("./i18n/lang_en.php");
-        break;
+        	require_once("./i18n/lang_fr.php");
+        	break;
+	case "en":
+		require_once("./i18n/lang_en.php");
+		break;
+	case "es":
+		require_once("./i18n/lang_es.php");
+		break;
+	case "de":
+		require_once("./i18n/lang_de.php");
+		break;
+	default:
+		require_once("./i18n/lang_en.php");
+		break;
 }
 
 ?>
