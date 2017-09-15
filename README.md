@@ -95,9 +95,12 @@ Allow the internal Synology user "httpd" to access to this "MEDIATHEQUE" share w
 
 ![Alt text](/screenshots/synology/DSM6_config_002.jpg?raw=true "Allow httpd to access this share")
 
-Finaly, you have to edit an Apache config file manualy through SSH, to add the "/volume1/MEDIATHEQUE" path usable by the X-send-file Apache module.
+Finaly, you have to edit an Apache config file manualy through SSH, to add the "/volume1/MEDIATHEQUE" path usable by the X-send-file Apache module (and only this path in the XSendFilePath directive).
 * vi /etc/httpd/conf/extra/mod_xsendfile.conf-user # Synology DSM5
 * vi /volume1/@appstore/WebStation/usr/local/etc/httpd/conf/extra/mod_xsendfile.conf-user # Synology DSM6
+* vi /volume1/@appstore/Apache2.2/usr/local/etc/apache22/conf/extra/mod_xsendfile.conf # Synology DSM6 for package Apache 2.2
+* vi /volume1/.4/usr/local/etc/apache24/conf/extra/mod_xsendfile.conf # Synology DSM6 for package Apache 2.4
+* For the next updates and evolution of DSM version and package version, it's possible to use the following command to find the right mod_xsendfile.conf via SSH : find / -name "\*xsendfile\*conf\*"
 
 ```shell
 [...]
