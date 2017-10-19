@@ -17,7 +17,7 @@ define("ENABLE_DOWNLOAD", true);
 # KodiWebPortal will replace each "NAX_XXX_REMOTE_PATH" part or media filepath extracted from Kodi DB with the
 # "NAX_XXX_LOCAL_PATH" corresponding to allow downloading.
 ###############################################################################################################
-define("NAX_LOGS_PATH", "logs");				// Path to log activity
+define("NAX_LOGS_PATH", "logs");							// Path to log activity
 define("NAX_MOVIES_LOCAL_PATH", "/volume1/MEDIATHEQUE/");	// Local path where are movies
 define("NAX_MOVIES_REMOTE_PATH", "smb://NAX/MEDIATHEQUE/");	// Location of movies in Kodi DB
 define("NAX_TVSHOW_LOCAL_PATH", "/volume1/MEDIATHEQUE/");	// Local path where are TVshow
@@ -32,7 +32,7 @@ define("SQL_XBMC_HOST", "localhost");
 define("SQL_XBMC_PORT", 3306);
 define("SQL_XBMC_USER", "root");
 define("SQL_XBMC_PASS", "");
-//define("SQL_XBMC_DBNAME", "xbmc_video99");
+//define("SQL_XBMC_DBNAME", "xbmc_video107");
 define("SQL_XBMC_DBNAME", false); // set to false to autoselect latest XBMC/KODI database
 
 ###############################################################################################################
@@ -79,14 +79,14 @@ define("NAX_TVSHOW_VIEW","tvshow_view");
 define("NAX_TVSHOWSEASON_VIEW","season_view");
 define("NAX_TVSHOWEPISODE_VIEW","episode_view");
 define("ENABLE_AUTHENTICATION", (ENABLE_INTERNAL_AUTHENTICATION || ENABLE_LDAP_AUTHENTICATION));
-define("KODI_WEB_PORTAL_VERSION", "1.0.6");
+define("KODI_WEB_PORTAL_VERSION", "1.0.7");
 define("IS_INCLUDED", true);
 
 $lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
 switch($lang){
 	case "fr":
-        	require_once("./i18n/lang_fr.php");
-        	break;
+        require_once("./i18n/lang_fr.php");
+        break;
 	case "en":
 		require_once("./i18n/lang_en.php");
 		break;

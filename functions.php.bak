@@ -313,7 +313,7 @@ function getDetailsEntryMovie($id){
 				" . NAX_MOVIE_VIEW . ".c01 AS movieSynopsis,
 				" . NAX_MOVIE_VIEW . ".c08 AS movieThumbs,
 				" . NAX_MOVIE_VIEW . ".c14 AS movieGenre,
-				" . NAX_MOVIE_VIEW . ".premiered AS movieYear,
+				" . NAX_MOVIE_VIEW . ".c07 AS movieYear,
 				" . NAX_MOVIE_VIEW . ".c15 AS movieRealisator,
 				" . NAX_MOVIE_VIEW . ".c21 AS movieNationality,
 				" . NAX_MOVIE_VIEW . ".strPath,
@@ -339,7 +339,7 @@ function getDetailsEntryMovie($id){
 	if(strtolower(substr($thumbs[0], 0, 4)) != "http")
 		$thumbs[0] = "http://" . $thumbs[0];
 	$genre = $data["movieGenre"];
-	$year = strtok($data["movieYear"], "-");
+	$year = $data["movieYear"];
 	$realisator = $data["movieRealisator"];
 	$nationality = $data["movieNationality"];
 	$path = str_replace("//", "/", (str_ireplace(NAX_MOVIES_REMOTE_PATH, NAX_MOVIES_LOCAL_PATH, $data["strPath"]) . "/" . $data["strFileName"]));
@@ -430,7 +430,7 @@ function getDetailsEntryTvShow($id){
 			$episodes = $data["seasonNbEpisodes"];
 			$echo .= "<div class='tvshow-details-season-details' onclick=\"toggleTvshowContent('tvshow-details-season-episodes', '".$data["seasonIdseason"]."');\">";
 			
-			// Retrieve current season's thumb
+			// Retrieve current season's thumb (TODO)
 			$sqlThumb = "SELECT ExtractValue(c06,'/thumb[@season=\"".$data["seasonIdseason"]."\"]') AS thumb FROM " . NAX_TVSHOW_VIEW . " WHERE " . NAX_TVSHOW_VIEW . ".idShow=:id;";
 			$stmtThumb = $db->prepare($sqlThumb);
 			$stmtThumb->bindValue('id', $id, PDO::PARAM_INT);
