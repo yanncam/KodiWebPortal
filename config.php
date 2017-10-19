@@ -27,9 +27,14 @@ define("NAX_TVSHOW_REMOTE_PATH", "smb://NAX/MEDIATHEQUE/");	// Location of TVsho
 # MySQL XBMC/KODI user authentication
 # Configure here how KodiWebPortal can connect to the MySQL server who hosts the Kodi dabatase (xbmc_videoXX).
 # SQL_XBMC_DBNAME can be "xbmc_videoXX" as a string, of false to autoselect dbname with latest version.
+# The local absolute path to SQL socket can be defined in SQL_XBMC_SOCK:
+# 	- /run/mysqld/mysqld.sock 	: default MariaDB5 on Synology
+# 	- /run/mysqld/mysqld10.sock : MariaDB10 custom socket on Synology
 ###############################################################################################################
 define("SQL_XBMC_HOST", "localhost");
 define("SQL_XBMC_PORT", 3306);
+define("SQL_XBMC_SOCK", "");
+//define("SQL_XBMC_SOCK", "/run/mysqld/mysqld10.sock");
 define("SQL_XBMC_USER", "root");
 define("SQL_XBMC_PASS", "");
 //define("SQL_XBMC_DBNAME", "xbmc_video107");
@@ -79,7 +84,7 @@ define("NAX_TVSHOW_VIEW","tvshow_view");
 define("NAX_TVSHOWSEASON_VIEW","season_view");
 define("NAX_TVSHOWEPISODE_VIEW","episode_view");
 define("ENABLE_AUTHENTICATION", (ENABLE_INTERNAL_AUTHENTICATION || ENABLE_LDAP_AUTHENTICATION));
-define("KODI_WEB_PORTAL_VERSION", "1.0.8");
+define("KODI_WEB_PORTAL_VERSION", "1.0.9");
 define("IS_INCLUDED", true);
 
 $lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
@@ -87,18 +92,18 @@ switch($lang){
 	case "fr":
         require_once("./i18n/lang_fr.php");
         break;
-	case "en":
-		require_once("./i18n/lang_en.php");
-		break;
-	case "es":
-		require_once("./i18n/lang_es.php");
-		break;
+    case "en":
+        require_once("./i18n/lang_en.php");
+        break;
+    case "es":
+        require_once("./i18n/lang_es.php");
+        break;
 	case "de":
 		require_once("./i18n/lang_de.php");
 		break;
-	default:
-		require_once("./i18n/lang_en.php");
-		break;
+    default:
+        require_once("./i18n/lang_en.php");
+        break;
 }
 
 ?>
