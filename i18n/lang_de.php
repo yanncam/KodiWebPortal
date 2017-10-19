@@ -27,6 +27,7 @@ define("STUDIO_LABEL", "Studio");
 define("NOTE_LABEL", "Notiz");
 define("SEARCH_LABEL", "Suche");
 define("RESET_LABEL", "Zurücksetzten");
+define("NORESULT_LABEL", "Ende der Ergebnisse");
 
 define("AUTHENTICATION_PAGE_TITLE", "Authentication page");
 define("AUTHENTICATION_USER_PLACEHOLDER", "Benutzer");

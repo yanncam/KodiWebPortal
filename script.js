@@ -1,4 +1,4 @@
-﻿$( document ).ready(function() {
+$( document ).ready(function() {
 	// Check if Ajax request is running to load entries
 	$ajaxRuning = false;
 
@@ -94,6 +94,7 @@ function getEntries(){
 			$("#entries").append("<div class='loading'><img src='images/loading.gif' alt='Loading...' /></div>");
 	    },	
 		success: function(data, textStatus, jqXHR){
+			$(".noMoreResult").remove();
 			$("#entries").append(data);
 			$(".loading").remove();
 			attachEvents();

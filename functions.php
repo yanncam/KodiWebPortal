@@ -231,6 +231,9 @@ function showsize($file) {
 function getEntriesMovies($sql){
 	global $db;
 	$stmt = $db->query($sql);
+	if($stmt->rowCount() <= 0){
+		echo "<div class='noMoreResult'>[ " . NORESULT_LABEL . " ]</div>";
+	}
 	while($data = $stmt->fetch()){
 		$thumbs = picturesXMLtoURLArray($data["movieThumbs"]);  // loading all thumb
 		if(strtolower(substr($thumbs[0], 0, 4)) != "http")
@@ -271,6 +274,9 @@ function getEntriesMovies($sql){
 function getEntriesTvShow($sql){
 	global $db;
 	$stmt = $db->query($sql);
+	if($stmt->rowCount() <= 0){
+		echo "<div class='noMoreResult'>[ " . NORESULT_LABEL . " ]</div>";
+	}
 	while($data = $stmt->fetch()){
 		$thumbs = picturesXMLtoURLArray($data["thumb"]);  // loading all thumb
 		if(strtolower(substr($thumbs[0], 0, 4)) != "http")

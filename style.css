@@ -333,7 +333,7 @@ p.tvshow-details-season-episode-synopsis{
   opacity: 0.8;
 }
 
-.arrondi {
+.arrondi{
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
   border-radius: 10px;
@@ -350,4 +350,10 @@ p.tvshow-details-season-episode-synopsis{
 
 .size125{
 	font-size: 125%;
+}
+
+.noMoreResult{
+	font-family: Verdana, sans-serif;
+	font-size: 20px;
+	color: #111;
 }
