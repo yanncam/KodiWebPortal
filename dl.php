@@ -2,13 +2,14 @@
 // @see http://sbdomo.esy.es/2014/05/my-readings-configuration-dsm5/
 // vi /etc/httpd/conf/extra/mod_xsendfile.conf-user # Synology DSM5
 // vi /volume1/@appstore/WebStation/usr/local/etc/httpd/conf/extra/mod_xsendfile.conf-user # Synology DSM6
+// vi /volume1/@appstore/Apache2.2/usr/local/etc/apache22/conf/extra/mod_xsendfile.conf
 // XSendFilePath /volume1
 // Reboot Apache through DSM (manage package => WebStation)
 
-session_start();
 require_once("./config.php");
-require_once("./db.php");
 require_once("./functions.php");
+session_start();
+require_once("./db.php");
 	
 if(ENABLE_DOWNLOAD){
 	if(ENABLE_AUTHENTICATION){ // Check authentication and authorization

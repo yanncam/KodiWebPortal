@@ -54,7 +54,8 @@ if(count($filters) > 0){
 				" . NAX_MOVIE_VIEW . ".c01 AS movieSynopsis,
 				" . NAX_MOVIE_VIEW . ".c08 AS movieThumbs,
 				" . NAX_MOVIE_VIEW . ".c19 AS movieToutube,
-				" . NAX_MOVIE_VIEW . ".c20 AS movieFanarts
+				" . NAX_MOVIE_VIEW . ".c20 AS movieFanarts,
+				" . NAX_MOVIE_VIEW . ".playCount
 			FROM " . NAX_MOVIE_VIEW . " WHERE ";
 	$multi = false;
 	foreach($filters as $filter){
@@ -71,7 +72,8 @@ if(count($filters) > 0){
 				" . NAX_MOVIE_VIEW . ".c01 AS movieSynopsis,
 				" . NAX_MOVIE_VIEW . ".c08 AS movieThumbs,
 				" . NAX_MOVIE_VIEW . ".c19 AS movieToutube,
-				" . NAX_MOVIE_VIEW . ".c20 AS movieFanarts
+				" . NAX_MOVIE_VIEW . ".c20 AS movieFanarts,
+				" . NAX_MOVIE_VIEW . ".playCount
 			FROM " . NAX_MOVIE_VIEW . " ORDER BY dateAdded DESC LIMIT $offset," . DEFAULT_ENTRIES_DISPLAY . ";"; 
 }
 

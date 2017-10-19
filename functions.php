@@ -229,7 +229,7 @@ function showsize($file) {
   * Results depend on the $sql query passed in argument.
   */
 function getEntriesMovies($sql){
-	global $db;
+	global $db, $WATCH_STATUS_FOR_USERS;
 	$stmt = $db->query($sql);
 	if($stmt->rowCount() <= 0){
 		echo "<div class='noMoreResult'>[ " . NORESULT_LABEL . " ]</div>";
@@ -241,11 +241,21 @@ function getEntriesMovies($sql){
 		$fanarts = picturesXMLtoURLArray($data["movieFanarts"]);  // loading all thumb
 		if(strtolower(substr($fanarts[0], 0, 4)) != "http")
 			$fanarts[0] = "http://" . $fanarts[0];
+		$playedStatus = "unwatched";
+		if(intval($data["playCount"]) > 0)
+			$playedStatus = "watched";
 	?>
 	<div class="entry arrondi" id="<?php echo $data["idMovie"]; ?>">
 	  <div class="fanart arrondi"><img class="arrondi" src="<?php echo $fanarts[0]; ?>" onerror="this.src='images/fanart-onerror.png';" style="display:none;" /></div>
 	  <div class="title"><?php echo $data["movieTitleFR"]; ?></div>
 	  <img class="thumb arrondi" src="<?php echo $thumbs[0]; ?>" onerror="this.src='images/thumb-onerror.jpg';" style="display:none;" />
+	  <?php
+		if(WATCHED_STATUS_FOR_ALL || (ENABLE_AUTHENTICATION && in_array($_SESSION['user'], $WATCH_STATUS_FOR_USERS))){
+	  ?>
+			<img class="thumbStatus arrondiTopLeft"src="images/<?php echo $playedStatus; ?>.png" title="<?php echo $playedStatus; ?>" style="display:none;" /> 
+	  <?php
+	  }
+	  ?>
 	  <div class="synopsis"><?php echo $data["movieSynopsis"]; ?></div>
 	  <div class="toolbar">
 	<?php
@@ -272,7 +282,7 @@ function getEntriesMovies($sql){
   * Results depend on the $sql query passed in argument.
   */
 function getEntriesTvShow($sql){
-	global $db;
+	global $db, $WATCH_STATUS_FOR_USERS;
 	$stmt = $db->query($sql);
 	if($stmt->rowCount() <= 0){
 		echo "<div class='noMoreResult'>[ " . NORESULT_LABEL . " ]</div>";
@@ -282,6 +292,9 @@ function getEntriesTvShow($sql){
 		if(strtolower(substr($thumbs[0], 0, 4)) != "http")
 			$thumbs[0] = "http://" . $thumbs[0];
 		$fanart = $data["fanartURL"].$data["fanartValue"];
+		$playedStatus = "unwatched";
+		if(intval($data["watchedcount"]) >= intval($data["totalCount"]))
+			$playedStatus = "watched";
 		
 	?>
 	<div class="entry arrondi" id="<?php echo $data["idShow"]; ?>">
@@ -290,6 +303,13 @@ function getEntriesTvShow($sql){
 	  </div>
 	  <div class="title"><?php echo $data["tvshowTitle"]; ?></div>
 	  <img class="thumb arrondi" src="<?php echo $thumbs[0]; ?>" onerror="this.src='images/thumb-onerror.jpg';" style="display:none;" />
+	  <?php
+		if(WATCHED_STATUS_FOR_ALL || (ENABLE_AUTHENTICATION && in_array($_SESSION['user'], $WATCH_STATUS_FOR_USERS))){
+	  ?>
+			<img class="thumbStatus arrondiTopLeft"src="images/<?php echo $playedStatus; ?>.png" title="<?php echo $playedStatus; ?>" style="display:none;" /> 
+	  <?php
+	  }
+	  ?>
 	  <div class="synopsis"><?php echo $data["tvshowSynopsis"]; ?></div>
 	  <div class="toolbar">
 		<a onclick="printDetails('details_<?php echo $data["idShow"]; ?>', <?php echo $data["idShow"]; ?>);" style="cursor:pointer;"><img src='images/info.png' title='<?php echo DESCRIPTION_LABEL; ?>' /></a>
@@ -311,7 +331,7 @@ function getEntriesTvShow($sql){
   * Movie is identified by $id.
   */
 function getDetailsEntryMovie($id){
-	global $db;
+	global $db, $WATCH_STATUS_FOR_USERS;
 	$id = intval($_GET["id"]);
 	$sql = "SELECT 
 				" . NAX_MOVIE_VIEW . ".c00 AS movieTitleFR,
@@ -324,6 +344,7 @@ function getDetailsEntryMovie($id){
 				" . NAX_MOVIE_VIEW . ".c21 AS movieNationality,
 				" . NAX_MOVIE_VIEW . ".strPath,
 				" . NAX_MOVIE_VIEW . ".strFileName,
+				" . NAX_MOVIE_VIEW . ".playCount,
 				" . NAX_ACTORS_TABLE . ".name,
 				" . NAX_ACTORLINKMOVIE_TABLE . ".role
 			FROM 
@@ -341,6 +362,9 @@ function getDetailsEntryMovie($id){
 	$titleFR = $data["movieTitleFR"];
 	$titleEN = $data["movieTitleEN"];
 	$synopsis = $data["movieSynopsis"];
+	$movieStatus = "unwatched";
+	if(intval($data["playCount"]) > 0)
+		$movieStatus = "watched";
 	$thumbs = picturesXMLtoURLArray($data["movieThumbs"]);  // loading all thumb
 	if(strtolower(substr($thumbs[0], 0, 4)) != "http")
 		$thumbs[0] = "http://" . $thumbs[0];
@@ -356,6 +380,8 @@ function getDetailsEntryMovie($id){
 	}
 	$echo =  "<div class='details-title'>" . $titleFR . " (" . $titleEN . ")</div>";
 	$echo .= "<img class='details-thumb arrondi' src='" . $thumbs[0] . "' onerror=\"this.src='images/thumb-onerror.jpg';\" />";
+	if(WATCHED_STATUS_FOR_ALL || (ENABLE_AUTHENTICATION && in_array($_SESSION['user'], $WATCH_STATUS_FOR_USERS)))
+		$echo .= "<img class='thumbStatus arrondiTopLeft' src='images/" . $movieStatus . ".png' title='" . $movieStatus ."' /> ";
 	$echo .= "<div class='details-details'><b>" . SYNOPSIS_LABEL . " : </b><br />" . $synopsis . "<br /><br />";
 	$echo .= "	<b>" . YEAR_LABEL . " : </b><br />" . $year . "<br /><br />";
 	$echo .= "	<b>" . GENRE_LABEL . " : </b><br />" . $genre . "<br /><br />";
@@ -379,7 +405,7 @@ function getDetailsEntryMovie($id){
   * TVShow is identified by $id.
   */
 function getDetailsEntryTvShow($id){
-	global $db;
+	global $db, $WATCH_STATUS_FOR_USERS;
 	$id = intval($_GET["id"]);
 	// One SQL request to rule them all...
 	$sql = "SELECT 
@@ -388,12 +414,14 @@ function getDetailsEntryTvShow($id){
 				" . NAX_TVSHOWSEASON_VIEW . ".episodes AS seasonNbEpisodes,
 				" . NAX_TVSHOWSEASON_VIEW . ".season AS seasonIdseason,
 				" . NAX_TVSHOWSEASON_VIEW . ".premiered AS seasonPremiered,
+				" . NAX_TVSHOWSEASON_VIEW . ".playCount AS seasonPlayCount,
 				" . NAX_TVSHOWEPISODE_VIEW . ".c13 AS episodeIdepisode,
 				" . NAX_TVSHOWEPISODE_VIEW . ".c00 AS episodeTitle,
 				" . NAX_TVSHOWEPISODE_VIEW . ".c10 AS episodeRealisator,
 				" . NAX_TVSHOWEPISODE_VIEW . ".c04 AS episodeScriptwriter,
 				" . NAX_TVSHOWEPISODE_VIEW . ".c03 AS episodeNote,
 				" . NAX_TVSHOWEPISODE_VIEW . ".c01 AS episodeSynopsis,
+				" . NAX_TVSHOWEPISODE_VIEW . ".playCount AS episodePlayCount,
 				" . NAX_TVSHOWEPISODE_VIEW . ".studio,
 				" . NAX_TVSHOWEPISODE_VIEW . ".strPath,
 				" . NAX_TVSHOWEPISODE_VIEW . ".strFileName,
@@ -434,6 +462,9 @@ function getDetailsEntryTvShow($id){
 				$echo .= "</div>"; // End hidden div with all season's episodes
 			$currentSeason = $data["seasonIdseason"];
 			$episodes = $data["seasonNbEpisodes"];
+			$seasonStatus = "unwatched";
+			if(intval($data["seasonPlayCount"]) >= intval($episodes))
+				$seasonStatus = "watched";
 			$echo .= "<div class='tvshow-details-season-details' onclick=\"toggleTvshowContent('tvshow-details-season-episodes', '".$data["seasonIdseason"]."');\">";
 			
 			// Retrieve current season's thumb
@@ -446,7 +477,9 @@ function getDetailsEntryTvShow($id){
 			if(strtolower(substr($thumbs[0], 0, 4)) != "http")
 				$thumbs[0] = "http://" . $thumbs[0];
 			$echo .= "	<img class='tvshow-details-season-thumb arrondi' src='" . $thumbs[0] . "' onerror=\"this.src='images/thumb-onerror.jpg';\" />";
-			
+			if(WATCHED_STATUS_FOR_ALL || (ENABLE_AUTHENTICATION && in_array($_SESSION['user'], $WATCH_STATUS_FOR_USERS))){
+				$echo .= "	<img class='thumbStatusSeason' src='images/" . $seasonStatus . "Season.png' title='" . $seasonStatus . "' />";
+			}
 			$echo .= "	<div class='tvshow-details-season-details-infos'>";
 			$echo .= "		<div class='text-up bold size125'>" . SEASON_LABEL . " ".$data["seasonIdseason"]."</div>";
 			$echo .= "		<div class='text-down'>" . YEAR_LABEL . " ".$data["seasonPremiered"]."<br/>" . EPISODE_LABEL . " : ".$data["seasonNbEpisodes"]."</div>";
@@ -457,6 +490,9 @@ function getDetailsEntryTvShow($id){
 		}
 
 		// For each season's episode
+		$episodeStatus = "unwatched";
+		if(intval($data["episodePlayCount"]) > 0)
+			$episodeStatus = "watched";
 		$echo .= "<div class='tvshow-details-season-episode'>";
 		$path = str_replace("//", "/", (str_ireplace(NAX_TVSHOW_REMOTE_PATH, NAX_TVSHOW_LOCAL_PATH, $data["strPath"]) . "/" . $data["strFileName"]));
 		$size = showsize($path);
@@ -465,6 +501,8 @@ function getDetailsEntryTvShow($id){
 		$echo .= "		<a onclick=\"toggleTvshowContent('tvshow-details-season-episode-synopsis', '".$data["idEpisode"]."');\" style=\"cursor:pointer;float:right;\"><img src='images/info.png' title='" . DESCRIPTION_LABEL . "' /></a>";
 		if(ENABLE_DOWNLOAD)
 			$echo .= "	<a target='_blank' style=\"cursor:pointer;float:right;\" href='dl.php?type=tvshow&id=" . $data["idEpisode"] . "'><img src='images/download.png' title='" . DOWNLOAD_LABEL . "' /></a>";
+		if(WATCHED_STATUS_FOR_ALL || (ENABLE_AUTHENTICATION && in_array($_SESSION['user'], $WATCH_STATUS_FOR_USERS)))
+			$echo .= "	<a style=\"cursor:pointer;float:right;\" href='#'><img src='images/" . $episodeStatus . "Episode.png' title='" . $episodeStatus . "' /></a>";
 		$echo .= "		<p class='tvshow-details-season-episode-synopsis' id='tvshow-details-season-episode-synopsis-".$data["idEpisode"]."'>";
 		$echo .= $data["episodeSynopsis"];
 		$echo .= "			<br /><br />";

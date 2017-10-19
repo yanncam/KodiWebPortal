@@ -74,6 +74,17 @@ define("LDAP_USERID_ATTRIBUTE", "uid");
 define("LDAP_GROUP_ATTRIBUTE", "memberuid");
 
 ###############################################################################################################
+# Watched / Unwatched / Started status parameters
+# If WATCHED_STATUS_FOR_ALL is true, a status "WATCHED" (a tick logo), "UNWATCHED" (a star logo) or "STARTED" 
+# (a pause logo) (not watched entirely) is displayed as indicator on all media (movies, tvshow, season or 
+# episode).
+# To display watched-status only for few user, put WATCHED_STATUS_FOR_ALL to false and fullfill the 
+# WATCH_STATUS_FOR_USERS with all usernames allowed to see status.
+###############################################################################################################
+define("WATCHED_STATUS_FOR_ALL", false);
+$WATCH_STATUS_FOR_USERS = ["kodi", "mylogin"];
+
+###############################################################################################################
 # XBMC / Kodi tables definition
 # Do not edit !
 ###############################################################################################################
@@ -84,7 +95,7 @@ define("NAX_TVSHOW_VIEW","tvshow_view");
 define("NAX_TVSHOWSEASON_VIEW","season_view");
 define("NAX_TVSHOWEPISODE_VIEW","episode_view");
 define("ENABLE_AUTHENTICATION", (ENABLE_INTERNAL_AUTHENTICATION || ENABLE_LDAP_AUTHENTICATION));
-define("KODI_WEB_PORTAL_VERSION", "1.0.9");
+define("KODI_WEB_PORTAL_VERSION", "1.1.0");
 define("IS_INCLUDED", true);
 
 $lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);

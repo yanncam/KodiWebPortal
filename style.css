@@ -67,6 +67,18 @@ body{
   width: 150px;
 }
 
+.entry .thumbStatus {  
+  position: absolute;  
+  top: 30px;  
+  left: 15px;  
+}
+
+.tvshow-details-season-details .thumbStatusSeason {  
+  position: absolute;  
+  top: 0px; 
+  right: 0px;  
+}
+
 .entry .synopsis{
   position: absolute;
   color: #000;
@@ -125,6 +137,12 @@ body{
   top: 30px;  
   left: 15px;  
   width: 200px;
+}
+
+.details .thumbStatus{
+  position: absolute;  
+  top: 30px;  
+  left: 15px;  
 }
 
 .details .details-details{
@@ -337,6 +355,12 @@ p.tvshow-details-season-episode-synopsis{
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
   border-radius: 10px;
+}
+
+.arrondiTopLeft{
+  -moz-border-radius-topleft: 10px;
+  -webkit-border-top-left-radius: 10px;
+  border-top-left-radius: 10px;
 }
 
 .loading{
