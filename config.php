@@ -89,13 +89,14 @@ $WATCH_STATUS_FOR_USERS = ["kodi", "mylogin"];
 # Do not edit !
 ###############################################################################################################
 define("NAX_MOVIE_VIEW", "movie_view");
+define("NAX_STREAMDETAILS_TABLE", "streamdetails");
 define("NAX_ACTORS_TABLE", "actor");
 define("NAX_ACTORLINKMOVIE_TABLE", "actor_link");
 define("NAX_TVSHOW_VIEW","tvshow_view");
 define("NAX_TVSHOWSEASON_VIEW","season_view");
 define("NAX_TVSHOWEPISODE_VIEW","episode_view");
 define("ENABLE_AUTHENTICATION", (ENABLE_INTERNAL_AUTHENTICATION || ENABLE_LDAP_AUTHENTICATION));
-define("KODI_WEB_PORTAL_VERSION", "1.1.0");
+define("KODI_WEB_PORTAL_VERSION", "1.1.1");
 define("IS_INCLUDED", true);
 
 $lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);

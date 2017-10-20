@@ -346,15 +346,24 @@ function getDetailsEntryMovie($id){
 				" . NAX_MOVIE_VIEW . ".strFileName,
 				" . NAX_MOVIE_VIEW . ".playCount,
 				" . NAX_ACTORS_TABLE . ".name,
-				" . NAX_ACTORLINKMOVIE_TABLE . ".role
+				" . NAX_ACTORLINKMOVIE_TABLE . ".role,
+				MAX(" . NAX_STREAMDETAILS_TABLE . ".strVideoCodec) 	AS streamStrVideoCodec,
+				MAX(" . NAX_STREAMDETAILS_TABLE . ".iVideoWidth) 	AS streamIVideoWidth,
+				MAX(" . NAX_STREAMDETAILS_TABLE . ".iVideoHeight) 	AS streamIVideoHeight,
+				MAX(" . NAX_STREAMDETAILS_TABLE . ".strAudioCodec) 	AS streamStrAudioCodec,
+				MAX(" . NAX_STREAMDETAILS_TABLE . ".iAudioChannels) AS streamIAudioChannels
 			FROM 
 				" . NAX_MOVIE_VIEW . ", 
 				" . NAX_ACTORS_TABLE . ", 
-				" . NAX_ACTORLINKMOVIE_TABLE . "
+				" . NAX_ACTORLINKMOVIE_TABLE . ",
+				" . NAX_STREAMDETAILS_TABLE . "
 			WHERE 
 					" . NAX_MOVIE_VIEW . ".idMovie=:id
 				AND	" . NAX_MOVIE_VIEW . ".idMovie=" . NAX_ACTORLINKMOVIE_TABLE . ".media_id 
-				AND " . NAX_ACTORLINKMOVIE_TABLE . ".actor_id=" . NAX_ACTORS_TABLE . ".actor_id;";
+				AND " . NAX_ACTORLINKMOVIE_TABLE . ".actor_id=" . NAX_ACTORS_TABLE . ".actor_id
+				AND " . NAX_MOVIE_VIEW . ".idFile=" . NAX_STREAMDETAILS_TABLE . ".idFile
+			GROUP BY
+					" . NAX_STREAMDETAILS_TABLE . ".idFile";
 	$stmt = $db->prepare($sql);
 	$stmt->bindValue('id', $id, PDO::PARAM_INT);
 	$stmt->execute();
@@ -362,6 +371,37 @@ function getDetailsEntryMovie($id){
 	$titleFR = $data["movieTitleFR"];
 	$titleEN = $data["movieTitleEN"];
 	$synopsis = $data["movieSynopsis"];
+	$mediaInfo = "";
+	if($data["streamStrVideoCodec"] != "")
+		$mediaInfo .= "[" . $data["streamStrVideoCodec"] . "]";
+	if($data["streamIVideoWidth"] != "" && $data["streamIVideoHeight"] != "")
+		$mediaInfo .= "[" . $data["streamIVideoWidth"] . "x" . $data["streamIVideoHeight"] . "]";
+	if($data["streamStrAudioCodec"] != "")
+		$mediaInfo .= "[" . $data["streamStrAudioCodec"] . "]";
+	if($data["streamIAudioChannels"] != ""){
+		switch($data["streamIAudioChannels"]){
+			case "1":
+				$mediaInfo .= "[mono]";break;
+			case "2":
+				$mediaInfo .= "[stereo]";break;
+			case "3":
+				$mediaInfo .= "[2.1]";break;
+			case "4":
+				$mediaInfo .= "[3.1]";break;
+			case "5":
+				$mediaInfo .= "[4.1]";break;
+			case "6":
+				$mediaInfo .= "[5.1]";break;
+			case "7":
+				$mediaInfo .= "[6.1]";break;
+			case "8":
+				$mediaInfo .= "[7.1]";break;
+			case "9":
+				$mediaInfo .= "[8.1]";break;
+			case "10":
+				$mediaInfo .= "[9.1]";break;
+		}
+	}
 	$movieStatus = "unwatched";
 	if(intval($data["playCount"]) > 0)
 		$movieStatus = "watched";
@@ -389,6 +429,7 @@ function getDetailsEntryMovie($id){
 	$echo .= "	<b>" . NATIONALITY_LABEL . " : </b><br />" . $nationality . "<br /><br />";
 	$echo .= "	<b>" . ACTORS_LABEL . " : </b><br />" . $actors . "<br /><br />";
 	$echo .= "	<b>" . FILEPATH_LABEL . " : </b><br />" . $path . "<br /><br />";
+	$echo .= "	<b>" . INFOMEDIA_LABEL . " : </b><br />" . $mediaInfo . "<br /><br />";
 	if($size)
 		$echo .= "<b>" . FILESIZE_LABEL . " : </b><br />$size<br />";
 	$echo .= "</div>";
@@ -426,16 +467,25 @@ function getDetailsEntryTvShow($id){
 				" . NAX_TVSHOWEPISODE_VIEW . ".strPath,
 				" . NAX_TVSHOWEPISODE_VIEW . ".strFileName,
 				" . NAX_TVSHOWEPISODE_VIEW . ".idEpisode,
-				ExtractValue(" . NAX_TVSHOW_VIEW . ".c06,'/thumb[@season=\"-1\"]') AS tvshowThumb0 
+				ExtractValue(" . NAX_TVSHOW_VIEW . ".c06,'/thumb[@season=\"-1\"]') AS tvshowThumb0,
+				MAX(" . NAX_STREAMDETAILS_TABLE . ".strVideoCodec) 	AS streamStrVideoCodec,
+				MAX(" . NAX_STREAMDETAILS_TABLE . ".iVideoWidth) 	AS streamIVideoWidth,
+				MAX(" . NAX_STREAMDETAILS_TABLE . ".iVideoHeight) 	AS streamIVideoHeight,
+				MAX(" . NAX_STREAMDETAILS_TABLE . ".strAudioCodec) 	AS streamStrAudioCodec,
+				MAX(" . NAX_STREAMDETAILS_TABLE . ".iAudioChannels) AS streamIAudioChannels
 			FROM 
 				" . NAX_TVSHOW_VIEW . ", 
 				" . NAX_TVSHOWSEASON_VIEW . ", 
-				" . NAX_TVSHOWEPISODE_VIEW . " 
+				" . NAX_TVSHOWEPISODE_VIEW . ",
+				" . NAX_STREAMDETAILS_TABLE . "
 			WHERE 
 					" . NAX_TVSHOW_VIEW . ".idShow=:id
 				AND " . NAX_TVSHOW_VIEW . ".idShow=" . NAX_TVSHOWSEASON_VIEW . ".idShow 
 				AND " . NAX_TVSHOWSEASON_VIEW . ".idShow=" . NAX_TVSHOWEPISODE_VIEW . ".idShow 
-				AND " . NAX_TVSHOWSEASON_VIEW . ".season=" . NAX_TVSHOWEPISODE_VIEW . ".c12 
+				AND " . NAX_TVSHOWSEASON_VIEW . ".season=" . NAX_TVSHOWEPISODE_VIEW . ".c12
+				AND " . NAX_TVSHOWEPISODE_VIEW . ".idFile=" . NAX_STREAMDETAILS_TABLE . ".idFile
+			GROUP BY
+				" . NAX_STREAMDETAILS_TABLE . ".idFile
 			ORDER BY 
 				" . NAX_TVSHOWSEASON_VIEW . ".idSeason,
 				CAST(" . NAX_TVSHOWEPISODE_VIEW . ".c13 as SIGNED INTEGER) 
@@ -490,6 +540,37 @@ function getDetailsEntryTvShow($id){
 		}
 
 		// For each season's episode
+		$mediaInfo = "";
+		if($data["streamStrVideoCodec"] != "")
+			$mediaInfo .= "[" . $data["streamStrVideoCodec"] . "]";
+		if($data["streamIVideoWidth"] != "" && $data["streamIVideoHeight"] != "")
+			$mediaInfo .= "[" . $data["streamIVideoWidth"] . "x" . $data["streamIVideoHeight"] . "]";
+		if($data["streamStrAudioCodec"] != "")
+			$mediaInfo .= "[" . $data["streamStrAudioCodec"] . "]";
+		if($data["streamIAudioChannels"] != ""){
+			switch($data["streamIAudioChannels"]){
+				case "1":
+					$mediaInfo .= "[mono]";break;
+				case "2":
+					$mediaInfo .= "[stereo]";break;
+				case "3":
+					$mediaInfo .= "[2.1]";break;
+				case "4":
+					$mediaInfo .= "[3.1]";break;
+				case "5":
+					$mediaInfo .= "[4.1]";break;
+				case "6":
+					$mediaInfo .= "[5.1]";break;
+				case "7":
+					$mediaInfo .= "[6.1]";break;
+				case "8":
+					$mediaInfo .= "[7.1]";break;
+				case "9":
+					$mediaInfo .= "[8.1]";break;
+				case "10":
+					$mediaInfo .= "[9.1]";break;
+			}
+		}
 		$episodeStatus = "unwatched";
 		if(intval($data["episodePlayCount"]) > 0)
 			$episodeStatus = "watched";
@@ -511,6 +592,7 @@ function getDetailsEntryTvShow($id){
 		$echo .= "			<b>" . STUDIO_LABEL . " :</b> " . $data["studio"] . "<br />";
 		$echo .= "			<b>" . NOTE_LABEL . " :</b> " . floatval($data["episodeNote"]) . "<br />";
 		$echo .= "			<b>" . FILEPATH_LABEL . " :</b> $path<br />";
+		$echo .= "			<b>" . INFOMEDIA_LABEL . " :</b> $mediaInfo<br />";
 		$echo .= "			<b>" . FILESIZE_LABEL . " :</b> $size<br />";
 		$echo .= "		</p>";
 		$echo .= "	</div>";

@@ -17,6 +17,7 @@ define("YEAR_LABEL", "Year");
 define("REALISATOR_LABEL", "Realisator");
 define("NATIONALITY_LABEL", "Nationality");
 define("ACTORS_LABEL", "Actor(s)");
+define("INFOMEDIA_LABEL", "Media Info");
 define("FILEPATH_LABEL", "File path");
 define("FILESIZE_LABEL", "File size");
 define("FILESIZE_UNITY", "B");
