@@ -1,6 +1,7 @@
 ﻿<?php
 require_once("./config.php");
 require_once("./functions.php");
+defineSecurityHeaders();
 if(isAuthenticated()){ // Check authentication and authorization
 	header("Location: index.php");
 	exit;

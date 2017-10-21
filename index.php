@@ -1,7 +1,8 @@
 <?php
 require_once("./config.php");
 require_once("./functions.php");
-session_start();
+defineSecurityHeaders();
+sessionStartSecurely();
 require_once("./db.php");
 
 if(ENABLE_AUTHENTICATION){
@@ -81,6 +82,7 @@ if(count($filters) > 0){
 
 if(isset($_GET["action"]) && $_GET["action"] == "logout"){
 	session_destroy();
+	setcookie("KODIWEBPORTAL", "", time()-3600);
 	header("Location: login.php");
 	exit;
 }

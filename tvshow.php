@@ -1,7 +1,8 @@
 <?php
 require_once("./config.php");
 require_once("./functions.php");
-session_start();
+defineSecurityHeaders();
+sessionStartSecurely();
 require_once("./db.php");
 
 if(ENABLE_AUTHENTICATION){

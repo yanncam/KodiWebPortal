@@ -3,12 +3,18 @@
 // vi /etc/httpd/conf/extra/mod_xsendfile.conf-user # Synology DSM5
 // vi /volume1/@appstore/WebStation/usr/local/etc/httpd/conf/extra/mod_xsendfile.conf-user # Synology DSM6
 // vi /volume1/@appstore/Apache2.2/usr/local/etc/apache22/conf/extra/mod_xsendfile.conf
+// # Define *only* the /volume1 path for the XSendFilePath directive like this :
 // XSendFilePath /volume1
-// Reboot Apache through DSM (manage package => WebStation)
+// Reboot Apache through DSM (manage package => WebStation or Apache2.2 or Apache2.4 depending on Synology DSM version)
+// 		synoservicectl --restart httpd-user
+//		synoservice --restart pkgctl-WebStation
+//		synoservice --restart pkgctl-Apache2.2
+//		synoservice --restart pkgctl-Apache2.4
 
 require_once("./config.php");
 require_once("./functions.php");
-session_start();
+defineSecurityHeaders();
+sessionStartSecurely();
 require_once("./db.php");
 	
 if(ENABLE_DOWNLOAD){

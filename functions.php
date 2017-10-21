@@ -70,6 +70,27 @@ function checkLDAPAuthentication($user, $password){
 		return false;
 }
 
+function defineSecurityHeaders(){
+	header("X-Frame-Options: sameorigin");
+	header("X-XSS-Protection: 1; mode=block");
+	header("X-Content-Type-Options: nosniff");
+	header("Referrer-Policy: origin-when-cross-origin");
+	$contentSecurityPolicy = "default-src 'self'; img-src 'self' http: https:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:;";
+	header("Content-Security-Policy: " . $contentSecurityPolicy);
+	header("X-Webkit-CSP: " . $contentSecurityPolicy);
+	header("X-Content-Security-Policy: " . $contentSecurityPolicy);
+}
+
+function sessionStartSecurely(){
+	@ini_set("session.hash_function", sha512);
+	session_set_cookie_params(86400, '/', null, ENFORCE_HTTPS_SECURITY, true);
+	if(ENFORCE_HTTPS_SECURITY)
+		session_name('__Host-KODIWEBPORTAL'); // @see https://scotthelme.co.uk/tough-cookies/
+	else
+		session_name('KODIWEBPORTAL');
+	session_start();
+}
+
 /**
   * Convert XML from KODI/XBMC database to array of URL.
   */
