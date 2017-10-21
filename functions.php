@@ -241,13 +241,14 @@ function getEntriesMovies($sql){
 		$fanarts = picturesXMLtoURLArray($data["movieFanarts"]);  // loading all thumb
 		if(strtolower(substr($fanarts[0], 0, 4)) != "http")
 			$fanarts[0] = "http://" . $fanarts[0];
+		$year = strtok($data["movieYear"], "-");
 		$playedStatus = "unwatched";
 		if(intval($data["playCount"]) > 0)
 			$playedStatus = "watched";
 	?>
 	<div class="entry arrondi" id="<?php echo $data["idMovie"]; ?>">
 	  <div class="fanart arrondi"><img class="arrondi" src="<?php echo $fanarts[0]; ?>" onerror="this.src='images/fanart-onerror.png';" style="display:none;" /></div>
-	  <div class="title"><?php echo $data["movieTitleFR"]; ?></div>
+	  <div class="title"><?php echo $data["movieTitleFR"] . " ($year)"; ?></div>
 	  <img class="thumb arrondi" src="<?php echo $thumbs[0]; ?>" onerror="this.src='images/thumb-onerror.jpg';" style="display:none;" />
 	  <?php
 		if(WATCHED_STATUS_FOR_ALL || (ENABLE_AUTHENTICATION && in_array($_SESSION['user'], $WATCH_STATUS_FOR_USERS))){
