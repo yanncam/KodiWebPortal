@@ -489,6 +489,7 @@ function getDetailsEntryTvShow($id){
 				" . NAX_TVSHOWEPISODE_VIEW . ".strPath,
 				" . NAX_TVSHOWEPISODE_VIEW . ".strFileName,
 				" . NAX_TVSHOWEPISODE_VIEW . ".idEpisode,
+				" . NAX_TVSHOWEPISODE_VIEW . ".idFile,
 				ExtractValue(" . NAX_TVSHOW_VIEW . ".c06,'/thumb[@season=\"-1\"]') AS tvshowThumb0,
 				MAX(" . NAX_STREAMDETAILS_TABLE . ".strVideoCodec) 	AS streamStrVideoCodec,
 				MAX(" . NAX_STREAMDETAILS_TABLE . ".iVideoWidth) 	AS streamIVideoWidth,
@@ -498,15 +499,16 @@ function getDetailsEntryTvShow($id){
 			FROM 
 				" . NAX_TVSHOW_VIEW . ", 
 				" . NAX_TVSHOWSEASON_VIEW . ", 
-				" . NAX_TVSHOWEPISODE_VIEW . ",
+				" . NAX_TVSHOWEPISODE_VIEW . " LEFT JOIN
 				" . NAX_STREAMDETAILS_TABLE . "
+				ON " . NAX_TVSHOWEPISODE_VIEW . ".idFile=" . NAX_STREAMDETAILS_TABLE . ".idFile
 			WHERE 
 					" . NAX_TVSHOW_VIEW . ".idShow=:id
 				AND " . NAX_TVSHOW_VIEW . ".idShow=" . NAX_TVSHOWSEASON_VIEW . ".idShow 
 				AND " . NAX_TVSHOWSEASON_VIEW . ".idShow=" . NAX_TVSHOWEPISODE_VIEW . ".idShow 
 				AND " . NAX_TVSHOWSEASON_VIEW . ".season=" . NAX_TVSHOWEPISODE_VIEW . ".c12
-				AND " . NAX_TVSHOWEPISODE_VIEW . ".idFile=" . NAX_STREAMDETAILS_TABLE . ".idFile
 			GROUP BY
+				" . NAX_TVSHOWEPISODE_VIEW . ".idFile,
 				" . NAX_STREAMDETAILS_TABLE . ".idFile
 			ORDER BY 
 				" . NAX_TVSHOWSEASON_VIEW . ".idSeason,
