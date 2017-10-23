@@ -75,7 +75,7 @@ function defineSecurityHeaders(){
 	header("X-XSS-Protection: 1; mode=block");
 	header("X-Content-Type-Options: nosniff");
 	header("Referrer-Policy: origin-when-cross-origin");
-	$contentSecurityPolicy = "default-src 'self'; img-src 'self' http: https:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:;";
+	$contentSecurityPolicy = "default-src 'self'; child-src https://*.youtube.com; img-src 'self' http: https:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:;";
 	header("Content-Security-Policy: " . $contentSecurityPolicy);
 	header("X-Webkit-CSP: " . $contentSecurityPolicy);
 	header("X-Content-Security-Policy: " . $contentSecurityPolicy);
