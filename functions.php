@@ -375,17 +375,19 @@ function getDetailsEntryMovie($id){
 				MAX(" . NAX_STREAMDETAILS_TABLE . ".strAudioCodec) 	AS streamStrAudioCodec,
 				MAX(" . NAX_STREAMDETAILS_TABLE . ".iAudioChannels) AS streamIAudioChannels
 			FROM 
-				" . NAX_MOVIE_VIEW . ", 
 				" . NAX_ACTORS_TABLE . ", 
 				" . NAX_ACTORLINKMOVIE_TABLE . ",
+				" . NAX_MOVIE_VIEW . " LEFT JOIN
 				" . NAX_STREAMDETAILS_TABLE . "
+				ON " . NAX_MOVIE_VIEW . ".idFile=" . NAX_STREAMDETAILS_TABLE . ".idFile
 			WHERE 
 					" . NAX_MOVIE_VIEW . ".idMovie=:id
 				AND	" . NAX_MOVIE_VIEW . ".idMovie=" . NAX_ACTORLINKMOVIE_TABLE . ".media_id 
 				AND " . NAX_ACTORLINKMOVIE_TABLE . ".actor_id=" . NAX_ACTORS_TABLE . ".actor_id
-				AND " . NAX_MOVIE_VIEW . ".idFile=" . NAX_STREAMDETAILS_TABLE . ".idFile
 			GROUP BY
-					" . NAX_STREAMDETAILS_TABLE . ".idFile";
+					" . NAX_STREAMDETAILS_TABLE . ".idFile,
+					" . NAX_ACTORS_TABLE . ".name,
+					" . NAX_ACTORLINKMOVIE_TABLE . ".role";
 	$stmt = $db->prepare($sql);
 	$stmt->bindValue('id', $id, PDO::PARAM_INT);
 	$stmt->execute();
