@@ -319,7 +319,7 @@ function getEntriesTvShow($sql){
 			$playedStatus = "watched";
 		
 	?>
-	<div class="entry arrondi" id="<?php echo $data["idShow"]; ?>">
+	<div class="entry arrondi" id="<?php echo $data["idShow"]; ?>" onclick="printDetails('details_<?php echo $data["idShow"]; ?>', <?php echo $data["idShow"]; ?>);">
 	  <div class="fanart arrondi">
 		<img class="arrondi" src="<?php echo $fanart; ?>" onerror="this.src='images/fanart-onerror.png';" style="display:none;" />
 	  </div>
@@ -334,9 +334,9 @@ function getEntriesTvShow($sql){
 	  ?>
 	  <div class="synopsis"><?php echo $data["tvshowSynopsis"]; ?></div>
 	  <div class="toolbar">
-		<a onclick="printDetails('details_<?php echo $data["idShow"]; ?>', <?php echo $data["idShow"]; ?>);" style="cursor:pointer;"><img src='images/info.png' title='<?php echo DESCRIPTION_LABEL; ?>' /></a>
+		<a style="cursor:pointer;"><img src='images/info.png' title='<?php echo DESCRIPTION_LABEL; ?>' /></a>
 	<?php if(ENABLE_DOWNLOAD){ ?>
-			<a onclick="printDetails('details_<?php echo $data["idShow"]; ?>', <?php echo $data["idShow"]; ?>);" style="cursor:pointer;"><img src='images/download.png' title='<?php echo DOWNLOAD_LABEL; ?>' /></a>
+			<a style="cursor:pointer;"><img src='images/download.png' title='<?php echo DOWNLOAD_LABEL; ?>' /></a>
 	<?php }	?>
 	  </div>
 		
