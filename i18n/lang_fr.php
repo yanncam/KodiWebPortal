@@ -29,6 +29,10 @@ define("NOTE_LABEL", "Note");
 define("SEARCH_LABEL", "Rechercher");
 define("RESET_LABEL", "Réinitialiser");
 define("NORESULT_LABEL", "Fin des résultats");
+define("STATUS_WATCHED_LABEL", "Vu");
+define("STATUS_UNWATCHED_LABEL", "Non-vu");
+define("SWITCH_STATUS_WATCHED_LABEL", "Passer ce média comme 'vu'");
+define("SWITCH_STATUS_UNWATCHED_LABEL", "Passer ce média comme 'non-vu'");
 
 define("AUTHENTICATION_PAGE_TITLE", "Page d'authentification");
 define("AUTHENTICATION_USER_PLACEHOLDER", "Nom d'utilisateur");

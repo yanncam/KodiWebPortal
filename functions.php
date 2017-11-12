@@ -245,6 +245,56 @@ function showsize($file) {
 	return $return;
 }
 
+function changeStatusMovie($id, $toStatus){
+	global $db, $WATCH_STATUS_FOR_USERS;
+	if($toStatus === "toWatched"){
+		$playCount = 1;
+		$lastPlayed = date("Y-m-d H:i:s", time());
+	} else {
+		$playCount = NULL;
+		$lastPlayed = NULL;
+	}
+	$sql = "UPDATE 
+				" . NAX_MOVIE_VIEW . "
+			SET
+				" . NAX_MOVIE_VIEW . ".playCount = :playCount,
+				" . NAX_MOVIE_VIEW . ".lastPlayed = :lastPlayed
+			WHERE
+				" . NAX_MOVIE_VIEW . ".idMovie = :id;"; 
+	$stmt = $db->prepare($sql);
+	$stmt->bindValue('playCount', $playCount, PDO::PARAM_INT);
+	$stmt->bindValue('lastPlayed', $lastPlayed, PDO::PARAM_STR);
+	$stmt->bindValue('id', $id, PDO::PARAM_INT);
+	if(WATCHED_STATUS_FOR_ALL || (ENABLE_AUTHENTICATION && in_array($_SESSION['user'], $WATCH_STATUS_FOR_USERS))){
+		$stmt->execute();
+	}
+}
+
+function changeStatusEpisode($id, $toStatus){
+	global $db, $WATCH_STATUS_FOR_USERS;
+	if($toStatus === "toWatched"){
+		$playCount = 1;
+		$lastPlayed = date("Y-m-d H:i:s", time());
+	} else {
+		$playCount = NULL;
+		$lastPlayed = NULL;
+	}
+	$sql = "UPDATE 
+				" . NAX_TVSHOWEPISODE_VIEW . "
+			SET
+				" . NAX_TVSHOWEPISODE_VIEW . ".playCount = :playCount,
+				" . NAX_TVSHOWEPISODE_VIEW . ".lastPlayed = :lastPlayed
+			WHERE
+				" . NAX_TVSHOWEPISODE_VIEW . ".idEpisode = :id;"; 
+	$stmt = $db->prepare($sql);
+	$stmt->bindValue('playCount', $playCount, PDO::PARAM_INT);
+	$stmt->bindValue('lastPlayed', $lastPlayed, PDO::PARAM_STR);
+	$stmt->bindValue('id', $id, PDO::PARAM_INT);
+	if(WATCHED_STATUS_FOR_ALL || (ENABLE_AUTHENTICATION && in_array($_SESSION['user'], $WATCH_STATUS_FOR_USERS))){
+		$stmt->execute();
+	}
+}
+
 /**
   * Return HTML formated result of movies entries to display in the main page.
   * Results depend on the $sql query passed in argument.
@@ -266,20 +316,25 @@ function getEntriesMovies($sql){
 		$playedStatus = "unwatched";
 		if(intval($data["playCount"]) > 0)
 			$playedStatus = "watched";
+		$switchStatus = ($playedStatus === "watched") ? "unwatched" : "watched";
 	?>
 	<div class="entry arrondi" id="<?php echo $data["idMovie"]; ?>">
 	  <div class="fanart arrondi"><img class="arrondi" src="<?php echo $fanarts[0]; ?>" onerror="this.src='images/fanart-onerror.png';" style="display:none;" /></div>
 	  <div class="title"><?php echo $data["movieTitleFR"] . " ($year)"; ?></div>
 	  <img class="thumb arrondi" src="<?php echo $thumbs[0]; ?>" onerror="this.src='images/thumb-onerror.jpg';" style="display:none;" />
-	  <?php
-		if(WATCHED_STATUS_FOR_ALL || (ENABLE_AUTHENTICATION && in_array($_SESSION['user'], $WATCH_STATUS_FOR_USERS))){
-	  ?>
-			<img class="thumbStatus arrondiTopLeft"src="images/<?php echo $playedStatus; ?>.png" title="<?php echo $playedStatus; ?>" style="display:none;" /> 
-	  <?php
-	  }
-	  ?>
+	<?php if(WATCHED_STATUS_FOR_ALL || (ENABLE_AUTHENTICATION && in_array($_SESSION['user'], $WATCH_STATUS_FOR_USERS))){ ?>
+			<div id="cornerStatus_<?php echo $data["idMovie"]; ?>_unwatched" style="cursor:pointer;display:<?php echo ($playedStatus == "unwatched") ? "visible" : "none"; ?>"><img class="thumbStatus arrondiTopLeft"src="images/unwatched.png" title="<?php echo STATUS_UNWATCHED_LABEL; ?>" style="display:none;" /></div>
+			<div id="cornerStatus_<?php echo $data["idMovie"]; ?>_watched" style="cursor:pointer;display:<?php echo ($playedStatus == "watched") ? "visible" : "none"; ?>"><img class="thumbStatus arrondiTopLeft"src="images/watched.png" title="<?php echo STATUS_WATCHED_LABEL; ?>" style="display:none;" /></div>
+	<?php } ?>
 	  <div class="synopsis"><?php echo $data["movieSynopsis"]; ?></div>
 	  <div class="toolbar">
+	<?php 
+	if(WATCHED_STATUS_FOR_ALL || (ENABLE_AUTHENTICATION && in_array($_SESSION['user'], $WATCH_STATUS_FOR_USERS))){ 
+	?>
+		<a id="linkStatus_<?php echo $data["idMovie"]; ?>_unwatched" onclick="changeStatus('toWatched', <?php echo $data["idMovie"]; ?>);" style="position:absolute;float:left;cursor:pointer;display:<?php echo ($playedStatus == "unwatched") ? "block" : "none"; ?>"><img id="buttonStatus_<?php echo $data["idMovie"]; ?>" src="images/unwatchedButton.png" title="<?php echo SWITCH_STATUS_WATCHED_LABEL; ?>" /></a>
+		<a id="linkStatus_<?php echo $data["idMovie"]; ?>_watched" onclick="changeStatus('toUnwatched', <?php echo $data["idMovie"]; ?>);" style="position:absolute;float:left;cursor:pointer;display:<?php echo ($playedStatus == "watched") ? "block" : "none"; ?>"><img id="buttonStatus_<?php echo $data["idMovie"]; ?>" src="images/watchedButton.png" title="<?php echo SWITCH_STATUS_UNWATCHED_LABEL; ?>" /></a>
+
+	<?php }	?>
 	<?php
 	  $youtubeID = extractYoutubeId($data["movieToutube"]);
 	  if(!empty($youtubeID))
@@ -328,7 +383,7 @@ function getEntriesTvShow($sql){
 	  <?php
 		if(WATCHED_STATUS_FOR_ALL || (ENABLE_AUTHENTICATION && in_array($_SESSION['user'], $WATCH_STATUS_FOR_USERS))){
 	  ?>
-			<img class="thumbStatus arrondiTopLeft"src="images/<?php echo $playedStatus; ?>.png" title="<?php echo $playedStatus; ?>" style="display:none;" /> 
+			<img class="thumbStatus arrondiTopLeft"src="images/<?php echo $playedStatus; ?>.png" title="<?php echo (($playedStatus === "watched") ? STATUS_WATCHED_LABEL : STATUS_UNWATCHED_LABEL ); ?>" style="display:none;" /> 
 	  <?php
 	  }
 	  ?>
@@ -445,7 +500,7 @@ function getDetailsEntryMovie($id){
 	$echo =  "<div class='details-title'>" . $titleFR . " (" . $titleEN . ")</div>";
 	$echo .= "<img class='details-thumb arrondi' src='" . $thumbs[0] . "' onerror=\"this.src='images/thumb-onerror.jpg';\" />";
 	if(WATCHED_STATUS_FOR_ALL || (ENABLE_AUTHENTICATION && in_array($_SESSION['user'], $WATCH_STATUS_FOR_USERS)))
-		$echo .= "<img class='thumbStatus arrondiTopLeft' src='images/" . $movieStatus . ".png' title='" . $movieStatus ."' /> ";
+		$echo .= "<img class='thumbStatus arrondiTopLeft' src='images/" . $movieStatus . ".png' title='" . (($movieStatus === "watched") ? STATUS_WATCHED_LABEL : STATUS_UNWATCHED_LABEL) ."' /> ";
 	$echo .= "<div class='details-details'><b>" . SYNOPSIS_LABEL . " : </b><br />" . $synopsis . "<br /><br />";
 	$echo .= "	<b>" . YEAR_LABEL . " : </b><br />" . $year . "<br /><br />";
 	$echo .= "	<b>" . GENRE_LABEL . " : </b><br />" . $genre . "<br /><br />";
@@ -554,7 +609,7 @@ function getDetailsEntryTvShow($id){
 				$thumbs[0] = "http://" . $thumbs[0];
 			$echo .= "	<img class='tvshow-details-season-thumb arrondi' src='" . $thumbs[0] . "' onerror=\"this.src='images/thumb-onerror.jpg';\" />";
 			if(WATCHED_STATUS_FOR_ALL || (ENABLE_AUTHENTICATION && in_array($_SESSION['user'], $WATCH_STATUS_FOR_USERS))){
-				$echo .= "	<img class='thumbStatusSeason' src='images/" . $seasonStatus . "Season.png' title='" . $seasonStatus . "' />";
+				$echo .= "	<img class='thumbStatusSeason' src='images/" . $seasonStatus . "Season.png' title='" . (($seasonStatus === "watched") ? STATUS_WATCHED_LABEL : STATUS_UNWATCHED_LABEL) . "' />";
 			}
 			$echo .= "	<div class='tvshow-details-season-details-infos'>";
 			$echo .= "		<div class='text-up bold size125'>" . SEASON_LABEL . " ".$data["seasonIdseason"]."</div>";
@@ -608,8 +663,10 @@ function getDetailsEntryTvShow($id){
 		$echo .= "		<a onclick=\"toggleTvshowContent('tvshow-details-season-episode-synopsis', '".$data["idEpisode"]."');\" style=\"cursor:pointer;float:right;\"><img src='images/info.png' title='" . DESCRIPTION_LABEL . "' /></a>";
 		if(ENABLE_DOWNLOAD)
 			$echo .= "	<a target='_blank' style=\"cursor:pointer;float:right;\" href='dl.php?type=tvshow&id=" . $data["idEpisode"] . "'><img src='images/download.png' title='" . DOWNLOAD_LABEL . "' /></a>";
-		if(WATCHED_STATUS_FOR_ALL || (ENABLE_AUTHENTICATION && in_array($_SESSION['user'], $WATCH_STATUS_FOR_USERS)))
-			$echo .= "	<a style=\"cursor:pointer;float:right;\" href='#'><img src='images/" . $episodeStatus . "Episode.png' title='" . $episodeStatus . "' /></a>";
+		if(WATCHED_STATUS_FOR_ALL || (ENABLE_AUTHENTICATION && in_array($_SESSION['user'], $WATCH_STATUS_FOR_USERS))){
+			$echo .= "	<a id=\"linkStatus_" . $data["idEpisode"] . "_watched\" onclick=\"changeStatusTvShow('toUnwatched', " . $data["idEpisode"] . ");\" style=\"cursor:pointer;float:right;display:" . (($episodeStatus === "watched") ? "visible" : "none") . "\"><img src='images/watchedButton.png' title='" . STATUS_WATCHED_LABEL . "' /></a>";
+			$echo .= "	<a id=\"linkStatus_" . $data["idEpisode"] . "_unwatched\" onclick=\"changeStatusTvShow('toWatched', " . $data["idEpisode"] . ");\" style=\"cursor:pointer;float:right;display:" . (($episodeStatus === "unwatched") ? "visible" : "none") . "\"><img src='images/unwatchedButton.png' title='" . STATUS_UNWATCHED_LABEL . "' /></a>";
+		}
 		$echo .= "		<p class='tvshow-details-season-episode-synopsis' id='tvshow-details-season-episode-synopsis-".$data["idEpisode"]."'>";
 		$echo .= $data["episodeSynopsis"];
 		$echo .= "			<br /><br />";

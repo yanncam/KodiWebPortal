@@ -29,6 +29,10 @@ define("NOTE_LABEL", "Nota");
 define("SEARCH_LABEL", "Buscar");
 define("RESET_LABEL", "Reajustar");
 define("NORESULT_LABEL", "Fin de resultados");
+define("STATUS_WATCHED_LABEL", "Vista");
+define("STATUS_UNWATCHED_LABEL", "No vista");
+define("SWITCH_STATUS_WATCHED_LABEL", "Pon esta película 'vista'");
+define("SWITCH_STATUS_UNWATCHED_LABEL", "Pon esta película 'no vista'");
 
 define("AUTHENTICATION_PAGE_TITLE", "Página de autenticación");
 define("AUTHENTICATION_USER_PLACEHOLDER", "Nombre del usuario");

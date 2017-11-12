@@ -87,6 +87,14 @@ if(isset($_GET["action"]) && $_GET["action"] == "logout"){
 	exit;
 }
 
+if(isset($_GET["id"]) && isset($_GET["action"]) && ($_GET["action"] === "toWatched" || $_GET["action"] === "toUnwatched")){
+	$id = intval($_GET["id"]);
+	$toStatus = strval($_GET["action"]);
+	if($id > 0)
+		changeStatusMovie($id, $toStatus);
+	exit;
+}
+
 if(isset($_GET["id"]) && isset($_GET["action"]) && $_GET["action"] == "detail"){
 	$id = intval($_GET["id"]);
 	if($id > 0)

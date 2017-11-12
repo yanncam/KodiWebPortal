@@ -29,6 +29,10 @@ define("NOTE_LABEL", "Note");
 define("SEARCH_LABEL", "Search");
 define("RESET_LABEL", "Reset");
 define("NORESULT_LABEL", "End of results");
+define("STATUS_WATCHED_LABEL", "Watched");
+define("STATUS_UNWATCHED_LABEL", "Unwatched");
+define("SWITCH_STATUS_WATCHED_LABEL", "Switch to 'watched'");
+define("SWITCH_STATUS_UNWATCHED_LABEL", "Switch to 'unwatched'");
 
 define("AUTHENTICATION_PAGE_TITLE", "Authentication page");
 define("AUTHENTICATION_USER_PLACEHOLDER", "Username");

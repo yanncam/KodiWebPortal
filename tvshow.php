@@ -62,6 +62,14 @@ if(count($filters) > 0){
 			FROM " . NAX_TVSHOW_VIEW . " ORDER BY dateAdded DESC LIMIT $offset," . DEFAULT_ENTRIES_DISPLAY . ";";
 }
 
+if(isset($_GET["id"]) && isset($_GET["action"]) && ($_GET["action"] === "toWatched" || $_GET["action"] === "toUnwatched")){
+	$id = intval($_GET["id"]);
+	$toStatus = strval($_GET["action"]);
+	if($id > 0)
+		changeStatusEpisode($id, $toStatus);
+	exit;
+}
+
 if(isset($_GET["id"]) && isset($_GET["action"]) && $_GET["action"] == "detail"){
 	$id = intval($_GET["id"]);
 	if($id > 0)

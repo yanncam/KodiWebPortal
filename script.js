@@ -134,6 +134,54 @@ function printDetails(divDetails, id){
 	$("#"+divDetails).slideToggle();  
 }
 
+function changeStatus(toStatus, id){
+	loc = document.location + "";
+	if(loc.indexOf("?") == -1)
+		loc += "?";
+	
+	$.ajax({
+	    url : loc + "&action=" + toStatus + "&id=" + id,
+	    type: "GET",
+		success: function(data, textStatus, jqXHR){
+			if(toStatus == "toWatched"){
+				$("#cornerStatus_" + id + "_unwatched").fadeOut();
+				$("#cornerStatus_" + id + "_watched").fadeIn();
+				$("#linkStatus_" + id + "_unwatched").fadeOut().css("display","none");
+				$("#linkStatus_" + id + "_watched").fadeIn().css("display","block");
+			} else {
+				$("#cornerStatus_" + id + "_unwatched").fadeIn();
+				$("#cornerStatus_" + id + "_watched").fadeOut();
+				$("#linkStatus_" + id + "_unwatched").fadeIn().css("display","block");
+				$("#linkStatus_" + id + "_watched").fadeOut().css("display","none");
+			}
+	    },
+	    error: function (jqXHR, textStatus, errorThrown){
+	    }
+	});
+}
+
+function changeStatusTvShow(toStatus, id){
+	loc = document.location + "";
+	if(loc.indexOf("?") == -1)
+		loc += "?";
+	
+	$.ajax({
+	    url : loc + "&action=" + toStatus + "&id=" + id,
+	    type: "GET",
+		success: function(data, textStatus, jqXHR){
+			if(toStatus == "toWatched"){
+				$("#linkStatus_" + id + "_unwatched").fadeOut().css("display","none");
+				$("#linkStatus_" + id + "_watched").fadeIn().css("display","block");
+			} else {
+				$("#linkStatus_" + id + "_unwatched").fadeIn().css("display","block");
+				$("#linkStatus_" + id + "_watched").fadeOut().css("display","none");
+			}
+	    },
+	    error: function (jqXHR, textStatus, errorThrown){
+	    }
+	});
+}
+
 function displayYoutube(divYoutube, idvideo){
 	// Set the height of opacity div to full page
 	$("#opacity").height($(document).height());
