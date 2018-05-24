@@ -51,7 +51,7 @@ if(ENABLE_DOWNLOAD){
 			//kill |utf8=0 from filepath and filename 
 			$path=str_replace('|utf8=0', '', $path);
 			$data["strFileName"]=str_replace('|utf8=0', '', $data["strFileName"]);
-			echo $data["strFileName"];
+
 			header("X-Sendfile: $path");
 			header("Content-type: application/octet-stream");
 			header("Content-Disposition: attachment; filename=\"" . $data["strFileName"] . "\"");
