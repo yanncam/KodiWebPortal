@@ -103,6 +103,7 @@ input[type="text"], input[type="password"] {
 
 <script type="text/javascript">
 	function login(user, passwd){
+		passwd=encodeURIComponent(passwd)
 		$.ajax({
 			type: 'POST',
 			url: 'index.php',
