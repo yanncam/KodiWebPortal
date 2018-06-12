@@ -48,7 +48,7 @@ function checkInternalAuthentication($user, $password){
   * return true or false if authentication succeed.
   */
 function checkLDAPAuthentication($user, $password){
-	if(preg_match("/^[a-zA-Z]+$/",$user)){
+	if(preg_match("/^[a-zA-Z0-9\s\_\s\-]+$/",$user)){
 		$queryUser = LDAP_USERID_ATTRIBUTE."=$user,".LDAP_USERS_DN;
 		$ldap 		= ldap_connect(LDAP_AUTH_HOST);
 		ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION, 3);
