@@ -493,6 +493,7 @@ function getDetailsEntryMovie($id){
 	$nationality = $data["movieNationality"];
 	$path = str_replace("//", "/", (str_ireplace(NAX_MOVIES_REMOTE_PATH, NAX_MOVIES_LOCAL_PATH, $data["strPath"]) . "/" . $data["strFileName"]));
 	$size = showsize($path);
+	$path = preg_replace("#(?<=:/)[^:@]+(:[^@]+)?(?=@)#","...", $path);
 	$actors = $data["name"] . " (" . $data["role"] . ")";
 	while($data = $stmt->fetch()){
 		$actors .= ", " . $data["name"] . " (" . $data["role"] . ")";
@@ -658,6 +659,7 @@ function getDetailsEntryTvShow($id){
 		$echo .= "<div class='tvshow-details-season-episode'>";
 		$path = str_replace("//", "/", (str_ireplace(NAX_TVSHOW_REMOTE_PATH, NAX_TVSHOW_LOCAL_PATH, $data["strPath"]) . "/" . $data["strFileName"]));
 		$size = showsize($path);
+		$path = preg_replace("#(?<=:/)[^:@]+(:[^@]+)?(?=@)#","...", $path);
 		$echo .= "	<div class='tvshow-details-season-episode-titre' >";
 		$echo .= $data["seasonIdseason"]."x".$data["episodeIdepisode"]." - ".$data["episodeTitle"];
 		$echo .= "		<a onclick=\"toggleTvshowContent('tvshow-details-season-episode-synopsis', '".$data["idEpisode"]."');\" style=\"cursor:pointer;float:right;\"><img src='images/info.png' title='" . DESCRIPTION_LABEL . "' /></a>";
