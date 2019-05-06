@@ -9,7 +9,7 @@ if(!isset($_SESSION["database"])){
 				$db = new PDO("mysql:host=" . SQL_XBMC_HOST . ";dbname=information_schema;port:" . SQL_XBMC_PORT, SQL_XBMC_USER, SQL_XBMC_PASS);
 			else
 				$db = new PDO("mysql:unix_socket=" . SQL_XBMC_SOCK . ";dbname=information_schema", SQL_XBMC_USER, SQL_XBMC_PASS);
-			$stmt = $db->query("SELECT SCHEMA_NAME FROM information_schema.SCHEMATA WHERE SCHEMA_NAME LIKE '".SQL_XBMC_DBNAMEPREFIX."%' ORDER BY SUBSTR(SCHEMA_NAME,11,5)+0 DESC LIMIT 0,1;");
+			$stmt = $db->query("SELECT SCHEMA_NAME FROM information_schema.SCHEMATA WHERE SCHEMA_NAME LIKE '".SQL_XBMC_DBNAMEPREFIX."%' ORDER BY REPLACE(SCHEMA_NAME,'".SQL_XBMC_DBNAMEPREFIX."','')+0 DESC LIMIT 0,1;");
 			$database = $stmt->fetch();
 			if(empty(trim($database["SCHEMA_NAME"]))){
 				echo "Error, no ".SQL_XBMC_DBNAMEPREFIX."% database found...";
