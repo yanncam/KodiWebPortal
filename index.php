@@ -24,6 +24,7 @@ if(ENABLE_AUTHENTICATION){
 
 // Clean GET vars for filter
 $title 			= (isset($_GET["title"]) && !empty($_GET["title"])) ? substr($db->quote(trim(strval($_GET["title"]))),1,-1) : "";
+$watched 		= (isset($_GET["watched"]) && !empty($_GET["watched"])) ? substr($db->quote(trim(strval($_GET["watched"]))),1,-1) : "";
 $genre 			= (isset($_GET["genre"]) && !empty($_GET["genre"])) ? substr($db->quote(trim(strval($_GET["genre"]))),1,-1) : "";
 $year 			= (isset($_GET["year"]) && !empty($_GET["year"])) ? intval($_GET["year"]) : "";
 $realisator 	= (isset($_GET["realisator"]) && !empty($_GET["realisator"])) ? substr($db->quote(trim(strval($_GET["realisator"]))),1,-1) : "";
@@ -34,6 +35,12 @@ $offset 		= (isset($_GET["offset"]) && trim(strval($_GET["offset"])) != "" && in
 $filters = array();
 if(!empty($title)){
 	$filters[] = "(c00 LIKE '%" . $title . "%' OR c16 LIKE '%" . $title . "%' OR c01 LIKE '%" . $title . "%')";
+}
+if($watched!="*"){
+	if ($watched=="YES")
+	$filters[] = "playCount>=1";
+	else
+	$filters[] = "(playCount <= 0 OR playCount IS NULL)";
 }
 if(!empty($genre)){
 	$filters[] = "c14 LIKE '%" . $genre . "%'";
@@ -79,7 +86,6 @@ if(count($filters) > 0){
 				" . NAX_MOVIE_VIEW . ".premiered AS movieYear
 			FROM " . NAX_MOVIE_VIEW . " ORDER BY dateAdded DESC LIMIT $offset," . DEFAULT_ENTRIES_DISPLAY . ";"; 
 }
-
 if(isset($_GET["action"]) && $_GET["action"] == "logout"){
 	session_destroy();
 	setcookie("KODIWEBPORTAL", "", time()-3600);
@@ -141,6 +147,14 @@ if(isset($_GET["offset"])){
 ?>
 	<label for="title"><?php echo TITLE_LABEL; ?></label>
 	<input id="title" type="text" name="title" placeholder="Indiana Jones" value="<?php echo htmlentities(stripcslashes($title)); ?>" />
+
+        <label for="watched"><?php echo STATUS_WATCHED_LABEL; ?></label>
+        <select id="watched" name="watched">
+                <option value="*" <?php if ($watched == "*") echo "selected"; ?>>*</option>
+                <option value="YES" <?php if ($watched == "YES") echo "selected"; ?>><?php echo YES;?></option>
+                <option value="NO" <?php if ($watched == "NO") echo "selected"; ?>><?php echo NO;?></option>
+        </select>
+
 
 	<label for="genre"><?php echo GENRE_LABEL; ?></label>
 	<select id="genre" name="genre">
