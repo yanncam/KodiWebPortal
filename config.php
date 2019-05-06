@@ -39,6 +39,7 @@ define("SQL_XBMC_SOCK", "");
 //define("SQL_XBMC_SOCK", "/run/mysqld/mysqld10.sock");
 define("SQL_XBMC_USER", "root");
 define("SQL_XBMC_PASS", "");
+define("SQL_XBMC_DBNAMEPREFIX", "MyVideos"); // For example : "xbmc_video" or "MyVideos"
 //define("SQL_XBMC_DBNAME", "xbmc_video107");
 define("SQL_XBMC_DBNAME", false); // set to false to autoselect latest XBMC/KODI database
 
