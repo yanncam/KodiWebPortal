@@ -55,9 +55,9 @@ define("SQL_XBMC_DBNAME", false); // set to false to autoselect latest XBMC/KODI
 ###############################################################################################################
 define("ENABLE_INTERNAL_AUTHENTICATION", true);
 $USERS = array(
-	"kodi" 		=> "$2y$10$471cELEUsyQJqaDyJBuXzOoBCEWfZwvMBtGsGLOQPwNH8DLInzJlq",		// K0d1P4s5W0rD		- Define first internal user
-	"xbmc" 		=> "$2y$10$3FaeYaRCEYUVm6rM2d3ixe3YaEcIvdp8/dmkU8y48X5rQILyoceo2",		// X8mCP4s5W0rD 	- Define second internal user
-//	"myUser"	=> "$2y$10$U7arjRoGuVd4DPueJjAnSeqDKGgTs3bXmViQlGlGxKNBgLMS1uAQq",		// MyU53rP4s5W0rd 	- Define another internal user
+	"kodi" 		=> '$2y$10$471cELEUsyQJqaDyJBuXzOoBCEWfZwvMBtGsGLOQPwNH8DLInzJlq',		// K0d1P4s5W0rD		- Define first internal user
+	"xbmc" 		=> '$2y$10$3FaeYaRCEYUVm6rM2d3ixe3YaEcIvdp8/dmkU8y48X5rQILyoceo2',		// X8mCP4s5W0rD 	- Define second internal user
+//	"myUser"	=> '$2y$10$U7arjRoGuVd4DPueJjAnSeqDKGgTs3bXmViQlGlGxKNBgLMS1uAQq',		// MyU53rP4s5W0rd 	- Define another internal user
 );
 
 ###############################################################################################################
