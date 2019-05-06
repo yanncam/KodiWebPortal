@@ -40,4 +40,7 @@ define("AUTHENTICATION_PASSWD_PLACEHOLDER", "Passwort");
 define("AUTHENTICATION_BUTTON", "Anmelden");
 define("AUTHENTICATION_ERROR_CREDENTIAL", "Falscher Benutzer oder Falsches Passwort...");
 define("AUTHENTICATION_SUCCESS_REDIRECT", "Authentifizierung erfolgreich, Umleiten...");
+
+define("YES", "Ja");
+define("NO", "Nein");
 ?>
