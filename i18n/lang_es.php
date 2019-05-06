@@ -40,4 +40,7 @@ define("AUTHENTICATION_PASSWD_PLACEHOLDER", "Contraseña");
 define("AUTHENTICATION_BUTTON", "Iniciar la sesión");
 define("AUTHENTICATION_ERROR_CREDENTIAL", "Error de autenticación...");
 define("AUTHENTICATION_SUCCESS_REDIRECT", "Autenticación exitosa, redirección permanente...");
+
+define("YES", "Si");
+define("NO", "No");
 ?>
