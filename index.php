@@ -37,10 +37,10 @@ if(!empty($title)){
 	$filters[] = "(c00 LIKE '%" . $title . "%' OR c16 LIKE '%" . $title . "%' OR c01 LIKE '%" . $title . "%')";
 }
 if(WATCHED_STATUS_FOR_ALL || (ENABLE_AUTHENTICATION && in_array($_SESSION['user'], $WATCH_STATUS_FOR_USERS)))
-if($watched!="*"){
+{
 	if ($watched=="YES")
 	$filters[] = "playCount>=1";
-	else
+	if ($watched=="NO")
 	$filters[] = "(playCount <= 0 OR playCount IS NULL)";
 }
 if(!empty($genre)){
