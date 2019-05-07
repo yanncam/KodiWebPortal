@@ -149,13 +149,14 @@ if(isset($_GET["offset"])){
 	<label for="title"><?php echo TITLE_LABEL; ?></label>
 	<input id="title" type="text" name="title" placeholder="Indiana Jones" value="<?php echo htmlentities(stripcslashes($title)); ?>" />
 
-        <label for="watched"><?php echo STATUS_WATCHED_LABEL; ?></label>
-        <select id="watched" name="watched">
-                <option value="*" <?php if ($watched == "*") echo "selected"; ?>>*</option>
-                <option value="YES" <?php if ($watched == "YES") echo "selected"; ?>><?php echo YES;?></option>
-                <option value="NO" <?php if ($watched == "NO") echo "selected"; ?>><?php echo NO;?></option>
-        </select>
-
+<?php if(WATCHED_STATUS_FOR_ALL || (ENABLE_AUTHENTICATION && in_array($_SESSION['user'], $WATCH_STATUS_FOR_USERS))) {
+        echo '<label for="watched">'.STATUS_WATCHED_LABEL.'</label>';
+        echo '<select id="watched" name="watched">';
+        echo '        <option value="*" '; if ($watched == "*") echo 'selected'; echo '>*</option>';
+        echo '        <option value="YES" '; if ($watched == "YES") echo 'selected'; echo '>'.YES.'</option>';
+        echo '        <option value="NO" '; if ($watched == "NO") echo 'selected'; echo '>'.NO.'</option>';
+        echo '</select>';
+}?>
 
 	<label for="genre"><?php echo GENRE_LABEL; ?></label>
 	<select id="genre" name="genre">
