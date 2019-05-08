@@ -40,4 +40,7 @@ define("AUTHENTICATION_PASSWD_PLACEHOLDER", "Password");
 define("AUTHENTICATION_BUTTON", "Login");
 define("AUTHENTICATION_ERROR_CREDENTIAL", "Wrong username or password...");
 define("AUTHENTICATION_SUCCESS_REDIRECT", "Authentication success, redirecting...");
+
+define("YES", "Yes");
+define("NO", "No");
 ?>

@@ -40,4 +40,7 @@ define("AUTHENTICATION_PASSWD_PLACEHOLDER", "Mot de passe");
 define("AUTHENTICATION_BUTTON", "Connexion");
 define("AUTHENTICATION_ERROR_CREDENTIAL", "Erreur d'authentification...");
 define("AUTHENTICATION_SUCCESS_REDIRECT", "Authentification réussie, redirection en cours...");
+
+define("YES", "Oui");
+define("NO", "Non");
 ?>
