@@ -19,7 +19,7 @@ define("ENFORCE_HTTPS_SECURITY", false);
 # KodiWebPortal will replace each "NAX_XXX_REMOTE_PATH" part or media filepath extracted from Kodi DB with the
 # "NAX_XXX_LOCAL_PATH" corresponding to allow downloading.
 ###############################################################################################################
-define("NAX_LOGS_PATH", "logs");							// Path to log activity
+define("NAX_LOGS_PATH", "logs");				// Path to log activity
 define("NAX_MOVIES_LOCAL_PATH", "/volume1/MEDIATHEQUE/");	// Local path where are movies
 define("NAX_MOVIES_REMOTE_PATH", "smb://NAX/MEDIATHEQUE/");	// Location of movies in Kodi DB
 define("NAX_TVSHOW_LOCAL_PATH", "/volume1/MEDIATHEQUE/");	// Local path where are TVshow
@@ -39,8 +39,8 @@ define("SQL_XBMC_SOCK", "");
 //define("SQL_XBMC_SOCK", "/run/mysqld/mysqld10.sock");
 define("SQL_XBMC_USER", "root");
 define("SQL_XBMC_PASS", "");
-define("SQL_XBMC_DBNAMEPREFIX", "MyVideos"); // For example : "xbmc_video" or "MyVideos"
-//define("SQL_XBMC_DBNAME", "xbmc_video107");
+define("SQL_XBMC_DBNAMEPREFIX", "xbmc_video"); // Default : "xbmc_video" or customized 'videodatabase' in Kodi's advancedsettings.xml file : "MyVideos"
+//define("SQL_XBMC_DBNAME", "xbmc_video107"); // Force this specific database name to be used
 define("SQL_XBMC_DBNAME", false); // set to false to autoselect latest XBMC/KODI database
 
 ###############################################################################################################
@@ -99,7 +99,7 @@ define("NAX_TVSHOW_VIEW","tvshow_view");
 define("NAX_TVSHOWSEASON_VIEW","season_view");
 define("NAX_TVSHOWEPISODE_VIEW","episode_view");
 define("ENABLE_AUTHENTICATION", (ENABLE_INTERNAL_AUTHENTICATION || ENABLE_LDAP_AUTHENTICATION));
-define("KODI_WEB_PORTAL_VERSION", "1.2.1");
+define("KODI_WEB_PORTAL_VERSION", "1.2.2");
 define("IS_INCLUDED", true);
 
 $lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
