@@ -37,12 +37,13 @@ I wanted to use my Synology NAS with these features to provide a private and per
 ## Compatibility
 
 **Kodi's versions :**
-* Kodi Krypton 17.0 (database name "xmbc_video107")
-* Kodi Jarvis 16.1 (database name "xmbc_video99")
-* Kodi Jarvis 16.0 (database name "xmbc_video99")
-* Kodi Isengard 15.2 (database name "xbmc_video93")
+* Kody Leia 18.2 (default database name "xbmc_video116")
+* Kodi Krypton 17.0 (default database name "xmbc_video107")
+* Kodi Jarvis 16.1 (default database name "xmbc_video99")
+* Kodi Jarvis 16.0 (default database name "xmbc_video99")
+* Kodi Isengard 15.2 (default database name "xbmc_video93")
 
-**Kodi Web Portal** is configured by default to choose the most recent Kodi's database (xbmc_videoXX).
+**Kodi Web Portal** is configured by default to choose the most recent Kodi's database (xbmc_videoXXX).
 
 **System :**
 * Apache server with PHP (>= 5.5) (Windows / Linux)
@@ -128,4 +129,7 @@ Reboot the Synology's Apache server to load the new configuration (stop the pack
 
 ## Misc
 
-Thanks to Vmauduit for his contribution ;) !
+Thanks to all contributor !
+* vmauduit
+* @boing86
+* @JayRabas
