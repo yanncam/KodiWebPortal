@@ -39,8 +39,8 @@ define("SQL_XBMC_SOCK", "");
 //define("SQL_XBMC_SOCK", "/run/mysqld/mysqld10.sock");
 define("SQL_XBMC_USER", "root");
 define("SQL_XBMC_PASS", "");
-define("SQL_XBMC_DBNAMEPREFIX", "xbmc_video"); // Default : "xbmc_video" or customized 'videodatabase' in Kodi's advancedsettings.xml file : "MyVideos"
-//define("SQL_XBMC_DBNAME", "xbmc_video107"); // Force this specific database name to be used
+define("SQL_XBMC_DBNAMEPREFIX", "MyVideos"); // Old default XBMC dbname : "xbmc_video", new default Kodi dbname : "MyVideos" or customized '<name>' in Kodi's advancedsettings.xml file : "MyCustomDbName"
+//define("SQL_XBMC_DBNAME", "xbmc_video116"); // Force this specific database name to be used
 define("SQL_XBMC_DBNAME", false); // set to false to autoselect latest XBMC/KODI database
 
 ###############################################################################################################
