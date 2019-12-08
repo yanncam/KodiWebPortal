@@ -126,6 +126,7 @@ if(isset($_GET["offset"])){
 	<meta http-equiv="Pragma-directive" content="no-cache" />
 	<meta http-equiv="Cache-Directive" content="no-cache" />
 	<meta name="robots" content="noindex,follow" />
+	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 	<title>KodiWebPortal <?php echo KODI_WEB_PORTAL_VERSION; ?></title>
 	<link rel="stylesheet" href="style.css">
 	<script type="text/javascript" src="https://code.jquery.com/jquery.min.js"></script>
