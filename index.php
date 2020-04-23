@@ -13,10 +13,23 @@ if(ENABLE_AUTHENTICATION){
 		sleep(2);
 		if(!checkAuthentication(trim(strval($_POST['user'])), trim(strval($_POST['pass'])))){
 			echo "<span class='error'>" . AUTHENTICATION_ERROR_CREDENTIAL . "</span>";
+			#sending a log to the syslog when authentication is incorrect
+			$sock = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
+			$msg = "kodi_authd Client authentication failure: {$_SERVER['HTTP_X_FORWARDED_FOR']} ({$_POST['user']})";
+			$len = strlen($msg);
+			socket_sendto($sock, $msg, $len, 0, '127.0.0.1', 514);
+			socket_close($sock);
 			exit;
 		} else {
 			echo "<span class='success'>" . AUTHENTICATION_SUCCESS_REDIRECT . "&nbsp;&nbsp;&nbsp;</span><img src='./images/loading-login.gif' />";
 			echo "<script type='text/javascript'>document.location='./';</script>";
+			#sending a log to the syslog when authentication is correct
+			$sock = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
+			$msg = "kodi_authd Client authentication failure: {$_SERVER['HTTP_X_FORWARDED_FOR']} ({$_POST['user']})";
+			$len = strlen($msg);
+			socket_sendto($sock, $msg, $len, 0, '127.0.0.1', 514);
+			socket_close($sock);
+			exit;
 			exit;
 		}
 	}
