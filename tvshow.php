@@ -56,9 +56,10 @@ if(count($filters) > 0){
 				" . NAX_TVSHOW_VIEW . ".c01 AS tvshowSynopsis,
 				" . NAX_TVSHOW_VIEW . ".totalCount,
 				" . NAX_TVSHOW_VIEW . ".watchedcount,
-				ExtractValue(c06,'/thumb[@season=\"-1\"]') AS thumb,
+				ExtractValue(c06,'/thumb[position()=1]') AS thumb,
 				ExtractValue(c11,'/fanart/@url') AS fanartURL,
-				ExtractValue(c11,'/fanart/thumb[position()=1]/@preview') AS fanartValue
+				ExtractValue(c11,'/fanart/thumb[position()=1]/@preview') AS fanartValue,
+				ExtractValue(c11,'/fanart/thumb[position()=1]') AS fanartURL2
 			FROM " . NAX_TVSHOW_VIEW . " ORDER BY dateAdded DESC LIMIT $offset," . DEFAULT_ENTRIES_DISPLAY . ";";
 }
 
