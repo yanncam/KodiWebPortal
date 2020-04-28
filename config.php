@@ -93,7 +93,7 @@ $WATCH_STATUS_FOR_USERS = ["kodi", "mylogin"];
 # SYSLOG_AUTHD_PORT - Set the UDP port
 ###############################################################################################################
 define("SYSLOG_AUTHD_ENABLE", false);
-define("SYSLOG_AUTHD_HOST", "local");
+define("SYSLOG_AUTHD_HOST", "localhost");
 define("SYSLOG_AUTHD_PORT", "514");
 
 ###############################################################################################################
