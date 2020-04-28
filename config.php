@@ -86,6 +86,15 @@ define("LDAP_GROUP_ATTRIBUTE", "memberuid");
 ###############################################################################################################
 define("WATCHED_STATUS_FOR_ALL", false);
 $WATCH_STATUS_FOR_USERS = ["kodi", "mylogin"];
+###############################################################################################################
+# Send log to a syslog server
+# If SYSLOG_AUTHD_ENABLE is true, then all authentication log are send to a syslog server.
+# SYSLOG_AUTHD_HOST - Set Syslog's IP
+# SYSLOG_AUTHD_PORT - Set the UDP port
+###############################################################################################################
+define("SYSLOG_AUTHD_ENABLE", false);
+define("SYSLOG_AUTHD_HOST", "local");
+define("SYSLOG_AUTHD_PORT", "514");
 
 ###############################################################################################################
 # XBMC / Kodi tables definition
