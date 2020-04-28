@@ -103,32 +103,18 @@ function getClientIP(){
 	}
 }
 
-function badAuthSyslog(){
-	$ip = getClientIP();
+function authSyslog($message){
 	$ip = preg_replace("/[^0-9.]/",'',getClientIP());
-	$sysUser = preg_replace("/[^A-Za-z0-9?!]/",'',$_POST['user']);
-	if(SYSLOG_AUTHD_ENABLE) {
-		$sock = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
-		$msg = "kodi_authd Client authentication failure: {$ip} {$sysUser}";
-		$len = strlen($msg);
-		socket_sendto($sock, $msg, $len, 0, SYSLOG_AUTHD_HOST, SYSLOG_AUTHD_PORT);
-		socket_close($sock);
-		exit;
-	}
-}
-function goodAuthSyslog(){
-	$ip = getClientIP();
-	$ip = preg_replace("/[^0-9.]/",'',getClientIP());
-	$sysUser = preg_replace("/[^A-Za-z0-9?!]/",'',$_POST['user']);
+	$sysUser = preg_replace("/[^A-Za-z0-9]/",'',$_POST['user']);
 	if(SYSLOG_AUTHD_ENABLE){
 		$sock = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
-		$msg = "kodi_authd New client authentication: {$ip} {$sysUser}";
+		$msg = "kodi_authd ".$message." : {$ip} {$sysUser}";
 		$len = strlen($msg);
 		socket_sendto($sock, $msg, $len, 0, SYSLOG_AUTHD_HOST, SYSLOG_AUTHD_PORT);
 		socket_close($sock);
 		exit;
 	}
-}	
+}		
 
 /**
   * Convert XML from KODI/XBMC database to array of URL.
