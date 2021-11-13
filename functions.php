@@ -368,7 +368,11 @@ function getEntriesTvShow($sql){
 		$thumbs = picturesXMLtoURLArray($data["thumb"]);  // loading all thumb
 		if(strtolower(substr($thumbs[0], 0, 4)) != "http")
 			$thumbs[0] = "http://" . $thumbs[0];
-		$fanart = $data["fanartURL"].$data["fanartValue"];
+		if (!empty ($data["fanartURL"]) && !empty($data["fanartValue"]) && (!preg_match ('/https?:\/\//i',$data["fanartValue"]))) {
+			$fanart = $data["fanartURL"].$data["fanartValue"];
+		} else {
+			$fanart = $data["fanartURL2"];
+		}
 		$playedStatus = "unwatched";
 		if(intval($data["watchedcount"]) >= intval($data["totalCount"]))
 			$playedStatus = "watched";
