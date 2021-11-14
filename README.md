@@ -24,30 +24,31 @@ You can use Kodi (XBMC) with a MySQL/MariaDB database to centralized all your mu
 
 Original idea of **Kodi Web Portal** came from my personal centralization of all backuped movies and tv shows into a Synology NAS.
 Through this excellent kind of NAS, you can deploy additionnal module in the DSM, like :
-* Web Station : Apache and PHP server
-* MariaDB : fork of MySQL database
+* Web Station : Apache (2.2 / 2.4) and PHP server (5.6 / 7.2 / 7.3 / 7.4)
+* MariaDB : fork of MySQL database (MariaDB 5 or 10)
 * phpMyAdmin : to administrate the MariaDB database
 * Directory Server : an LDAP server in the Synology for manage users and groups
 A Synology NAS acts as a complete web server to host my Kodi's data and the **Kodi Web Portal**.
 
 I wanted to use my Synology NAS with these features to provide a private and personal web interface displaying all my Kodi's movies and TV show scraped, and so, if I was outside home, I would have been able to browse and download my personal content with ease. **Kodi Web Portal** was born.
 
-**Kodi Web Portal** interface is available in French (fr), English (en - default) and Spanish (es). Language is automatically choosen depending on your browser's language.
+**Kodi Web Portal** interface is available in French (fr), English (en - default), Spanish (es) and German (de). Language is automatically choosen depending on your browser's language.
 
 ## Compatibility
 
 **Kodi's versions :**
+* Kodi Matrix 19.3 (default database name "xbmc_video119")
 * Kody Leia 18.2 (default database name "xbmc_video116")
 * Kodi Krypton 17.0 (default database name "xmbc_video107")
 * Kodi Jarvis 16.1 (default database name "xmbc_video99")
 * Kodi Jarvis 16.0 (default database name "xmbc_video99")
 * Kodi Isengard 15.2 (default database name "xbmc_video93")
 
-**Kodi Web Portal** is configured by default to choose the most recent Kodi's database (xbmc_videoXXX).
+**Kodi Web Portal** is configured by default to choose the most recent Kodi's database (xbmc_videoXXX or MyVideosXXX).
 
 **System :**
-* Apache server with PHP (>= 5.5) (Windows / Linux)
-* Synology NAS (DSM 5, DSM 6)
+* Apache server (2.2 / 2.4) with PHP (>= 5.5, 5.6 / 7.2 / 7.3 / 7.4) (Windows / Linux)
+* Synology NAS (DSM 5, DSM 6, DSM 7)
 
 ## Authentication
 
@@ -99,8 +100,8 @@ Allow the internal Synology user "httpd" to access to this "MEDIATHEQUE" share w
 Finaly, you have to edit an Apache config file manualy through SSH, to add the "/volume1/MEDIATHEQUE" path usable by the X-send-file Apache module (and only this path in the XSendFilePath directive).
 * vi /etc/httpd/conf/extra/mod_xsendfile.conf-user # Synology DSM5
 * vi /volume1/@appstore/WebStation/usr/local/etc/httpd/conf/extra/mod_xsendfile.conf-user # Synology DSM6
-* vi /volume1/@appstore/Apache2.2/usr/local/etc/apache22/conf/extra/mod_xsendfile.conf # Synology DSM6 for package Apache 2.2
-* vi /volume1/.4/usr/local/etc/apache24/conf/extra/mod_xsendfile.conf # Synology DSM6 for package Apache 2.4
+* vi /volume1/@appstore/Apache2.2/usr/local/etc/apache22/conf/extra/mod_xsendfile.conf # Synology DSM6/7 for package Apache 2.2
+* vi /volume1/@appstore/Apache2.4/usr/local/etc/apache24/conf/extra/mod_xsendfile.conf # Synology DSM6/7 for package Apache 2.4
 * For the next updates and evolution of DSM version and package version, it's possible to use the following command to find the right mod_xsendfile.conf via SSH : find / -name "\*xsendfile\*conf\*"
 
 ```shell
@@ -112,6 +113,7 @@ XSendFilePath /volume1/MEDIATHEQUE
 ![Alt text](/screenshots/synology/DSM6_config_004.jpg?raw=true "Update XSendFilePath through SSH")
 
 **Note : be carefull, after any upgrade of your DSM or WebStation package, XSendFile configuration is reset, so you have to edit this file again to allow download.**
+You can automatize the XSendFile update via a crontab script, please refers to https://github.com/yanncam/KodiWebPortal/issues/12.
 
 Reboot the Synology's Apache server to load the new configuration (stop the package then restart it).
 
