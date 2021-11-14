@@ -114,7 +114,8 @@ function extractYoutubeId($url){
 		$urls = array();
 		$pattern = "/(v=|videoid=)([a-zA-Z0-9_\-]{10,})&?/";
 		preg_match_all($pattern, $url, $urls);
-		$return = ((count($urls) > 0) && !empty($urls[count($urls)-1])) ? $urls[count($urls)-1][count(count($urls)-1)-1] : array();
+		$countUrls = count($urls);
+		$return = (($countUrls > 0) && !empty($urls[$countUrls-1])) ? $urls[$countUrls-1][count($urls[$countUrls-1])-1] : array();
 	}
 	return $return;
 }
