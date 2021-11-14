@@ -36,7 +36,7 @@ define("NAX_TVSHOW_REMOTE_PATH", "smb://NAX/MEDIATHEQUE/");	// Location of TVsho
 define("SQL_XBMC_HOST", "localhost");
 define("SQL_XBMC_PORT", 3306);
 define("SQL_XBMC_SOCK", "");
-//define("SQL_XBMC_SOCK", "/run/mysqld/mysqld10.sock");
+//define("SQL_XBMC_SOCK", "/run/mysqld/mysqld.sock"); // or /run/mysqld/mysqld10.sock for MariaDB10
 define("SQL_XBMC_USER", "root");
 define("SQL_XBMC_PASS", "");
 define("SQL_XBMC_DBNAMEPREFIX", "MyVideos"); // Old default XBMC dbname : "xbmc_video", new default Kodi dbname : "MyVideos" or customized '<name>' in Kodi's advancedsettings.xml file : "MyCustomDbName"
@@ -99,7 +99,7 @@ define("NAX_TVSHOW_VIEW","tvshow_view");
 define("NAX_TVSHOWSEASON_VIEW","season_view");
 define("NAX_TVSHOWEPISODE_VIEW","episode_view");
 define("ENABLE_AUTHENTICATION", (ENABLE_INTERNAL_AUTHENTICATION || ENABLE_LDAP_AUTHENTICATION));
-define("KODI_WEB_PORTAL_VERSION", "1.2.3");
+define("KODI_WEB_PORTAL_VERSION", "1.2.4");
 define("IS_INCLUDED", true);
 
 $lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
