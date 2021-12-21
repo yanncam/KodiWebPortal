@@ -13,10 +13,12 @@ if(ENABLE_AUTHENTICATION){
 		sleep(2);
 		if(!checkAuthentication(trim(strval($_POST['user'])), trim(strval($_POST['pass'])))){
 			echo "<span class='error'>" . AUTHENTICATION_ERROR_CREDENTIAL . "</span>";
+			authSyslog("Client authentication failure");
 			exit;
 		} else {
 			echo "<span class='success'>" . AUTHENTICATION_SUCCESS_REDIRECT . "&nbsp;&nbsp;&nbsp;</span><img src='./images/loading-login.gif' />";
 			echo "<script type='text/javascript'>document.location='./';</script>";
+			authSyslog("New client authentication");
 			exit;
 		}
 	}
