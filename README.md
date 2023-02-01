@@ -37,6 +37,7 @@ I wanted to use my Synology NAS with these features to provide a private and per
 ## Compatibility
 
 **Kodi's versions :**
+* Kodi Nexus 20.0 (default database name "xbmc_video121")
 * Kodi Matrix 19.3 (default database name "xbmc_video119")
 * Kody Leia 18.2 (default database name "xbmc_video116")
 * Kodi Krypton 17.0 (default database name "xmbc_video107")
